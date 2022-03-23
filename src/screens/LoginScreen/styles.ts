@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { theme } from '../../theme/Theme';
 
 type LoginScreenStyleType = {
   buttonContainer: ViewStyle;
@@ -16,6 +17,7 @@ export const styles = StyleSheet.create<LoginScreenStyleType>({
   titleText: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: theme.focusedItem,
   },
   infoText: {
     fontSize: 18,

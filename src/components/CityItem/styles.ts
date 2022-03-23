@@ -1,25 +1,34 @@
 import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { theme } from '../../theme/Theme';
 
 type CityItemStyleType = {
   buttonContainer: ViewStyle;
   buttonText: TextStyle;
   itemText: TextStyle;
+  textContainer: ViewStyle;
 };
 
 export const styles = StyleSheet.create<CityItemStyleType>({
+  textContainer: {
+    justifyContent: 'center',
+  },
   itemText: {
-    marginLeft: 16,
-    fontSize: 18,
-    fontWeight: '400',
-    color: 'black',
+    textAlign: 'left',
+    fontSize: 24,
+    fontWeight: '300',
+    fontStyle: 'italic',
+    marginLeft: 18,
+    color: theme.unFocusedItem,
   },
   buttonText: {
     fontSize: 18,
+    fontWeight: '400',
+    color: theme.focusedItem,
   },
   buttonContainer: {
-    width: Dimensions.get('window').width / 3,
+    width: Dimensions.get('window').width / 5,
     position: 'absolute',
-    right: 16,
+    right: 8,
     borderRadius: 10,
   },
 });

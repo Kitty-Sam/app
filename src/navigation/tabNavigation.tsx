@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import { LoginScreen } from '../screens/LoginScreen/LoginScreen';
 import { CityScreen } from '../screens/CItyScreen/CityScreen';
 import { ListCitiesScreen } from '../screens/ListCitiesScreen/ListCitiesScreen';
 import { Icon } from 'react-native-elements';
 import { theme } from '../theme/Theme';
+import { NavigationContainer } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,35 +18,41 @@ export const TabNavigation = () => {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: theme.screenColor,
+          },
+          headerTitleAlign: 'center',
+        }}>
         <Tab.Screen
-          name={'City'}
+          name="weather forecast for 5 days"
           component={CityScreen}
           options={{
-            tabBarLabel: 'City',
+            tabBarShowLabel: false,
             tabBarIcon: ({ size, focused, color }) => (
               <Icon
                 tvParallaxProperties
                 name="home"
                 type="ionicon"
-                color={focused ? theme.borderColor : theme.selectedColor}
-                size={24}
+                color={focused ? theme.focusedItem : theme.unFocusedItem}
+                size={30}
               />
             ),
           }}
         />
         <Tab.Screen
-          name={'List'}
+          name="List of cities"
           component={ListCitiesScreen}
           options={{
-            tabBarLabel: 'List',
+            tabBarShowLabel: false,
             tabBarIcon: ({ size, focused, color }) => (
               <Icon
                 tvParallaxProperties
                 name="md-list-circle"
                 type="ionicon"
-                color={focused ? theme.borderColor : theme.selectedColor}
-                size={24}
+                color={focused ? theme.focusedItem : theme.unFocusedItem}
+                size={30}
               />
             ),
           }}

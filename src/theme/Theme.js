@@ -1,5 +1,5 @@
 export const theme = {
-  mainColor: '#C7CBE8',
-  selectedColor: '#B6F2C3',
-  borderColor: '#000000',
+  screenColor: '#5856d6',
+  unFocusedItem: '#777481',
+  focusedItem: '#4F47AB',
 };
