@@ -2,7 +2,10 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const CityItem = ({ title }) => {
+type CityItemProps = {
+  title: string;
+};
+export const CityItem = ({ title }: CityItemProps) => {
   return (
     <SafeAreaView>
       <Text style={styles.center}>{title}</Text>
@@ -15,5 +18,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-export default CityItem;

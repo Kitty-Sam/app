@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import LoginScreen from '../screens/LoginScreen';
-import CityScreen from '../screens/CityScreen';
-import ListCitiesScreen from '../screens/ListCitiesScreen';
+import { LoginScreen } from '../screens/LoginScreen/LoginScreen';
+import { CityScreen } from '../screens/CItyScreen/CityScreen';
+import { ListCitiesScreen } from '../screens/ListCitiesScreen/ListCitiesScreen';
 import { Icon } from 'react-native-elements';
 import { theme } from '../theme/Theme';
-import { LoginNavigation } from './loginStack';
 
 const Tab = createBottomTabNavigator();
 
 export const TabNavigation = () => {
-  const [userData, setUserData] = useState(false);
+  const [userData, setUserData] = useState(true);
 
   if (!userData) {
-    return <LoginNavigation />;
+    return <LoginScreen />;
   }
 
   return (
