@@ -30,6 +30,7 @@ export const TabNavigation = () => {
                 name="home"
                 type="ionicon"
                 color={focused ? theme.borderColor : theme.selectedColor}
+                size={24}
               />
             ),
           }}
@@ -45,6 +46,7 @@ export const TabNavigation = () => {
                 name="md-list-circle"
                 type="ionicon"
                 color={focused ? theme.borderColor : theme.selectedColor}
+                size={24}
               />
             ),
           }}
