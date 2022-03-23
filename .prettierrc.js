@@ -1,0 +1,21 @@
+module.exports = {
+  bracketSpacing: true,
+  jsxBracketSameLine: true,
+  singleQuote: true,
+  trailingComma: 'all',
+  arrowParens: 'always',
+  tabWidth: 2,
+  useTabs: false,
+  endOfLine: 'auto',
+  semi: true,
+  importOrder: [
+    '^react',
+    '^react/(.*)$',
+    '^@react-navigation/(.*)$',
+    '^@notifee/(.*)$',
+    '^(.*)$',
+    '^[./]',
+  ],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
+};
