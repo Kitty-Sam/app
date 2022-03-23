@@ -24,6 +24,7 @@ export const styles = StyleSheet.create<LoginScreenStyleType>({
     textAlign: 'center',
   },
   buttonContainer: {
+    justifyContent: 'center',
     width: Dimensions.get('window').width / 4,
     margin: 10,
   },
