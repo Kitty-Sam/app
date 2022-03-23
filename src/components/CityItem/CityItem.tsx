@@ -5,7 +5,8 @@ import { Gap } from '../Gap';
 import { styles } from './styles';
 import { CityItemProps } from './types';
 
-export const CityItem = ({ title, id }: CityItemProps) => {
+export const CityItem = (props: CityItemProps) => {
+  const { title, id } = props;
   const [loadData, setLoadData] = useState<boolean>(false);
 
   const onOpenDataPress = (title: string) => {

@@ -1,6 +1,8 @@
 import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { theme } from '../../theme/Theme';
 
+const { width } = Dimensions.get('window');
+
 type CityItemStyleType = {
   buttonContainer: ViewStyle;
   buttonText: TextStyle;
@@ -26,7 +28,7 @@ export const styles = StyleSheet.create<CityItemStyleType>({
     color: theme.focusedItem,
   },
   buttonContainer: {
-    width: Dimensions.get('window').width / 5,
+    width: width / 5,
     position: 'absolute',
     right: 8,
     borderRadius: 10,

@@ -9,6 +9,8 @@ type LoginScreenStyleType = {
   titleText: TextStyle;
 };
 
+const { width } = Dimensions.get('window');
+
 export const styles = StyleSheet.create<LoginScreenStyleType>({
   root: {
     justifyContent: 'center',
@@ -27,7 +29,7 @@ export const styles = StyleSheet.create<LoginScreenStyleType>({
   },
   buttonContainer: {
     justifyContent: 'center',
-    width: Dimensions.get('window').width / 4,
+    width: width / 4,
     margin: 10,
   },
   inputText: {
