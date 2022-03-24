@@ -61,7 +61,7 @@ export const LoginScreen = () => {
           <Gap scale={2} />
           <View style={styles.buttonContainer}>
             <Button
-              title="send"
+              title="logIn"
               disabled={!name || !password || !confirmPassword}
               onPress={onSendPress}
             />

@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { COLORS } from '../../theme/colors';
 
 type LoginScreenStyleType = {
   buttonContainer: ViewStyle;
@@ -8,6 +9,8 @@ type LoginScreenStyleType = {
   titleText: TextStyle;
 };
 
+const { width } = Dimensions.get('window');
+
 export const styles = StyleSheet.create<LoginScreenStyleType>({
   root: {
     justifyContent: 'center',
@@ -16,16 +19,17 @@ export const styles = StyleSheet.create<LoginScreenStyleType>({
   titleText: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: COLORS.indigo,
   },
   infoText: {
-    fontSize: 18,
+    /* fontSize: 18,
     fontWeight: '500',
-    fontStyle: 'italic',
+    fontStyle: 'italic',*/
     textAlign: 'center',
   },
   buttonContainer: {
     justifyContent: 'center',
-    width: Dimensions.get('window').width / 4,
+    width: width / 4,
     margin: 10,
   },
   inputText: {
