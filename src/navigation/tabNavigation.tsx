@@ -8,10 +8,10 @@ import { CityScreen } from '../screens/CItyScreen/CityScreen';
 import { ListCitiesScreen } from '../screens/ListCitiesScreen/ListCitiesScreen';
 import { Icon } from 'react-native-elements';
 
-import { TAB_NAME } from '../enum/enum';
+import { TAB_NAVIGATION_NAME } from '../enum/enum';
 import { COLORS } from '../theme/colors';
 
-import { Button, View, useColorScheme } from 'react-native';
+import { Button, useColorScheme, View } from 'react-native';
 import {
   DarkTheme,
   DefaultTheme,
@@ -70,8 +70,7 @@ export const TabNavigation = () => {
   type ScreenOptionsType =
     | BottomTabNavigationOptions
     | ((props: {
-        // navigation: TabNavigation;
-        navigation: any;
+        navigation: TAB_NAVIGATION_NAME;
         route: RouteProp<TabNavigationParamList, keyof TabNavigationParamList>;
       }) => BottomTabNavigationOptions);
 
@@ -87,12 +86,12 @@ export const TabNavigation = () => {
     <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Tab.Navigator screenOptions={commonScreenOptions}>
         <Tab.Screen
-          name={TAB_NAME.MAIN_SCREEN}
+          name={TAB_NAVIGATION_NAME.MAIN_SCREEN}
           component={CityScreen}
           options={mainScreenOptions}
         />
         <Tab.Screen
-          name={TAB_NAME.LIST_CITIES_SCREEN}
+          name={TAB_NAVIGATION_NAME.LIST_CITIES_SCREEN}
           component={ListCitiesScreen}
           options={listCityScreenOptions}
         />
