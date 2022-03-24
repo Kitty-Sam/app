@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { theme } from '../../theme/Theme';
+import { COLORS } from '../../theme/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -16,16 +16,11 @@ export const styles = StyleSheet.create<CityItemStyleType>({
   },
   itemText: {
     textAlign: 'left',
-    fontSize: 24,
-    fontWeight: '300',
-    fontStyle: 'italic',
     marginLeft: 18,
-    color: theme.unFocusedItem,
+    color: COLORS.jumbo,
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: '400',
-    color: theme.focusedItem,
+    color: COLORS.jumbo,
   },
   buttonContainer: {
     width: width / 5,

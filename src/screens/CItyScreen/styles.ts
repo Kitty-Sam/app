@@ -1,5 +1,5 @@
 import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { theme } from '../../theme/Theme';
+import { COLORS } from '../../theme/colors';
 
 type CityScreenStyleType = {
   buttonContainer: ViewStyle;
@@ -17,9 +17,7 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
   },
   titleText: {
     textAlign: 'center',
-    color: theme.unFocusedItem,
-    fontSize: 24,
-    fontWeight: '300',
-    fontStyle: 'italic',
+    color: COLORS.jumbo,
+    fontSize: 16,
   },
 });
