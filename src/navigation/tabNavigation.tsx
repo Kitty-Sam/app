@@ -16,9 +16,8 @@ import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
-  RouteProp,
 } from '@react-navigation/native';
-import { TabNavigationParamList } from './types';
+import { ScreenOptionsType, TabNavigationParamList } from './types';
 import { styles } from './styles';
 
 const Tab = createBottomTabNavigator<TabNavigationParamList>();
@@ -66,13 +65,6 @@ export const TabNavigation = () => {
       />
     ),
   };
-
-  type ScreenOptionsType =
-    | BottomTabNavigationOptions
-    | ((props: {
-        navigation: TAB_NAVIGATION_NAME;
-        route: RouteProp<TabNavigationParamList, keyof TabNavigationParamList>;
-      }) => BottomTabNavigationOptions);
 
   const commonScreenOptions: ScreenOptionsType = {
     headerStyle: {
