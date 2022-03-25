@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+  Keyboard,
+  KeyboardAvoidingView,
   Platform,
   StatusBar,
   Text,
@@ -7,8 +9,6 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  KeyboardAvoidingView,
-  Keyboard,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppButton } from '../../components/AppButton';
@@ -16,6 +16,8 @@ import { COLORS } from '../../theme/colors';
 
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './style';
+import { AppButtonWithImg } from '../../components/AppButtonWithImg';
+import { Divider } from 'react-native-elements';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -58,6 +60,30 @@ export const LoginScreen = () => {
                 onPress={registerPress}
                 backgroundColor={COLORS.BUTTONS_COLORS.chalet_green}
                 title={'REGISTER'}
+              />
+            </View>
+            <Divider
+              style={{
+                backgroundColor: COLORS.TEXT_COLORS.zuccini,
+                marginTop: 150,
+              }}
+            />
+            <View style={styles.buttonsLinkContainer}>
+              <AppButtonWithImg
+                onPress={() => {
+                  console.log('123');
+                }}
+                backgroundColor={'#3b5998'}
+                title={'Login with facebook'}
+                icon={'facebook'}
+              />
+              <AppButtonWithImg
+                onPress={() => {
+                  console.log('123');
+                }}
+                backgroundColor={COLORS.BUTTONS_COLORS.tacao}
+                title={'Login with google'}
+                icon={'google-plus'}
               />
             </View>
           </View>

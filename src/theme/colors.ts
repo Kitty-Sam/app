@@ -2,6 +2,7 @@ export const COLORS = {
   BUTTONS_COLORS: {
     default_button_Buddha_Gold: '#dd9d02',
     chalet_green: '#576A3D',
+    tacao: '#F0A284',
   },
   TEXT_COLORS: {
     zuccini: '#053625',
