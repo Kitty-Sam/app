@@ -1,9 +1,11 @@
 import React from 'react';
 import {
   Keyboard,
+  Platform,
   StatusBar,
   TextInput,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,36 +21,39 @@ export const RegisterScreen = () => {
   };
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={stylesRegister.root}>
-      <StatusBar hidden />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={stylesRegister.registerContainer}>
-          <TextInput
-            style={styles.inputText}
-            placeholder="Name"
-            placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-          />
-          <TextInput
-            style={styles.inputText}
-            placeholder="Email"
-            placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-          />
-          <TextInput
-            style={styles.inputText}
-            placeholder="Password"
-            placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-          />
-          <TextInput
-            style={[styles.inputText, { marginBottom: 20 }]}
-            placeholder="Confirm password"
-            placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-          />
-          <AppButton
-            onPress={registerUserPress}
-            title="REGISTER"
-            backgroundColor={COLORS.BUTTONS_COLORS.default_button_Buddha_Gold}
-          />
-        </View>
-      </TouchableWithoutFeedback>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <StatusBar hidden />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={stylesRegister.registerContainer}>
+            <TextInput
+              style={styles.inputText}
+              placeholder="Name"
+              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+            />
+            <TextInput
+              style={styles.inputText}
+              placeholder="Email"
+              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+            />
+            <TextInput
+              style={styles.inputText}
+              placeholder="Password"
+              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+            />
+            <TextInput
+              style={[styles.inputText, { marginBottom: 20 }]}
+              placeholder="Confirm password"
+              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+            />
+            <AppButton
+              onPress={registerUserPress}
+              title="REGISTER"
+              backgroundColor={COLORS.BUTTONS_COLORS.default_button_Buddha_Gold}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

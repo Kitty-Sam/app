@@ -11,7 +11,7 @@ LogBox.ignoreLogs([
 ]);
 
 export const App: FC = () => {
-  const [userData, setUserData] = useState(false);
+  const [userData, setUserData] = useState(true);
 
   if (!userData) {
     return <AuthStackNavigation />;
