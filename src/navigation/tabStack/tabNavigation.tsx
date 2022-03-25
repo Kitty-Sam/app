@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import { LoginScreen } from '../screens/LoginScreen/LoginScreen';
-import { CityScreen } from '../screens/CItyScreen/CityScreen';
-import { ListCitiesScreen } from '../screens/ListCitiesScreen/ListCitiesScreen';
+import { CityScreen } from '../../screens/CItyScreen/CityScreen';
+import { ListCitiesScreen } from '../../screens/ListCitiesScreen/ListCitiesScreen';
 import { Icon } from 'react-native-elements';
 
-import { TAB_NAVIGATION_NAME } from '../enum/enum';
-import { COLORS } from '../theme/colors';
+import { TAB_NAVIGATION_NAME } from '../../enum/enum';
+import { COLORS } from '../../theme/colors';
 
 import { Button, useColorScheme, View } from 'react-native';
 import {
@@ -17,19 +16,12 @@ import {
   DefaultTheme,
   NavigationContainer,
 } from '@react-navigation/native';
-import { ScreenOptionsType, TabNavigationParamList } from './types';
-import { styles } from './styles';
+import { ScreenOptionsType, TabStackParamList } from './types';
 
-const Tab = createBottomTabNavigator<TabNavigationParamList>();
+const TabStack = createBottomTabNavigator<TabStackParamList>();
 
 export const TabNavigation = () => {
   const scheme = useColorScheme();
-
-  const [userData, setUserData] = useState(true);
-
-  if (!userData) {
-    return <LoginScreen />;
-  }
 
   const onLogOutPress = () => {
     console.log('123');
@@ -47,7 +39,7 @@ export const TabNavigation = () => {
       />
     ),
     headerRight: () => (
-      <View style={styles.logOutContainer}>
+      <View>
         <Button title="Log out" onPress={onLogOutPress} color={COLORS.punch} />
       </View>
     ),
@@ -76,18 +68,18 @@ export const TabNavigation = () => {
 
   return (
     <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Tab.Navigator screenOptions={commonScreenOptions}>
-        <Tab.Screen
+      <TabStack.Navigator screenOptions={commonScreenOptions}>
+        <TabStack.Screen
           name={TAB_NAVIGATION_NAME.MAIN_SCREEN}
           component={CityScreen}
           options={mainScreenOptions}
         />
-        <Tab.Screen
+        <TabStack.Screen
           name={TAB_NAVIGATION_NAME.LIST_CITIES_SCREEN}
           component={ListCitiesScreen}
           options={listCityScreenOptions}
         />
-      </Tab.Navigator>
+      </TabStack.Navigator>
     </NavigationContainer>
   );
 };
