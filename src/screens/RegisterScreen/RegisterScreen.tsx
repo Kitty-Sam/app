@@ -7,10 +7,11 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from '../LoginScreen/style';
+
 import { AppButton } from '../../components/AppButton';
 import { COLORS } from '../../theme/colors';
 import { stylesRegister } from './styles';
+import { styles } from '../LoginScreen/style';
 
 export const RegisterScreen = () => {
   const registerUserPress = () => {
@@ -21,12 +22,25 @@ export const RegisterScreen = () => {
       <StatusBar hidden />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={stylesRegister.registerContainer}>
-          <TextInput style={styles.inputText} placeholder="Name" />
-          <TextInput style={styles.inputText} placeholder="Email" />
-          <TextInput style={styles.inputText} placeholder="Password" />
+          <TextInput
+            style={styles.inputText}
+            placeholder="Name"
+            placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+          />
+          <TextInput
+            style={styles.inputText}
+            placeholder="Email"
+            placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+          />
+          <TextInput
+            style={styles.inputText}
+            placeholder="Password"
+            placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+          />
           <TextInput
             style={[styles.inputText, { marginBottom: 20 }]}
             placeholder="Confirm password"
+            placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
           />
           <AppButton
             onPress={registerUserPress}

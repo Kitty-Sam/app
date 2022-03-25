@@ -13,8 +13,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppButton } from '../../components/AppButton';
 import { COLORS } from '../../theme/colors';
-import { styles } from './style';
+
 import { useNavigation } from '@react-navigation/native';
+import { styles } from './style';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -36,8 +37,16 @@ export const LoginScreen = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.loginContainer}>
             <Text style={styles.headerText}>Weather App</Text>
-            <TextInput style={styles.inputText} placeholder="Email" />
-            <TextInput style={styles.inputText} placeholder="Password" />
+            <TextInput
+              style={styles.inputText}
+              placeholder="Email"
+              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+            />
+            <TextInput
+              style={styles.inputText}
+              placeholder="Password"
+              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+            />
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.textContainer}
