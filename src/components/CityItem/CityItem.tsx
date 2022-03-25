@@ -1,12 +1,14 @@
-import React from 'react';
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Text, View } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Gap } from '../Gap';
+import { COLORS } from '../../theme/colors';
 import { styles } from './styles';
 import { CityItemProps } from './types';
 
 export const CityItem = (props: CityItemProps) => {
-  const { title, id } = props;
+  const { title } = props;
+  const [value, setValue] = useState<boolean>(false);
 
   const onOpenDataPress = (title: string) => {
     Alert.alert('A few minutes, please');
@@ -15,16 +17,13 @@ export const CityItem = (props: CityItemProps) => {
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']}>
-      <Gap />
       <View style={styles.textContainer}>
-        <Text style={styles.itemText}>
-          {id} {title}
-        </Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => onOpenDataPress(title)}>
-            <Text style={styles.buttonText}>Show</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.itemText}>{title}</Text>
+        <CheckBox
+          checked={value}
+          onPress={() => setValue(!value)}
+          checkedColor={COLORS.BUTTONS_COLORS.default_button_Buddha_Gold}
+        />
       </View>
     </SafeAreaView>
   );

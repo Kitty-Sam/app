@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     alignSelf: 'center',
     textTransform: 'uppercase',
-    color: '#20152c',
+    color: COLORS.TEXT_COLORS.zuccini,
   },
 });
