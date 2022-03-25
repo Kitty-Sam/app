@@ -20,6 +20,8 @@ export const CityItem = (props: CityItemProps) => {
       <View style={styles.textContainer}>
         <Text style={styles.itemText}>{title}</Text>
         <CheckBox
+          checkedIcon="dot-circle-o"
+          uncheckedIcon="circle-o"
           checked={value}
           onPress={() => setValue(!value)}
           checkedColor={COLORS.BUTTONS_COLORS.default_button_Buddha_Gold}
