@@ -1,4 +1,4 @@
-import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../theme/colors';
 
 type CityScreenStyleType = {
@@ -6,18 +6,21 @@ type CityScreenStyleType = {
   root: ViewStyle;
   titleText: TextStyle;
 };
+const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create<CityScreenStyleType>({
   root: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: COLORS.BACKGROUND_COLORS.pampas,
+    flex: 1,
+    justifyContent: 'flex-start',
   },
   buttonContainer: {
-    width: 200,
+    width: width / 6,
   },
   titleText: {
-    textAlign: 'center',
-    color: COLORS.jumbo,
-    fontSize: 16,
+    marginVertical: 24,
+    marginHorizontal: 24,
+    color: COLORS.TEXT_COLORS.zuccini,
+    fontSize: 18,
   },
 });

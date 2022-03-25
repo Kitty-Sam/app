@@ -4,28 +4,24 @@ import { COLORS } from '../../theme/colors';
 const { width } = Dimensions.get('window');
 
 type CityItemStyleType = {
-  buttonContainer: ViewStyle;
-  buttonText: TextStyle;
   itemText: TextStyle;
   textContainer: ViewStyle;
 };
 
 export const styles = StyleSheet.create<CityItemStyleType>({
   textContainer: {
-    justifyContent: 'center',
+    marginHorizontal: 32,
+    borderBottomColor: COLORS.TEXT_COLORS.zuccini,
+    borderBottomWidth: 1,
+    marginVertical: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   itemText: {
+    marginTop: 14,
     textAlign: 'left',
-    marginLeft: 18,
-    color: COLORS.jumbo,
-  },
-  buttonText: {
-    color: COLORS.jumbo,
-  },
-  buttonContainer: {
-    width: width / 5,
-    position: 'absolute',
-    right: 8,
-    borderRadius: 10,
+    color: COLORS.TEXT_COLORS.zuccini,
+    fontSize: 18,
   },
 });

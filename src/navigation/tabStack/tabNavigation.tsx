@@ -9,20 +9,13 @@ import { Icon } from 'react-native-elements';
 
 import { TAB_NAVIGATION_NAME } from '../../enum/enum';
 import { COLORS } from '../../theme/colors';
-
-import { Button, useColorScheme, View } from 'react-native';
-import {
-  DarkTheme,
-  DefaultTheme,
-  NavigationContainer,
-} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { ScreenOptionsType, TabStackParamList } from './types';
+import { AppButton } from '../../components/AppButton';
 
 const TabStack = createBottomTabNavigator<TabStackParamList>();
 
 export const TabNavigation = () => {
-  const scheme = useColorScheme();
-
   const onLogOutPress = () => {
     console.log('123');
   };
@@ -34,15 +27,25 @@ export const TabNavigation = () => {
         tvParallaxProperties
         name="home"
         type="ionicon"
-        color={focused ? COLORS.indigo : COLORS.jumbo}
         size={30}
+        color={COLORS.TEXT_COLORS.zuccini}
       />
     ),
+
+    tabBarActiveBackgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
+    tabBarInactiveBackgroundColor: COLORS.BACKGROUND_COLORS.pampas,
     headerRight: () => (
-      <View>
-        <Button title="Log out" onPress={onLogOutPress} color={COLORS.punch} />
-      </View>
+      <AppButton
+        onPress={() => {
+          console.log('123');
+        }}
+        title="Log Out"
+      />
     ),
+    headerRightContainerStyle: {
+      paddingRight: 16,
+    },
+    headerTitleStyle: { color: COLORS.TEXT_COLORS.zuccini },
   };
 
   const listCityScreenOptions: BottomTabNavigationOptions = {
@@ -52,22 +55,24 @@ export const TabNavigation = () => {
         tvParallaxProperties
         name="md-list-circle"
         type="ionicon"
-        color={focused ? COLORS.indigo : COLORS.jumbo}
         size={30}
+        color={COLORS.TEXT_COLORS.zuccini}
       />
     ),
+    tabBarActiveBackgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
+    tabBarInactiveBackgroundColor: COLORS.BACKGROUND_COLORS.pampas,
   };
 
   const commonScreenOptions: ScreenOptionsType = {
     headerStyle: {
-      backgroundColor: COLORS.indigo,
+      backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
     },
-    headerTitleAlign: 'center',
+    headerTitleAlign: 'left',
     headerTitle: 'Weather App',
   };
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer>
       <TabStack.Navigator screenOptions={commonScreenOptions}>
         <TabStack.Screen
           name={TAB_NAVIGATION_NAME.MAIN_SCREEN}

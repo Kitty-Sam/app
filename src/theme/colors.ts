@@ -5,14 +5,12 @@ export const COLORS = {
   },
   TEXT_COLORS: {
     zuccini: '#053625',
+    soya_Bean: '#5C5747',
   },
   BACKGROUND_COLORS: {
     indian_Khaki: '#C0AB87',
+    akaroa: '#DACEB9',
     iron: '#D0D1D1',
+    pampas: '#F0EDEB',
   },
-
-  indigo: '#5856d6',
-  jumbo: '#777481',
-  blue_Violeta: '#4F47AB',
-  punch: '#D6411F',
 };
