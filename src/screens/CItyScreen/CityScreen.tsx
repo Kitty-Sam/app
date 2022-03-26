@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Dimensions, StatusBar, Text, View } from 'react-native';
+import { StatusBar, Text, View } from 'react-native';
 import { styles } from './styles';
 import { FAB, Image, Overlay } from 'react-native-elements';
 import { COLORS } from '../../theme/colors';
-
-const { width, height } = Dimensions.get('window');
+import { ImagePicker } from '../../components/ImagePicker';
 
 const img =
   'https://icons-for-free.com/iconfiles/png/512/fog+foggy+weather+icon-1320196634851598977.png';
@@ -30,18 +29,15 @@ export const CityScreen = () => {
         isVisible={visible}
         onBackdropPress={toggleOverlay}
         overlayStyle={styles.overlay}>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: COLORS.TEXT_COLORS.zuccini }}>Hello!</Text>
-          <Text
-            style={{ color: COLORS.TEXT_COLORS.zuccini, textAlign: 'center' }}>
+        <View style={styles.textOverlayContainer}>
+          <Text style={styles.overlayText}>Hello!</Text>
+          <Text style={styles.overlayText}>
             Just use me, if you want to know the weather
           </Text>
-          <Image
-            source={{ uri: img }}
-            style={{ width: width / 2, height: height / 3 }}
-          />
+          <Image source={{ uri: img }} style={styles.imageContainer} />
         </View>
       </Overlay>
+      <ImagePicker />
     </SafeAreaView>
   );
 };
