@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StatusBar, Text, View } from 'react-native';
 import { CityItem } from '../../components/CityItem/CityItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,7 +16,7 @@ const DATA: DataItemType[] = [
   { id: 2, city: 'Moscow' },
   { id: 3, city: 'Kiev' },
   { id: 4, city: 'Riga' },
-  { id: 5, city: 'Riga' },
+  { id: 5, city: 'Beloozersk' },
   { id: 6, city: 'Riga' },
   { id: 7, city: 'Riga' },
   { id: 8, city: 'Riga' },
@@ -29,10 +29,32 @@ const DATA: DataItemType[] = [
 ];
 
 export const ListCitiesScreen = () => {
+  const [filteredData, setFilteredData] = useState<DataItemType[]>([]);
+  const [masterData, setMasterData] = useState<DataItemType[]>([]);
   const [search, setSearch] = useState<string>('');
 
-  const updateSearch = (search: string) => {
-    setSearch(search);
+  const loadData = () => {
+    setMasterData(DATA);
+    setFilteredData(DATA);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const searchFilter = (text: string) => {
+    if (text) {
+      const newData = masterData.filter((item) => {
+        const itemData = item.city ? item.city.toUpperCase() : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredData(newData);
+      setSearch(text);
+    } else {
+      setFilteredData(masterData);
+      setSearch(text);
+    }
   };
 
   return (
@@ -42,7 +64,7 @@ export const ListCitiesScreen = () => {
         <Text style={styles.conditionText}>Choose the city</Text>
         <SearchBar
           placeholder="Type Here..."
-          onChangeText={updateSearch}
+          onChangeText={(text: string) => searchFilter(text)}
           value={search}
           containerStyle={{
             marginVertical: 16,
@@ -58,9 +80,9 @@ export const ListCitiesScreen = () => {
         />
       </View>
       <FlatList
-        keyExtractor={(item) => item.id.toString()}
-        data={DATA}
-        renderItem={({ item }) => <CityItem title={item.city} id={item.id} />}
+        keyExtractor={(item, index) => index.toString()}
+        data={filteredData}
+        renderItem={({ item }) => <CityItem title={item.city} />}
       />
     </SafeAreaView>
   );

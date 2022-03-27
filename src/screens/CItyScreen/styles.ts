@@ -4,15 +4,17 @@ import { COLORS } from '../../theme/colors';
 type CityScreenStyleType = {
   buttonContainer: ViewStyle;
   fab: ViewStyle;
+  imageContainer: any;
   overlay: ViewStyle;
+  overlayText: TextStyle;
   root: ViewStyle;
+  textOverlayContainer: ViewStyle;
   titleText: TextStyle;
 };
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create<CityScreenStyleType>({
   root: {
-    justifyContent: 'space-between',
     backgroundColor: COLORS.BACKGROUND_COLORS.pampas,
     flex: 1,
     marginHorizontal: 16,
@@ -35,5 +37,17 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
     height: 300,
     alignItems: 'center',
     borderRadius: 10,
+  },
+  overlayText: {
+    color: COLORS.TEXT_COLORS.zuccini,
+    textAlign: 'center',
+  },
+  imageContainer: {
+    width: width / 2,
+    height: height / 3,
+  },
+  textOverlayContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

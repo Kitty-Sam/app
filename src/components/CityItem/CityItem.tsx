@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,10 +10,15 @@ export const CityItem = (props: CityItemProps) => {
   const { title } = props;
   const [value, setValue] = useState<boolean>(false);
 
-  const onOpenDataPress = (title: string) => {
-    Alert.alert('A few minutes, please');
-    // const weatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${title}&lang=ru&units=metric&APPID=a9a3a62789de80865407c0452e9d1c27`;
-  };
+  useEffect(() => {
+    if (value && title) {
+      Alert.alert('A few minutes, please');
+      const weatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${title}&lang=ru&units=metric&APPID=a9a3a62789de80865407c0452e9d1c27`;
+      fetch(weatherURL)
+        .then((res) => res.json())
+        .then((data) => console.log('data is launched', data.list));
+    }
+  }, [value, title]);
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']}>
