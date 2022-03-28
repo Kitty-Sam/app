@@ -4,7 +4,7 @@ import { StatusBar, Text, View } from 'react-native';
 import { styles } from './styles';
 import { FAB, Image, Overlay } from 'react-native-elements';
 import { COLORS } from '../../theme/colors';
-import { ImagePicker } from '../../components/ImagePicker';
+import { ImagePicker } from '../../components/ImagePicker/ImagePicker';
 
 const img =
   'https://icons-for-free.com/iconfiles/png/512/fog+foggy+weather+icon-1320196634851598977.png';

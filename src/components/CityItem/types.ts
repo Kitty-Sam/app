@@ -1,4 +1,4 @@
 export type CityItemProps = {
-  id: number;
+  id?: number;
   title: string;
 };

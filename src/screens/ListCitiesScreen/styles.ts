@@ -5,6 +5,8 @@ type ListCitiesScreenStyleType = {
   conditionContainer: ViewStyle;
   conditionText: TextStyle;
   root: ViewStyle;
+  search: ViewStyle;
+  searchContainer: ViewStyle;
 };
 
 export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
@@ -19,5 +21,15 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
   conditionContainer: {
     marginVertical: 16,
     marginHorizontal: 16,
+  },
+  searchContainer: {
+    marginVertical: 16,
+    backgroundColor: COLORS.BACKGROUND_COLORS.indian_Khaki,
+    borderRadius: 10,
+  },
+  search: {
+    backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
+    color: COLORS.TEXT_COLORS.zuccini,
+    borderRadius: 10,
   },
 });

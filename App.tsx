@@ -16,6 +16,7 @@ export const App: FC = () => {
   if (!userData) {
     return <AuthStackNavigation />;
   }
+
   return (
     <Provider store={store}>
       <TabNavigation />

@@ -1,10 +1,16 @@
-import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import {
+  Dimensions,
+  ImageStyle,
+  StyleSheet,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import { COLORS } from '../../theme/colors';
 
 type CityScreenStyleType = {
   buttonContainer: ViewStyle;
   fab: ViewStyle;
-  imageContainer: any;
+  imageContainer: ImageStyle;
   overlay: ViewStyle;
   overlayText: TextStyle;
   root: ViewStyle;
@@ -17,7 +23,7 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
   root: {
     backgroundColor: COLORS.BACKGROUND_COLORS.pampas,
     flex: 1,
-    marginHorizontal: 16,
+    paddingHorizontal: 16,
   },
   buttonContainer: {
     width: width / 6,
@@ -29,8 +35,9 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
   },
   fab: {
     position: 'absolute',
-    right: 10,
-    bottom: 15,
+    right: 8,
+    bottom: 16,
+    zIndex: 10,
   },
   overlay: {
     width: 300,
