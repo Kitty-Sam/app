@@ -11,20 +11,21 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AppButton } from '../../components/AppButton';
+import { AppButton } from '../../components/AppButton/AppButton';
 import { COLORS } from '../../theme/colors';
-
-import { useNavigation } from '@react-navigation/native';
 import { styles } from './style';
-import { AppButtonWithImg } from '../../components/AppButtonWithImg';
+import { AppButtonWithImg } from '../../components/AppButtonWithImg/AppButtonWithImg';
 import { Divider } from 'react-native-elements';
+import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
+import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 
-export const LoginScreen = () => {
-  const navigation = useNavigation();
+export const LoginScreen = (
+  props: StackScreenNavigationProps<AUTH_NAVIGATION_NAME.LOGIN>,
+) => {
+  const { navigation } = props;
 
   const registerPress = () => {
-    // @ts-ignore
-    navigation.navigate('Register');
+    navigation.navigate(AUTH_NAVIGATION_NAME.REGISTER);
   };
 
   const loginPress = () => {
@@ -55,11 +56,11 @@ export const LoginScreen = () => {
                 activeOpacity={0.4}>
                 <Text style={styles.regularText}>Forgot email/password</Text>
               </TouchableOpacity>
-              <AppButton onPress={loginPress} title={'LOGIN'} />
+              <AppButton onPress={loginPress} title={'SIGH IN'} />
               <AppButton
                 onPress={registerPress}
                 backgroundColor={COLORS.BUTTONS_COLORS.chalet_green}
-                title={'REGISTER'}
+                title={'SIGH UP'}
               />
             </View>
             <Divider

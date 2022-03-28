@@ -6,13 +6,10 @@ import {
   launchCamera,
   launchImageLibrary,
 } from 'react-native-image-picker';
-import { AppButton } from './AppButton';
-import { COLORS } from '../theme/colors';
-
-type DataResponseType = {
-  id?: string;
-  uri?: string;
-};
+import { AppButton } from '../AppButton/AppButton';
+import { COLORS } from '../../theme/colors';
+import { styles } from './styles';
+import { DataResponseType } from './types';
 
 export const ImagePicker = () => {
   const [dataFromGallery, setDataFromGallery] = useState<DataResponseType[]>(
@@ -60,11 +57,7 @@ export const ImagePicker = () => {
 
   return (
     <View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
+      <View style={styles.buttonsContainer}>
         <AppButton title={'take photo'} onPress={takePhoto} />
         <AppButton
           title={'add from gallery'}
@@ -74,22 +67,14 @@ export const ImagePicker = () => {
       </View>
       {dataFromGallery.length ? (
         <ScrollView
-          contentContainerStyle={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            // showsHorizontalScrollIndicator: false,
-          }}>
+          contentContainerStyle={styles.listContainer}
+          showsHorizontalScrollIndicator={false}>
           {dataFromGallery.map(({ uri, id }) => (
-            <View
-              key={id}
-              style={{
-                flexDirection: 'row',
-                marginVertical: 16,
-              }}>
+            <View key={id} style={styles.imageContainer}>
               <Image
                 resizeMode="cover"
                 resizeMethod="scale"
-                style={{ width: 200, height: 200 }}
+                style={styles.image}
                 source={{ uri: uri }}
               />
             </View>
@@ -99,3 +84,24 @@ export const ImagePicker = () => {
     </View>
   );
 };
+
+/*
+const styles = StyleSheet.create({
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    marginVertical: 16,
+  },
+  image: {
+    width: width / 2,
+    height: height / 3,
+  },
+  listContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+*/

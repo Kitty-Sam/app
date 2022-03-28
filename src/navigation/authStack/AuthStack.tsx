@@ -18,7 +18,7 @@ export const AuthStackNavigation = () => {
   return (
     <NavigationContainer>
       <AuthStack.Navigator
-        initialRouteName="Login"
+        initialRouteName={AUTH_NAVIGATION_NAME.LOGIN}
         screenOptions={commonScreenOptions}>
         <AuthStack.Screen
           name={AUTH_NAVIGATION_NAME.LOGIN}

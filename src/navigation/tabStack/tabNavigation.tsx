@@ -11,7 +11,7 @@ import { TAB_NAVIGATION_NAME } from '../../enum/enum';
 import { COLORS } from '../../theme/colors';
 import { NavigationContainer } from '@react-navigation/native';
 import { ScreenOptionsType, TabStackParamList } from './types';
-import { AppButton } from '../../components/AppButton';
+import { AppButton } from '../../components/AppButton/AppButton';
 
 const TabStack = createBottomTabNavigator<TabStackParamList>();
 

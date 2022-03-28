@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StatusBar, Text, View } from 'react-native';
+import { FlatList, StatusBar, Text, TextInputProps, View } from 'react-native';
 import { CityItem } from '../../components/CityItem/CityItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
 import { SearchBar } from 'react-native-elements';
-import { COLORS } from '../../theme/colors';
 
 type DataItemType = {
   city: string;
@@ -16,16 +15,12 @@ const DATA: DataItemType[] = [
   { id: 2, city: 'Moscow' },
   { id: 3, city: 'Kiev' },
   { id: 4, city: 'Riga' },
-  { id: 5, city: 'Beloozersk' },
-  { id: 6, city: 'Riga' },
-  { id: 7, city: 'Riga' },
-  { id: 8, city: 'Riga' },
-  { id: 9, city: 'Riga' },
-  { id: 10, city: 'Riga' },
-  { id: 11, city: 'Riga' },
-  { id: 12, city: 'Riga' },
-  { id: 13, city: 'Riga' },
-  { id: 14, city: 'Riga' },
+  { id: 5, city: 'Orsha' },
+  { id: 6, city: 'Brest' },
+  { id: 7, city: 'Grodno' },
+  { id: 8, city: 'Bereza' },
+  { id: 9, city: 'Mogilev' },
+  { id: 10, city: 'Vitebsk' },
 ];
 
 export const ListCitiesScreen = () => {
@@ -57,6 +52,10 @@ export const ListCitiesScreen = () => {
     }
   };
 
+  const onChangeText: TextInputProps['onChangeText'] = (text: string) => {
+    searchFilter(text);
+  };
+
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
       <StatusBar hidden />
@@ -64,18 +63,11 @@ export const ListCitiesScreen = () => {
         <Text style={styles.conditionText}>Choose the city</Text>
         <SearchBar
           placeholder="Type Here..."
-          onChangeText={(text: string) => searchFilter(text)}
+          // @ts-ignore
+          onChangeText={onChangeText}
           value={search}
-          containerStyle={{
-            marginVertical: 16,
-            backgroundColor: COLORS.BACKGROUND_COLORS.indian_Khaki,
-            borderRadius: 10,
-          }}
-          style={{
-            backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
-            color: COLORS.TEXT_COLORS.zuccini,
-            borderRadius: 10,
-          }}
+          containerStyle={styles.searchContainer}
+          style={styles.search}
           platform="android"
         />
       </View>
@@ -83,6 +75,7 @@ export const ListCitiesScreen = () => {
         keyExtractor={(item, index) => index.toString()}
         data={filteredData}
         renderItem={({ item }) => <CityItem title={item.city} />}
+        showsHorizontalScrollIndicator={false}
       />
     </SafeAreaView>
   );

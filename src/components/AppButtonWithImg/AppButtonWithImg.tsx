@@ -1,16 +1,8 @@
 import React from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { COLORS } from '../theme/colors';
-
-type AppButtonWithImgPropsType = {
-  backgroundColor: string;
-  icon: string;
-  onPress: () => void;
-  title: string;
-};
-
-const { width } = Dimensions.get('window');
+import { styles } from './styles';
+import { AppButtonWithImgPropsType } from './types';
 
 export const AppButtonWithImg = (props: AppButtonWithImgPropsType) => {
   const { backgroundColor, icon, title, onPress } = props;
@@ -27,17 +19,3 @@ export const AppButtonWithImg = (props: AppButtonWithImgPropsType) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  appButtonContainer: {
-    marginHorizontal: 10,
-    width: width / 2,
-    marginVertical: 10,
-  },
-  appButton: {
-    color: COLORS.TEXT_COLORS.zuccini,
-  },
-  appButtonText: {
-    color: COLORS.TEXT_COLORS.zuccini,
-  },
-});
