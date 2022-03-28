@@ -6,8 +6,11 @@ import { FAB, Image, Overlay } from 'react-native-elements';
 import { COLORS } from '../../theme/colors';
 import { ImagePicker } from '../../components/ImagePicker/ImagePicker';
 
-const img =
-  'https://icons-for-free.com/iconfiles/png/512/fog+foggy+weather+icon-1320196634851598977.png';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const img = require('../../../assets/weather.png');
+
+// const img =
+//   'https://icons-for-free.com/iconfiles/png/512/fog+foggy+weather+icon-1320196634851598977.png';
 
 export const CityScreen = () => {
   const [visible, setVisible] = useState(false);
@@ -34,7 +37,8 @@ export const CityScreen = () => {
           <Text style={styles.overlayText}>
             Just use me, if you want to know the weather
           </Text>
-          <Image source={{ uri: img }} style={styles.imageContainer} />
+          {/*<Image source={{ uri: img }} style={styles.imageContainer} />*/}
+          <Image source={img} style={styles.imageContainer} />
         </View>
       </Overlay>
       <ImagePicker />

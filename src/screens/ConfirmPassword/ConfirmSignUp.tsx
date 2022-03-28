@@ -1,29 +1,34 @@
 import React from 'react';
 import {
   Keyboard,
-  KeyboardAvoidingView,
   Platform,
   StatusBar,
   TextInput,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
   View,
+  TouchableOpacity,
+  Text,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppButton } from '../../components/AppButton/AppButton';
 import { COLORS } from '../../theme/colors';
-import { stylesRegister } from './styles';
+
 import { styles } from '../LoginScreen/style';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
+import { stylesRegister } from '../RegisterScreen/styles';
 
-export const RegisterScreen = (
-  props: StackScreenNavigationProps<AUTH_NAVIGATION_NAME.REGISTER>,
+export const ConfirmScreen = (
+  props: StackScreenNavigationProps<AUTH_NAVIGATION_NAME.CONFIRM>,
 ) => {
-  const { navigation } = props;
+  const confirmPress = () => {
+    console.log('confirm password');
+  };
 
-  const registerUserPress = () => {
-    navigation.navigate(AUTH_NAVIGATION_NAME.CONFIRM);
+  const resetCodePress = () => {
+    console.log('reset code');
   };
 
   return (
@@ -38,19 +43,17 @@ export const RegisterScreen = (
               placeholder="Email"
               placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
             />
-            <TextInput
-              style={styles.inputText}
-              placeholder="Password"
-              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-            />
-            <TextInput
-              style={[styles.inputText, { marginBottom: 20 }]}
-              placeholder="Confirm password"
-              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-            />
+            <TouchableOpacity
+              style={{ alignItems: 'center' }}
+              activeOpacity={0.5}
+              onPress={resetCodePress}>
+              <Text style={{ color: COLORS.TEXT_COLORS.zuccini }}>
+                Reset code?
+              </Text>
+            </TouchableOpacity>
             <AppButton
-              onPress={registerUserPress}
-              title="SIGH UP"
+              onPress={confirmPress}
+              title="CONFIRM"
               backgroundColor={COLORS.BUTTONS_COLORS.default_button_Buddha_Gold}
             />
           </View>

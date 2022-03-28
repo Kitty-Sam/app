@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Image, ScrollView, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  PermissionsAndroid,
+  ScrollView,
+  View,
+} from 'react-native';
 import {
   ImagePickerResponse,
   launchCamera,
@@ -28,31 +34,61 @@ export const ImagePicker = () => {
   };
 
   const addPhoto = async () => {
-    await launchImageLibrary(
-      {
-        selectionLimit: 0,
-        mediaType: 'photo',
-        includeBase64: false,
-      },
-      savePhoto,
-    );
+    try {
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+      ]);
+
+      if (
+        granted['android.permission.CAMERA'] ===
+        PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        await launchImageLibrary(
+          {
+            selectionLimit: 0,
+            mediaType: 'photo',
+            includeBase64: false,
+          },
+          savePhoto,
+        );
+      } else {
+        Alert.alert('Give your permissions');
+      }
+    } catch (error) {
+      console.warn(error);
+    }
   };
 
   const takePhoto = async () => {
-    await launchCamera({
-      saveToPhotos: true,
-      mediaType: 'photo',
-      includeBase64: false,
-    });
+    try {
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+      ]);
 
-    await launchImageLibrary(
-      {
-        selectionLimit: 0,
-        mediaType: 'photo',
-        includeBase64: false,
-      },
-      savePhoto,
-    );
+      if (
+        granted['android.permission.CAMERA'] ===
+        PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        await launchCamera({
+          saveToPhotos: true,
+          mediaType: 'photo',
+          includeBase64: false,
+        });
+
+        await launchImageLibrary(
+          {
+            selectionLimit: 0,
+            mediaType: 'photo',
+            includeBase64: false,
+          },
+          savePhoto,
+        );
+      } else {
+        Alert.alert('Give your permissions');
+      }
+    } catch (error) {
+      console.warn(error);
+    }
   };
 
   return (
@@ -68,7 +104,8 @@ export const ImagePicker = () => {
       {dataFromGallery.length ? (
         <ScrollView
           contentContainerStyle={styles.listContainer}
-          showsHorizontalScrollIndicator={false}>
+          // showsVerticalScrollIndicator={false}
+        >
           {dataFromGallery.map(({ uri, id }) => (
             <View key={id} style={styles.imageContainer}>
               <Image
@@ -84,24 +121,3 @@ export const ImagePicker = () => {
     </View>
   );
 };
-
-/*
-const styles = StyleSheet.create({
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  imageContainer: {
-    flexDirection: 'row',
-    marginVertical: 16,
-  },
-  image: {
-    width: width / 2,
-    height: height / 3,
-  },
-  listContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-*/

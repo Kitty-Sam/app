@@ -12,18 +12,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppButton } from '../../components/AppButton/AppButton';
 import { COLORS } from '../../theme/colors';
-import { stylesRegister } from './styles';
+
 import { styles } from '../LoginScreen/style';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
+import { stylesRegister } from '../RegisterScreen/styles';
 
-export const RegisterScreen = (
-  props: StackScreenNavigationProps<AUTH_NAVIGATION_NAME.REGISTER>,
+export const ForgotScreen = (
+  props: StackScreenNavigationProps<AUTH_NAVIGATION_NAME.FORGOT>,
 ) => {
   const { navigation } = props;
 
-  const registerUserPress = () => {
-    navigation.navigate(AUTH_NAVIGATION_NAME.CONFIRM);
+  const confirmForgotSubmit = () => {
+    navigation.navigate(AUTH_NAVIGATION_NAME.FORGOT_SUBMIT);
   };
 
   return (
@@ -38,19 +39,9 @@ export const RegisterScreen = (
               placeholder="Email"
               placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
             />
-            <TextInput
-              style={styles.inputText}
-              placeholder="Password"
-              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-            />
-            <TextInput
-              style={[styles.inputText, { marginBottom: 20 }]}
-              placeholder="Confirm password"
-              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-            />
             <AppButton
-              onPress={registerUserPress}
-              title="SIGH UP"
+              onPress={confirmForgotSubmit}
+              title="CONFIRM"
               backgroundColor={COLORS.BUTTONS_COLORS.default_button_Buddha_Gold}
             />
           </View>

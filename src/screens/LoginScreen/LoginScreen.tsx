@@ -32,6 +32,10 @@ export const LoginScreen = (
     console.log('login');
   };
 
+  const onForgotDataPress = () => {
+    navigation.navigate(AUTH_NAVIGATION_NAME.FORGOT);
+  };
+
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
       <KeyboardAvoidingView
@@ -54,7 +58,9 @@ export const LoginScreen = (
               <TouchableOpacity
                 style={styles.textContainer}
                 activeOpacity={0.4}>
-                <Text style={styles.regularText}>Forgot email/password</Text>
+                <Text style={styles.regularText} onPress={onForgotDataPress}>
+                  Forgot email/password
+                </Text>
               </TouchableOpacity>
               <AppButton onPress={loginPress} title={'SIGH IN'} />
               <AppButton
