@@ -7,6 +7,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { LoginScreen } from '../../screens/LoginScreen/LoginScreen';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
 import { AuthStackParamList, ScreenOptionsType } from './types';
+import { ConfirmScreen } from '../../screens/ConfirmPassword/ConfirmSignUp';
+import { ForgotScreen } from '../../screens/ForgotScreen/ForgotScreen';
+import { ForgotSubmitScreen } from '../../screens/ForgotSubmit/ForgotSubmitScreen';
 
 const AuthStack = createStackNavigator<AuthStackParamList>();
 
@@ -27,6 +30,18 @@ export const AuthStackNavigation = () => {
         <AuthStack.Screen
           name={AUTH_NAVIGATION_NAME.REGISTER}
           component={RegisterScreen}
+        />
+        <AuthStack.Screen
+          name={AUTH_NAVIGATION_NAME.CONFIRM}
+          component={ConfirmScreen}
+        />
+        <AuthStack.Screen
+          name={AUTH_NAVIGATION_NAME.FORGOT}
+          component={ForgotScreen}
+        />
+        <AuthStack.Screen
+          name={AUTH_NAVIGATION_NAME.FORGOT_SUBMIT}
+          component={ForgotSubmitScreen}
         />
       </AuthStack.Navigator>
     </NavigationContainer>

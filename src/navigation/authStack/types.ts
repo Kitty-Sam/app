@@ -6,6 +6,9 @@ import {
 } from '@react-navigation/stack';
 
 export type AuthStackParamList = {
+  Confirm: undefined;
+  Forgot: undefined;
+  Forgot_Submit: undefined;
   Login: undefined;
   Register: undefined;
 };

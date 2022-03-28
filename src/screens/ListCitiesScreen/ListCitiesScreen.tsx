@@ -75,7 +75,7 @@ export const ListCitiesScreen = () => {
         keyExtractor={(item, index) => index.toString()}
         data={filteredData}
         renderItem={({ item }) => <CityItem title={item.city} />}
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
