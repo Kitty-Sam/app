@@ -14,12 +14,18 @@ import { AppButton } from '../../components/AppButton/AppButton';
 import { COLORS } from '../../theme/colors';
 
 import { styles } from '../LoginScreen/style';
-import { StackScreenNavigationProps } from '../../navigation/authStack/types';
+import {
+  AuthStackParamList,
+  StackScreenNavigationProps,
+} from '../../navigation/authStack/types';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
 import { stylesRegister } from '../RegisterScreen/styles';
 
 export const ForgotSubmitScreen = (
-  props: StackScreenNavigationProps<AUTH_NAVIGATION_NAME.FORGOT_SUBMIT>,
+  props: StackScreenNavigationProps<
+    AUTH_NAVIGATION_NAME.FORGOT_SUBMIT,
+    AuthStackParamList
+  >,
 ) => {
   const { navigation } = props;
 

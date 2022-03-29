@@ -10,3 +10,8 @@ export enum AUTH_NAVIGATION_NAME {
   LOGIN = 'Login',
   REGISTER = 'Register',
 }
+
+export enum COMMON_STACK_NAME {
+  TAB = 'Tab',
+  WEATHER = 'Weather',
+}

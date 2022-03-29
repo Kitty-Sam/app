@@ -14,12 +14,18 @@ import { AppButton } from '../../components/AppButton/AppButton';
 import { COLORS } from '../../theme/colors';
 
 import { styles } from '../LoginScreen/style';
-import { StackScreenNavigationProps } from '../../navigation/authStack/types';
+import {
+  AuthStackParamList,
+  StackScreenNavigationProps,
+} from '../../navigation/authStack/types';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
 import { stylesRegister } from '../RegisterScreen/styles';
 
 export const ForgotScreen = (
-  props: StackScreenNavigationProps<AUTH_NAVIGATION_NAME.FORGOT>,
+  props: StackScreenNavigationProps<
+    AUTH_NAVIGATION_NAME.CONFIRM,
+    AuthStackParamList
+  >,
 ) => {
   const { navigation } = props;
 

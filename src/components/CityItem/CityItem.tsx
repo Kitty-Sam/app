@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../../theme/colors';
 import { styles } from './styles';
 import { CityItemProps } from './types';
+import { useNavigation } from '@react-navigation/native';
+import { COMMON_STACK_NAME } from '../../enum/enum';
 
 export const CityItem = (props: CityItemProps) => {
+  const navigation = useNavigation();
+
   const { title } = props;
   const [value, setValue] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (value && title) {
-      Alert.alert('A few minutes, please');
-      const weatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${title}&lang=ru&units=metric&APPID=a9a3a62789de80865407c0452e9d1c27`;
-      fetch(weatherURL)
-        .then((res) => res.json())
-        .then((data) => console.log('data is launched', data.list));
-    }
-  }, [value, title]);
+  if (value) {
+    navigation.navigate(COMMON_STACK_NAME.WEATHER, {
+      title: title,
+    });
+    setValue(false);
+  }
+
+  console.log('data from city', title);
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']}>

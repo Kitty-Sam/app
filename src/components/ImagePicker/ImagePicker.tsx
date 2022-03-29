@@ -5,7 +5,9 @@ import {
   Image,
   PermissionsAndroid,
   ScrollView,
+  FlatList,
   View,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {
   ImagePickerResponse,
@@ -102,10 +104,7 @@ export const ImagePicker = () => {
         />
       </View>
       {dataFromGallery.length ? (
-        <ScrollView
-          contentContainerStyle={styles.listContainer}
-          // showsVerticalScrollIndicator={false}
-        >
+        <ScrollView contentContainerStyle={styles.listContainer}>
           {dataFromGallery.map(({ uri, id }) => (
             <View key={id} style={styles.imageContainer}>
               <Image

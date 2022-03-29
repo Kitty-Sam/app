@@ -14,11 +14,17 @@ import { AppButton } from '../../components/AppButton/AppButton';
 import { COLORS } from '../../theme/colors';
 import { stylesRegister } from './styles';
 import { styles } from '../LoginScreen/style';
-import { StackScreenNavigationProps } from '../../navigation/authStack/types';
+import {
+  AuthStackParamList,
+  StackScreenNavigationProps,
+} from '../../navigation/authStack/types';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
 
 export const RegisterScreen = (
-  props: StackScreenNavigationProps<AUTH_NAVIGATION_NAME.REGISTER>,
+  props: StackScreenNavigationProps<
+    AUTH_NAVIGATION_NAME.CONFIRM,
+    AuthStackParamList
+  >,
 ) => {
   const { navigation } = props;
 

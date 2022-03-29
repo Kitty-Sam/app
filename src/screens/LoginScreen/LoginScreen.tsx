@@ -17,10 +17,16 @@ import { styles } from './style';
 import { AppButtonWithImg } from '../../components/AppButtonWithImg/AppButtonWithImg';
 import { Divider } from 'react-native-elements';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
-import { StackScreenNavigationProps } from '../../navigation/authStack/types';
+import {
+  AuthStackParamList,
+  StackScreenNavigationProps,
+} from '../../navigation/authStack/types';
 
 export const LoginScreen = (
-  props: StackScreenNavigationProps<AUTH_NAVIGATION_NAME.LOGIN>,
+  props: StackScreenNavigationProps<
+    AUTH_NAVIGATION_NAME.LOGIN,
+    AuthStackParamList
+  >,
 ) => {
   const { navigation } = props;
 
