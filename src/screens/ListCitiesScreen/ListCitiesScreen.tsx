@@ -4,11 +4,7 @@ import { CityItem } from '../../components/CityItem/CityItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
 import { SearchBar } from 'react-native-elements';
-
-type DataItemType = {
-  city: string;
-  id: number;
-};
+import { DataItemType } from './types';
 
 const DATA: DataItemType[] = [
   { id: 1, city: 'Minsk' },
@@ -72,6 +68,7 @@ export const ListCitiesScreen = () => {
         />
       </View>
       <FlatList
+        style={styles.listContainer}
         keyExtractor={(item, index) => index.toString()}
         data={filteredData}
         renderItem={({ item }) => <CityItem title={item.city} />}

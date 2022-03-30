@@ -18,7 +18,6 @@ export const App: FC = () => {
   }
   return (
     <Provider store={store}>
-      {/*<TabNavigation />*/}
       <MainStackNavigation />
     </Provider>
   );

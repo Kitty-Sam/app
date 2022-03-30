@@ -9,19 +9,18 @@ import { useNavigation } from '@react-navigation/native';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 
 export const CityItem = (props: CityItemProps) => {
+  const { title } = props;
+
   const navigation = useNavigation();
 
-  const { title } = props;
   const [value, setValue] = useState<boolean>(false);
 
   if (value) {
-    navigation.navigate(COMMON_STACK_NAME.WEATHER, {
-      title: title,
+    navigation.navigate(COMMON_STACK_NAME.NOTIFICATIONS, {
+      title,
     });
     setValue(false);
   }
-
-  console.log('data from city', title);
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']}>

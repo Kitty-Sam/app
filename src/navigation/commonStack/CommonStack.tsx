@@ -5,13 +5,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 
 import { TabNavigation } from '../tabStack/tabNavigation';
-import { WeatherCard } from '../../components/WeatherCard/WeatherCard';
-import { TabStackParamList } from '../tabStack/types';
-
-export type CommonStackParamList = {
-  Tab: TabStackParamList;
-  Weather: undefined;
-};
+import { WeatherCardScreen } from '../../screens/WeatherCardScreen/WeatherCardScreen';
+import { CommonStackParamList } from './types';
+import { COLORS } from '../../theme/colors';
+import { NotificationsScreen } from '../../screens/NotificationsSCreen/NotificationsScreen';
 
 const MainStack = createStackNavigator<CommonStackParamList>();
 
@@ -25,8 +22,22 @@ export const MainStackNavigation = () => {
           options={{ headerShown: false }}
         />
         <MainStack.Screen
+          name={COMMON_STACK_NAME.NOTIFICATIONS}
+          component={NotificationsScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
+            },
+          }}
+        />
+        <MainStack.Screen
           name={COMMON_STACK_NAME.WEATHER}
-          component={WeatherCard}
+          component={WeatherCardScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
+            },
+          }}
         />
       </MainStack.Navigator>
     </NavigationContainer>

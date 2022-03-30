@@ -5,9 +5,7 @@ import {
   Image,
   PermissionsAndroid,
   ScrollView,
-  FlatList,
   View,
-  KeyboardAvoidingView,
 } from 'react-native';
 import {
   ImagePickerResponse,
@@ -94,7 +92,7 @@ export const ImagePicker = () => {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.buttonsContainer}>
         <AppButton title={'take photo'} onPress={takePhoto} />
         <AppButton
@@ -104,18 +102,20 @@ export const ImagePicker = () => {
         />
       </View>
       {dataFromGallery.length ? (
-        <ScrollView contentContainerStyle={styles.listContainer}>
-          {dataFromGallery.map(({ uri, id }) => (
-            <View key={id} style={styles.imageContainer}>
-              <Image
-                resizeMode="cover"
-                resizeMethod="scale"
-                style={styles.image}
-                source={{ uri: uri }}
-              />
-            </View>
-          ))}
-        </ScrollView>
+        <View>
+          <ScrollView contentContainerStyle={styles.listContainer}>
+            {dataFromGallery.map(({ uri, id }) => (
+              <View key={id} style={styles.imageContainer}>
+                <Image
+                  resizeMode="cover"
+                  resizeMethod="scale"
+                  style={styles.image}
+                  source={{ uri: uri }}
+                />
+              </View>
+            ))}
+          </ScrollView>
+        </View>
       ) : null}
     </View>
   );

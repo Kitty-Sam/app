@@ -4,6 +4,7 @@ import { COLORS } from '../../theme/colors';
 type ListCitiesScreenStyleType = {
   conditionContainer: ViewStyle;
   conditionText: TextStyle;
+  listContainer: ViewStyle;
   root: ViewStyle;
   search: ViewStyle;
   searchContainer: ViewStyle;
@@ -23,7 +24,6 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
     marginHorizontal: 16,
   },
   searchContainer: {
-    marginVertical: 16,
     backgroundColor: COLORS.BACKGROUND_COLORS.indian_Khaki,
     borderRadius: 10,
   },
@@ -31,5 +31,8 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
     backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
     color: COLORS.TEXT_COLORS.zuccini,
     borderRadius: 10,
+  },
+  listContainer: {
+    margin: 14,
   },
 });
