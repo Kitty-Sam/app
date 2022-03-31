@@ -1,16 +1,11 @@
+import React, { ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { COLORS } from '../../theme/colors';
-import React from 'react';
 import { styles } from './styles';
+import { NotificationProps } from './types';
 
-type NotificationProps = {
-  checked: boolean;
-  selectNotification: () => void;
-  title: string;
-};
-
-export const Notification = (props: NotificationProps) => {
+export const Notification = (props: NotificationProps): ReactElement => {
   const { title, checked, selectNotification } = props;
 
   return (

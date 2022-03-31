@@ -5,6 +5,7 @@ type ImagePickerStyle = {
   image: ImageStyle;
   imageContainer: ViewStyle;
   listContainer: ViewStyle;
+  rootContainer: ViewStyle;
 };
 
 const { width, height } = Dimensions.get('window');
@@ -25,5 +26,8 @@ export const styles = StyleSheet.create<ImagePickerStyle>({
   listContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  rootContainer: {
+    flex: 1,
   },
 });

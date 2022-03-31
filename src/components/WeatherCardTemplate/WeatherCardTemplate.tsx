@@ -1,16 +1,11 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import { styles } from './styles';
+import { WeatherCardTemplateProps } from './types';
 
-type WeatherCardTemplateProps = {
-  days: string[];
-  feelsLike: number[];
-  index: number;
-  tempMax: number[];
-  tempMin: number[];
-};
-
-export const WeatherCardDayTemplate = (props: WeatherCardTemplateProps) => {
+export const WeatherCardDayTemplate = (
+  props: WeatherCardTemplateProps,
+): ReactElement => {
   const { feelsLike, days, tempMin, tempMax, index } = props;
 
   return (

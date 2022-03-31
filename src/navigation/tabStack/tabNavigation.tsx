@@ -71,7 +71,6 @@ export const TabNavigation = () => {
   };
 
   return (
-    // <NavigationContainer>
     <TabStack.Navigator screenOptions={commonScreenOptions}>
       <TabStack.Screen
         name={TAB_NAVIGATION_NAME.MAIN_SCREEN}
@@ -84,6 +83,5 @@ export const TabNavigation = () => {
         options={listCityScreenOptions}
       />
     </TabStack.Navigator>
-    // </NavigationContainer>
   );
 };

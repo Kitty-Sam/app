@@ -57,12 +57,12 @@ export const WeatherCardScreen = (
   );
 */
 
-  const tempMax = data.map((el) => el['main']['temp_max']);
-  const tempMin = data.map((el) => el['main']['temp_min']);
-  const feelsLike = data.map((el) => el['main']['feels_like']);
-  const days_in_ms = data.map((el) => el['dt'] * 1000);
-  const days = days_in_ms.map((el) =>
-    new Date(el).toLocaleString('ru', {
+  const tempMax = data.map((day) => day['main']['temp_max']);
+  const tempMin = data.map((day) => day['main']['temp_min']);
+  const feelsLike = data.map((day) => day['main']['feels_like']);
+  const days_in_ms = data.map((day) => day['dt'] * 1000);
+  const days = days_in_ms.map((day) =>
+    new Date(day).toLocaleString('ru', {
       weekday: 'long',
     }),
   );

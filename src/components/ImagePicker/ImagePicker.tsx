@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   Alert,
   Image,
@@ -17,7 +16,7 @@ import { COLORS } from '../../theme/colors';
 import { styles } from './styles';
 import { DataResponseType } from './types';
 
-export const ImagePicker = () => {
+export const ImagePicker = (): ReactElement => {
   const [dataFromGallery, setDataFromGallery] = useState<DataResponseType[]>(
     [],
   );
@@ -92,7 +91,7 @@ export const ImagePicker = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.rootContainer}>
       <View style={styles.buttonsContainer}>
         <AppButton title={'take photo'} onPress={takePhoto} />
         <AppButton

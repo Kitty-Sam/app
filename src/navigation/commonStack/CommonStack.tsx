@@ -1,4 +1,7 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackNavigationOptions,
+} from '@react-navigation/stack';
 import React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,6 +16,12 @@ import { NotificationsScreen } from '../../screens/NotificationsSCreen/Notificat
 const MainStack = createStackNavigator<CommonStackParamList>();
 
 export const MainStackNavigation = () => {
+  const screenOptions: StackNavigationOptions = {
+    headerStyle: {
+      backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
+    },
+  };
+
   return (
     <NavigationContainer>
       <MainStack.Navigator initialRouteName={COMMON_STACK_NAME.TAB}>
@@ -24,20 +33,12 @@ export const MainStackNavigation = () => {
         <MainStack.Screen
           name={COMMON_STACK_NAME.NOTIFICATIONS}
           component={NotificationsScreen}
-          options={{
-            headerStyle: {
-              backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
-            },
-          }}
+          options={screenOptions}
         />
         <MainStack.Screen
           name={COMMON_STACK_NAME.WEATHER}
           component={WeatherCardScreen}
-          options={{
-            headerStyle: {
-              backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
-            },
-          }}
+          options={screenOptions}
         />
       </MainStack.Navigator>
     </NavigationContainer>

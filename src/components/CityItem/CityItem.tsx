@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,7 +8,7 @@ import { CityItemProps } from './types';
 import { useNavigation } from '@react-navigation/native';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 
-export const CityItem = (props: CityItemProps) => {
+export const CityItem = (props: CityItemProps): ReactElement => {
   const { title } = props;
 
   const navigation = useNavigation();

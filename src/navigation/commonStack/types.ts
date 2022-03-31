@@ -1,7 +1,7 @@
 import { TabStackParamList } from '../tabStack/types';
 
 export type CommonStackParamList = {
-  Notifications: undefined;
+  Notifications: { title: string };
   Tab: TabStackParamList;
-  Weather: undefined;
+  Weather: { selectedIds: number[]; title: string };
 };

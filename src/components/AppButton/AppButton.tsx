@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../theme/colors';
 import { styles } from './styles';
 import { AppButtonPropsType } from './types';
 
-export const AppButton = (props: AppButtonPropsType) => {
+export const AppButton = (props: AppButtonPropsType): ReactElement => {
   const {
     onPress,
     title,
     disabled,
     backgroundColor = COLORS.BUTTONS_COLORS.default_button_Buddha_Gold,
   } = props;
+
   return (
     <TouchableOpacity
       disabled={disabled}

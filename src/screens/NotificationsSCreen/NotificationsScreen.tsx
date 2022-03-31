@@ -5,12 +5,10 @@ import { AppButton } from '../../components/AppButton/AppButton';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 import { Notification } from '../../components/Notification/Notification';
 import { styles } from './style';
-
-type NotificationItemType = {
-  id: number;
-  shortTitle: string;
-  title: string;
-};
+import { NotificationItemType } from './types';
+import { StackScreenNavigationProps } from '../../navigation/authStack/types';
+import { CommonStackParamList } from '../../navigation/commonStack/types';
+import { keyExtractor } from '../../utils/keyExtractor';
 
 export const NOTIFICATIONS: NotificationItemType[] = [
   { id: 1, title: 'max temperature', shortTitle: 'temp_max' },
@@ -20,9 +18,14 @@ export const NOTIFICATIONS: NotificationItemType[] = [
   { id: 5, title: 'humidity', shortTitle: 'humidity' },
 ];
 
-export const NotificationsScreen = (props: any) => {
+export const NotificationsScreen = (
+  props: StackScreenNavigationProps<
+    COMMON_STACK_NAME.NOTIFICATIONS,
+    CommonStackParamList
+  >,
+) => {
   const { route, navigation } = props;
-  const cityTitle = route.params!.title;
+  const cityTitle = route.params.title;
 
   const [chosenValuesIds, setChosenValuesIds] = useState<number[]>([]);
 
@@ -63,7 +66,7 @@ export const NotificationsScreen = (props: any) => {
       </View>
       <FlatList
         style={styles.listContainer}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={keyExtractor}
         data={NOTIFICATIONS}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
