@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from './styles';
 import { AppButtonWithImgPropsType } from './types';
 
-export const AppButtonWithImg = (props: AppButtonWithImgPropsType) => {
+export const AppButtonWithImg = (
+  props: AppButtonWithImgPropsType,
+): ReactElement => {
   const { backgroundColor, icon, title, onPress } = props;
   return (
     <View style={styles.appButtonContainer}>

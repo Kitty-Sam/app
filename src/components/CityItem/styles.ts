@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../theme/colors';
-
-const { width } = Dimensions.get('window');
 
 type CityItemStyleType = {
   itemText: TextStyle;

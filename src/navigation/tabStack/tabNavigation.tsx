@@ -9,11 +9,10 @@ import { Icon } from 'react-native-elements';
 
 import { TAB_NAVIGATION_NAME } from '../../enum/enum';
 import { COLORS } from '../../theme/colors';
-import { NavigationContainer } from '@react-navigation/native';
 import { ScreenOptionsType, TabStackParamList } from './types';
 import { AppButton } from '../../components/AppButton/AppButton';
 
-const TabStack = createBottomTabNavigator<TabStackParamList>();
+export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
 export const TabNavigation = () => {
   const onLogOutPress = () => {
@@ -72,19 +71,17 @@ export const TabNavigation = () => {
   };
 
   return (
-    <NavigationContainer>
-      <TabStack.Navigator screenOptions={commonScreenOptions}>
-        <TabStack.Screen
-          name={TAB_NAVIGATION_NAME.MAIN_SCREEN}
-          component={CityScreen}
-          options={mainScreenOptions}
-        />
-        <TabStack.Screen
-          name={TAB_NAVIGATION_NAME.LIST_CITIES_SCREEN}
-          component={ListCitiesScreen}
-          options={listCityScreenOptions}
-        />
-      </TabStack.Navigator>
-    </NavigationContainer>
+    <TabStack.Navigator screenOptions={commonScreenOptions}>
+      <TabStack.Screen
+        name={TAB_NAVIGATION_NAME.MAIN_SCREEN}
+        component={CityScreen}
+        options={mainScreenOptions}
+      />
+      <TabStack.Screen
+        name={TAB_NAVIGATION_NAME.LIST_CITIES_SCREEN}
+        component={ListCitiesScreen}
+        options={listCityScreenOptions}
+      />
+    </TabStack.Navigator>
   );
 };

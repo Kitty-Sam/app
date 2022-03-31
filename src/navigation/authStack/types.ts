@@ -1,5 +1,5 @@
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
-import { RouteProp } from '@react-navigation/native';
+import { ParamListBase, RouteProp } from '@react-navigation/native';
 import {
   StackNavigationOptions,
   StackNavigationProp,
@@ -13,9 +13,12 @@ export type AuthStackParamList = {
   Register: undefined;
 };
 
-export type StackScreenNavigationProps<T extends keyof AuthStackParamList> = {
-  navigation: StackNavigationProp<AuthStackParamList, T>;
-  route: RouteProp<AuthStackParamList, T>;
+export type StackScreenNavigationProps<
+  T extends keyof NavParamList,
+  NavParamList extends ParamListBase,
+> = {
+  navigation: StackNavigationProp<NavParamList, T>;
+  route: RouteProp<NavParamList, T>;
 };
 
 export type ScreenOptionsType =

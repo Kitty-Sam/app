@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { LoginScreen } from '../../screens/LoginScreen/LoginScreen';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
 import { AuthStackParamList, ScreenOptionsType } from './types';
-import { ConfirmScreen } from '../../screens/ConfirmPassword/ConfirmSignUp';
+import { ConfirmScreen } from '../../screens/ConfirmPassword/Confirm';
 import { ForgotScreen } from '../../screens/ForgotScreen/ForgotScreen';
 import { ForgotSubmitScreen } from '../../screens/ForgotSubmit/ForgotSubmitScreen';
 
