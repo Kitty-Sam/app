@@ -12,17 +12,3 @@ const pReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = createStore(pReducer);
 export const persistor = persistStore(store);
-
-/*
-const rootReducer = persistCombineReducers(persistConfig, {
-  cities: cityReducer,
-});
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export default () => {
-  const store = createStore(persistedReducer);
-  const persistor = persistStore(store, { storage: AsyncStorage });
-  return { store, persistor };
-};
-*/
