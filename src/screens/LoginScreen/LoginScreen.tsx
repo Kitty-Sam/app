@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -22,6 +24,16 @@ import {
   StackScreenNavigationProps,
 } from '../../navigation/authStack/types';
 
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppStoreType } from '../../store/store';
+import { loginToggleAC } from '../../store/reducers/loginReducer';
+import {
+  requestStatus,
+  toggleAppStatusAC,
+} from '../../store/reducers/appReducer';
+
 export const LoginScreen = (
   props: StackScreenNavigationProps<
     AUTH_NAVIGATION_NAME.LOGIN,
@@ -29,13 +41,60 @@ export const LoginScreen = (
   >,
 ) => {
   const { navigation } = props;
+  const dispatch = useDispatch();
+  const statusApp = useSelector<AppStoreType, requestStatus>(
+    (state) => state.app.status,
+  );
+
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const UserDataFromRedux = useSelector<AppStoreType, any>(
+    (state) => state.register.user,
+  );
+
+  const UserData = {
+    email,
+    password,
+  };
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '355613544936-j7vuevctvi6buvua5b08emjdvbilp7ci.apps.googleusercontent.com',
+    });
+  }, []);
+
+  const onGoogleButtonPress = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const { idToken } = await GoogleSignin.signIn();
+      const credential = auth.GoogleAuthProvider.credential(idToken);
+      const { user } = await auth().signInWithCredential(credential);
+      Alert.alert(`Hello, ${user.displayName}`);
+      dispatch(loginToggleAC(true));
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   const registerPress = () => {
     navigation.navigate(AUTH_NAVIGATION_NAME.REGISTER);
   };
 
   const loginPress = () => {
-    console.log('login');
+    dispatch(toggleAppStatusAC(requestStatus.loading));
+    if (
+      UserDataFromRedux.email === UserData.email &&
+      UserDataFromRedux.password === UserData.password
+    ) {
+      dispatch(loginToggleAC(true));
+      dispatch(toggleAppStatusAC(requestStatus.succeeded));
+    } else {
+      Alert.alert('incorrect personal data, try again');
+      setEmail('');
+      setPassword('');
+    }
   };
 
   const onForgotDataPress = () => {
@@ -44,64 +103,75 @@ export const LoginScreen = (
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <StatusBar hidden />
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.loginContainer}>
-            <Text style={styles.headerText}>Weather App</Text>
-            <TextInput
-              style={styles.inputText}
-              placeholder="Email"
-              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-            />
-            <TextInput
-              style={styles.inputText}
-              placeholder="Password"
-              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-            />
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.textContainer}
-                activeOpacity={0.4}>
-                <Text style={styles.regularText} onPress={onForgotDataPress}>
-                  Forgot email/password
-                </Text>
-              </TouchableOpacity>
-              <AppButton onPress={loginPress} title={'SIGH IN'} />
-              <AppButton
-                onPress={registerPress}
-                backgroundColor={COLORS.BUTTONS_COLORS.chalet_green}
-                title={'SIGH UP'}
+      {statusApp === requestStatus.loading ? (
+        <View>
+          <ActivityIndicator />
+        </View>
+      ) : (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <StatusBar hidden />
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.loginContainer}>
+              <Text style={styles.headerText}>Weather App</Text>
+              <TextInput
+                autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
+                style={styles.inputText}
+                placeholder="Email"
+                placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
               />
-            </View>
-            <Divider
-              style={{
-                backgroundColor: COLORS.TEXT_COLORS.zuccini,
-                marginTop: 150,
-              }}
-            />
-            <View style={styles.buttonsLinkContainer}>
-              <AppButtonWithImg
-                onPress={() => {
-                  console.log('123');
+              <TextInput
+                autoCapitalize="none"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={true}
+                style={styles.inputText}
+                placeholder="Password"
+                placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+              />
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.textContainer}
+                  activeOpacity={0.4}>
+                  <Text style={styles.regularText} onPress={onForgotDataPress}>
+                    Forgot email/password
+                  </Text>
+                </TouchableOpacity>
+                <AppButton onPress={loginPress} title={'SIGH IN'} />
+                <AppButton
+                  onPress={registerPress}
+                  backgroundColor={COLORS.BUTTONS_COLORS.chalet_green}
+                  title={'SIGH UP'}
+                />
+              </View>
+              <Divider
+                style={{
+                  backgroundColor: COLORS.TEXT_COLORS.zuccini,
+                  marginTop: 150,
                 }}
-                backgroundColor={'#3b5998'}
-                title={'Login with facebook'}
-                icon={'facebook'}
               />
-              <AppButtonWithImg
-                onPress={() => {
-                  console.log('123');
-                }}
-                backgroundColor={COLORS.BUTTONS_COLORS.tacao}
-                title={'Login with google'}
-                icon={'google-plus'}
-              />
+              <View style={styles.buttonsLinkContainer}>
+                <AppButtonWithImg
+                  onPress={() => {
+                    console.log('123');
+                  }}
+                  backgroundColor={'#3b5998'}
+                  title={'Login with facebook'}
+                  icon={'facebook'}
+                />
+                <AppButtonWithImg
+                  onPress={() => onGoogleButtonPress()}
+                  backgroundColor={COLORS.BUTTONS_COLORS.tacao}
+                  title={'Login with google'}
+                  icon={'google-plus'}
+                />
+              </View>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };

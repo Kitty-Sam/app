@@ -1,8 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 import { LogBox } from 'react-native';
-import { store } from './src/store/store';
-import { Provider } from 'react-redux';
+import { AppStoreType } from './src/store/store';
+import { useSelector } from 'react-redux';
 import { AuthStackNavigation } from './src/navigation/authStack/AuthStack';
 import { MainStackNavigation } from './src/navigation/commonStack/CommonStack';
 
@@ -11,14 +11,12 @@ LogBox.ignoreLogs([
 ]);
 
 export const App: FC = () => {
-  const [userData, setUserData] = useState(true);
+  const isLoggedIn = useSelector<AppStoreType, boolean>(
+    (state) => state.login.isLoggedIn,
+  );
 
-  if (!userData) {
+  if (!isLoggedIn) {
     return <AuthStackNavigation />;
   }
-  return (
-    <Provider store={store}>
-      <MainStackNavigation />
-    </Provider>
-  );
+  return <MainStackNavigation />;
 };

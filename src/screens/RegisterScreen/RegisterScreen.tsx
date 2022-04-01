@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -19,6 +19,8 @@ import {
   StackScreenNavigationProps,
 } from '../../navigation/authStack/types';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
+import { useDispatch } from 'react-redux';
+import { setUserDataAC } from '../../store/reducers/registerReducer';
 
 export const RegisterScreen = (
   props: StackScreenNavigationProps<
@@ -28,8 +30,20 @@ export const RegisterScreen = (
 ) => {
   const { navigation } = props;
 
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+
+  const dispatch = useDispatch();
+
+  const userData = {
+    email: email,
+    password: password,
+  };
+
   const registerUserPress = () => {
-    navigation.navigate(AUTH_NAVIGATION_NAME.CONFIRM);
+    dispatch(setUserDataAC(userData));
+    navigation.navigate(AUTH_NAVIGATION_NAME.LOGIN);
   };
 
   return (
@@ -40,16 +54,24 @@ export const RegisterScreen = (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={stylesRegister.registerContainer}>
             <TextInput
+              autoCapitalize="none"
+              value={email}
+              onChangeText={setEmail}
               style={styles.inputText}
               placeholder="Email"
               placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
             />
             <TextInput
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChangeText={setPassword}
               style={styles.inputText}
               placeholder="Password"
               placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
             />
             <TextInput
+              autoCapitalize="none"
+              secureTextEntry={true}
               style={[styles.inputText, { marginBottom: 20 }]}
               placeholder="Confirm password"
               placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
