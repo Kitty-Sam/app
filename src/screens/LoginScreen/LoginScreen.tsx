@@ -33,6 +33,7 @@ import {
   requestStatus,
   toggleAppStatusAC,
 } from '../../store/reducers/appReducer';
+import { UserType } from '../../store/reducers/registerReducer';
 
 export const LoginScreen = (
   props: StackScreenNavigationProps<
@@ -49,8 +50,12 @@ export const LoginScreen = (
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const UserDataFromRedux = useSelector<AppStoreType, any>(
+  const UserDataFromRedux = useSelector<AppStoreType, UserType>(
     (state) => state.register.user,
+  );
+
+  const isAuth = useSelector<AppStoreType, boolean>(
+    (state) => state.register.isAuth,
   );
 
   const UserData = {
@@ -63,7 +68,7 @@ export const LoginScreen = (
       webClientId:
         '355613544936-j7vuevctvi6buvua5b08emjdvbilp7ci.apps.googleusercontent.com',
     });
-  }, []);
+  });
 
   const onGoogleButtonPress = async () => {
     try {
@@ -94,6 +99,7 @@ export const LoginScreen = (
       Alert.alert('incorrect personal data, try again');
       setEmail('');
       setPassword('');
+      dispatch(toggleAppStatusAC(requestStatus.failed));
     }
   };
 
@@ -139,7 +145,11 @@ export const LoginScreen = (
                     Forgot email/password
                   </Text>
                 </TouchableOpacity>
-                <AppButton onPress={loginPress} title={'SIGH IN'} />
+                <AppButton
+                  onPress={loginPress}
+                  title={'SIGH IN'}
+                  disabled={!isAuth}
+                />
                 <AppButton
                   onPress={registerPress}
                   backgroundColor={COLORS.BUTTONS_COLORS.chalet_green}

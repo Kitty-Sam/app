@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -20,7 +21,10 @@ import {
 } from '../../navigation/authStack/types';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
 import { useDispatch } from 'react-redux';
-import { setUserDataAC } from '../../store/reducers/registerReducer';
+import {
+  authToggleAC,
+  setUserDataAC,
+} from '../../store/reducers/registerReducer';
 
 export const RegisterScreen = (
   props: StackScreenNavigationProps<
@@ -37,13 +41,21 @@ export const RegisterScreen = (
   const dispatch = useDispatch();
 
   const userData = {
-    email: email,
-    password: password,
+    email,
+    password,
   };
 
   const registerUserPress = () => {
-    dispatch(setUserDataAC(userData));
-    navigation.navigate(AUTH_NAVIGATION_NAME.LOGIN);
+    if (password === confirmPassword) {
+      dispatch(setUserDataAC(userData));
+      dispatch(authToggleAC(true));
+      navigation.navigate(AUTH_NAVIGATION_NAME.LOGIN);
+    } else {
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      Alert.alert('confirm password');
+    }
   };
 
   return (
@@ -71,6 +83,7 @@ export const RegisterScreen = (
             />
             <TextInput
               autoCapitalize="none"
+              onChangeText={setConfirmPassword}
               secureTextEntry={true}
               style={[styles.inputText, { marginBottom: 20 }]}
               placeholder="Confirm password"
@@ -79,6 +92,9 @@ export const RegisterScreen = (
             <AppButton
               onPress={registerUserPress}
               title="SIGH UP"
+              disabled={
+                email === '' || password === '' || confirmPassword === ''
+              }
               backgroundColor={COLORS.BUTTONS_COLORS.default_button_Buddha_Gold}
             />
           </View>
