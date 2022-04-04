@@ -11,8 +11,9 @@ import { TAB_NAVIGATION_NAME } from '../../enum/enum';
 import { COLORS } from '../../theme/colors';
 import { ScreenOptionsType, TabStackParamList } from './types';
 import { AppButton } from '../../components/AppButton/AppButton';
-import { loginToggleAC } from '../../store/reducers/loginReducer';
+
 import { useDispatch } from 'react-redux';
+import { loginToggleAC } from '../../store/actions/login';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 

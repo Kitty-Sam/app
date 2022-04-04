@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -27,13 +27,17 @@ import {
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStoreType } from '../../store/store';
-import { loginToggleAC } from '../../store/reducers/loginReducer';
-import {
-  requestStatus,
-  toggleAppStatusAC,
-} from '../../store/reducers/appReducer';
+import { requestStatus } from '../../store/reducers/appReducer';
 import { UserType } from '../../store/reducers/registerReducer';
+import { Formik } from 'formik';
+import { loginValidationSchema } from '../../utils/formValidation';
+import { loginToggleAC } from '../../store/actions/login';
+import { toggleAppStatusAC } from '../../store/actions/app';
+import {
+  getUserData,
+  selectAuth,
+} from '../../store/selectors/registerSelector';
+import { selectStatusApp } from '../../store/selectors/appSelector';
 
 export const LoginScreen = (
   props: StackScreenNavigationProps<
@@ -42,33 +46,12 @@ export const LoginScreen = (
   >,
 ) => {
   const { navigation } = props;
+
   const dispatch = useDispatch();
-  const statusApp = useSelector<AppStoreType, requestStatus>(
-    (state) => state.app.status,
-  );
 
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
-  const UserDataFromRedux = useSelector<AppStoreType, UserType>(
-    (state) => state.register.user,
-  );
-
-  const isAuth = useSelector<AppStoreType, boolean>(
-    (state) => state.register.isAuth,
-  );
-
-  const UserData = {
-    email,
-    password,
-  };
-
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '355613544936-j7vuevctvi6buvua5b08emjdvbilp7ci.apps.googleusercontent.com',
-    });
-  });
+  const statusApp = useSelector(selectStatusApp);
+  const UserDataFromRedux = useSelector(getUserData);
+  const isAuth = useSelector(selectAuth);
 
   const onGoogleButtonPress = async () => {
     try {
@@ -76,7 +59,7 @@ export const LoginScreen = (
       const { idToken } = await GoogleSignin.signIn();
       const credential = auth.GoogleAuthProvider.credential(idToken);
       const { user } = await auth().signInWithCredential(credential);
-      Alert.alert(`Hello, ${user.displayName}`);
+      Alert.alert('Welcome back!', `${user.displayName}`);
       dispatch(loginToggleAC(true));
     } catch (error) {
       console.log('error', error);
@@ -87,18 +70,17 @@ export const LoginScreen = (
     navigation.navigate(AUTH_NAVIGATION_NAME.REGISTER);
   };
 
-  const loginPress = () => {
+  const loginPress = (values: UserType) => {
     dispatch(toggleAppStatusAC(requestStatus.loading));
     if (
-      UserDataFromRedux.email === UserData.email &&
-      UserDataFromRedux.password === UserData.password
+      UserDataFromRedux.email === values.email &&
+      UserDataFromRedux.password === values.password
     ) {
       dispatch(loginToggleAC(true));
       dispatch(toggleAppStatusAC(requestStatus.succeeded));
+      Alert.alert('Welcome Back!', `${UserDataFromRedux.fullName}`);
     } else {
-      Alert.alert('incorrect personal data, try again');
-      setEmail('');
-      setPassword('');
+      Alert.alert('OOPS!', 'Incorrect personal data, try again');
       dispatch(toggleAppStatusAC(requestStatus.failed));
     }
   };
@@ -120,48 +102,76 @@ export const LoginScreen = (
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.loginContainer}>
               <Text style={styles.headerText}>Weather App</Text>
-              <TextInput
-                autoCapitalize="none"
-                value={email}
-                onChangeText={setEmail}
-                style={styles.inputText}
-                placeholder="Email"
-                placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-              />
-              <TextInput
-                autoCapitalize="none"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={true}
-                style={styles.inputText}
-                placeholder="Password"
-                placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-              />
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.textContainer}
-                  activeOpacity={0.4}>
-                  <Text style={styles.regularText} onPress={onForgotDataPress}>
-                    Forgot email/password
-                  </Text>
-                </TouchableOpacity>
-                <AppButton
-                  onPress={loginPress}
-                  title={'SIGH IN'}
-                  disabled={!isAuth}
-                />
-                <AppButton
-                  onPress={registerPress}
-                  backgroundColor={COLORS.BUTTONS_COLORS.chalet_green}
-                  title={'SIGH UP'}
-                />
-              </View>
-              <Divider
-                style={{
-                  backgroundColor: COLORS.TEXT_COLORS.zuccini,
-                  marginTop: 150,
-                }}
-              />
+              <Formik
+                validationSchema={loginValidationSchema}
+                initialValues={{ email: '', password: '' }}
+                onSubmit={(values) => {
+                  loginPress(values);
+                }}>
+                {({
+                  touched,
+                  handleChange,
+                  errors,
+                  handleBlur,
+                  handleSubmit,
+                  values,
+                }) => (
+                  <>
+                    <TextInput
+                      autoCapitalize="none"
+                      style={styles.inputText}
+                      placeholder="Email"
+                      placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                      keyboardType="email-address"
+                    />
+                    {errors.email && touched.email && (
+                      <Text style={{ color: 'red' }}>{errors.email}</Text>
+                    )}
+
+                    <TextInput
+                      autoCapitalize="none"
+                      secureTextEntry={true}
+                      style={styles.inputText}
+                      placeholder="Password"
+                      placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                    />
+
+                    {errors.password && touched.password && (
+                      <Text style={{ color: 'red' }}>{errors.password}</Text>
+                    )}
+
+                    <View style={styles.buttonContainer}>
+                      <TouchableOpacity
+                        style={styles.textContainer}
+                        activeOpacity={0.4}>
+                        <Text
+                          style={styles.regularText}
+                          onPress={onForgotDataPress}>
+                          Forgot email/password
+                        </Text>
+                      </TouchableOpacity>
+                      <AppButton
+                        onPress={handleSubmit}
+                        title={'SIGH IN'}
+                        disabled={!isAuth}
+                      />
+                      <AppButton
+                        onPress={registerPress}
+                        backgroundColor={COLORS.BUTTONS_COLORS.chalet_green}
+                        title={'SIGH UP'}
+                      />
+                    </View>
+                  </>
+                )}
+              </Formik>
+
+              <Divider style={styles.divider} />
               <View style={styles.buttonsLinkContainer}>
                 <AppButtonWithImg
                   onPress={() => {

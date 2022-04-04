@@ -13,11 +13,9 @@ import { dayWeatherInfo } from './types';
 import { styles } from './style';
 import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/WeatherCardTemplate';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  requestStatus,
-  toggleAppStatusAC,
-} from '../../store/reducers/appReducer';
-import { AppStoreType } from '../../store/store';
+import { requestStatus } from '../../store/reducers/appReducer';
+import { toggleAppStatusAC } from '../../store/actions/app';
+import { selectStatusApp } from '../../store/selectors/appSelector';
 
 export const WeatherCardScreen = (
   props: StackScreenNavigationProps<
@@ -28,13 +26,11 @@ export const WeatherCardScreen = (
   const { route } = props;
   const { title, selectedIds } = route.params!;
 
+  const [data, setData] = useState<dayWeatherInfo[]>([]);
+
   const dispatch = useDispatch();
 
-  const statusApp = useSelector<AppStoreType, requestStatus>(
-    (state) => state.app.status,
-  );
-
-  const [data, setData] = useState<dayWeatherInfo[]>([]);
+  const statusApp = useSelector(selectStatusApp);
 
   useEffect(() => {
     if (title) {

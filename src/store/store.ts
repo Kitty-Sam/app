@@ -1,4 +1,4 @@
-import { combineReducers, createStore } from 'redux';
+import { combineReducers } from 'redux';
 import { cityReducer } from './reducers/cityReducer';
 import { registerReducer } from './reducers/registerReducer';
 import { loginReducer } from './reducers/loginReducer';
@@ -12,5 +12,3 @@ export const rootReducer = combineReducers({
 });
 
 export type AppStoreType = ReturnType<typeof rootReducer>;
-
-export const store = createStore(rootReducer);

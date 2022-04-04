@@ -4,6 +4,7 @@ import { COLORS } from '../../theme/colors';
 type LoginScreenStyleType = {
   buttonContainer: ViewStyle;
   buttonsLinkContainer: ViewStyle;
+  divider: ViewStyle;
   headerText: TextStyle;
   inputText: TextStyle;
   loginContainer: ViewStyle;
@@ -59,5 +60,9 @@ export const styles = StyleSheet.create<LoginScreenStyleType>({
   buttonsLinkContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  divider: {
+    backgroundColor: COLORS.TEXT_COLORS.zuccini,
+    marginTop: 150,
   },
 });

@@ -1,3 +1,7 @@
+import { toggleAppStatusAC } from '../actions/app';
+
+export const APP_SET_STATUS = 'APP/SET_STATUS';
+
 export enum requestStatus {
   failed = 'failed',
   idle = 'idle',
@@ -24,15 +28,12 @@ export const appReducer = (
   action: ActionsType,
 ) => {
   switch (action.type) {
-    case 'APP/SET_STATUS':
+    case APP_SET_STATUS:
       return { ...state, status: action.status };
 
     default:
       return state;
   }
 };
-
-export const toggleAppStatusAC = (status: RequestStatusType) =>
-  ({ type: 'APP/SET_STATUS', status } as const);
 
 type ActionsType = ReturnType<typeof toggleAppStatusAC>;
