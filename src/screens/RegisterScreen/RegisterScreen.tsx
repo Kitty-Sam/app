@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Field, Formik } from 'formik';
 import { CustomInput } from '../../components/CustomInput/CustomInput';
 import { signUpValidationSchema } from '../../utils/formValidation';
-import { authToggleAC, setUserDataAC } from '../../store/actions/register';
+import { authToggle, saveUserData } from '../../store/actions/register';
 import { UserType } from '../../store/reducers/registerReducer';
 import { getUserData } from '../../store/selectors/registerSelector';
 
@@ -47,8 +47,8 @@ export const RegisterScreen = (
       Alert.alert('OOPS!', 'This user is already registered, please, sign in');
       navigation.navigate(AUTH_NAVIGATION_NAME.LOGIN);
     }
-    dispatch(setUserDataAC(userData));
-    dispatch(authToggleAC(true));
+    dispatch(saveUserData(userData));
+    dispatch(authToggle(true));
     navigation.navigate(AUTH_NAVIGATION_NAME.LOGIN);
   };
 

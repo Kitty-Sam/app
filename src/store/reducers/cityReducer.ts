@@ -1,4 +1,4 @@
-import { getCitiesAC, toggleSelectedCityAC } from '../actions/cities';
+import { getCities, toggleSelectedCity } from '../actions/cities';
 import { DataItemType } from '../../screens/ListCitiesScreen/types';
 
 export const TOGGLE_SELECTED_CITY = 'TOGGLE_SELECTED_CITY';
@@ -33,7 +33,7 @@ export const cityReducer = (state = initialState, action: ActionsType) => {
 
     case TOGGLE_SELECTED_CITY: {
       const cities = state.cities.map((city) => {
-        if (city.id === action.id) {
+        if (city.id === action.payload) {
           city.selected = !city.selected;
         }
         return city;
@@ -51,5 +51,5 @@ export const cityReducer = (state = initialState, action: ActionsType) => {
 };
 
 type ActionsType =
-  | ReturnType<typeof getCitiesAC>
-  | ReturnType<typeof toggleSelectedCityAC>;
+  | ReturnType<typeof getCities>
+  | ReturnType<typeof toggleSelectedCity>;

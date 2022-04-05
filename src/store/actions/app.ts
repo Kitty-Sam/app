@@ -1,6 +1,16 @@
-import { APP_SET_STATUS, RequestStatusType } from '../reducers/appReducer';
+import { RequestStatusType } from '../reducers/appReducer';
 
-export const toggleAppStatusAC = (status: RequestStatusType) => ({
-  type: APP_SET_STATUS,
-  status,
+export enum AppActions {
+  APP_SET_STATUS = 'APP/SET_STATUS',
+}
+
+export const toggleAppStatus: AppStatusToggleActionType = (
+  payload: RequestStatusType,
+) => ({
+  type: AppActions.APP_SET_STATUS,
+  payload,
 });
+export type AppStatusToggleActionType = (payload: RequestStatusType) => {
+  payload: RequestStatusType;
+  type: AppActions.APP_SET_STATUS;
+};

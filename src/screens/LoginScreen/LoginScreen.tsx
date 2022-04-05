@@ -31,8 +31,8 @@ import { requestStatus } from '../../store/reducers/appReducer';
 import { UserType } from '../../store/reducers/registerReducer';
 import { Formik } from 'formik';
 import { loginValidationSchema } from '../../utils/formValidation';
-import { loginToggleAC } from '../../store/actions/login';
-import { toggleAppStatusAC } from '../../store/actions/app';
+import { loginToggle } from '../../store/actions/login';
+import { toggleAppStatus } from '../../store/actions/app';
 import {
   getUserData,
   selectAuth,
@@ -60,7 +60,7 @@ export const LoginScreen = (
       const credential = auth.GoogleAuthProvider.credential(idToken);
       const { user } = await auth().signInWithCredential(credential);
       Alert.alert('Welcome back!', `${user.displayName}`);
-      dispatch(loginToggleAC(true));
+      dispatch(loginToggle(true));
     } catch (error) {
       console.log('error', error);
     }
@@ -71,17 +71,17 @@ export const LoginScreen = (
   };
 
   const loginPress = (values: UserType) => {
-    dispatch(toggleAppStatusAC(requestStatus.loading));
+    dispatch(toggleAppStatus(requestStatus.LOADING));
     if (
       UserDataFromRedux.email === values.email &&
       UserDataFromRedux.password === values.password
     ) {
-      dispatch(loginToggleAC(true));
-      dispatch(toggleAppStatusAC(requestStatus.succeeded));
+      dispatch(loginToggle(true));
+      dispatch(toggleAppStatus(requestStatus.SUCCEEDED));
       Alert.alert('Welcome Back!', `${UserDataFromRedux.fullName}`);
     } else {
       Alert.alert('OOPS!', 'Incorrect personal data, try again');
-      dispatch(toggleAppStatusAC(requestStatus.failed));
+      dispatch(toggleAppStatus(requestStatus.FAILED));
     }
   };
 
@@ -91,7 +91,7 @@ export const LoginScreen = (
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
-      {statusApp === requestStatus.loading ? (
+      {statusApp === requestStatus.LOADING ? (
         <View>
           <ActivityIndicator />
         </View>

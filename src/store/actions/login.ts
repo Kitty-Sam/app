@@ -1,6 +1,13 @@
-import { LOGIN_TOGGLE_LOGIN } from '../reducers/loginReducer';
+export enum LoginActions {
+  LOGIN_TOGGLE_LOGIN = 'LOGIN/TOGGLE_LOGIN',
+}
 
-export const loginToggleAC = (isLoggedIn: boolean) => ({
-  type: LOGIN_TOGGLE_LOGIN,
-  isLoggedIn,
+export const loginToggle: LoginToggleActionType = (payload: boolean) => ({
+  type: LoginActions.LOGIN_TOGGLE_LOGIN,
+  payload,
 });
+
+export type LoginToggleActionType = (payload: boolean) => {
+  payload: boolean;
+  type: LoginActions.LOGIN_TOGGLE_LOGIN;
+};

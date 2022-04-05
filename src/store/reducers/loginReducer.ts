@@ -1,19 +1,17 @@
-import { loginToggleAC } from '../actions/login';
+import { LoginActions, loginToggle } from '../actions/login';
 
 const initialState = {
   isLoggedIn: false,
 };
 
-export const LOGIN_TOGGLE_LOGIN = 'LOGIN/TOGGLE_LOGIN';
-
 export const loginReducer = (state = initialState, action: ActionsType) => {
   switch (action.type) {
-    case LOGIN_TOGGLE_LOGIN:
-      return { ...state, isLoggedIn: action.isLoggedIn };
+    case LoginActions.LOGIN_TOGGLE_LOGIN:
+      return { ...state, isLoggedIn: action.payload };
 
     default:
       return state;
   }
 };
 
-type ActionsType = ReturnType<typeof loginToggleAC>;
+type ActionsType = ReturnType<typeof loginToggle>;

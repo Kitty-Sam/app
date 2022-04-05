@@ -1,7 +1,4 @@
-import { authToggleAC, setUserDataAC } from '../actions/register';
-
-export const REGISTER_AUTH = 'REGISTER/AUTH';
-export const REGISTER_SET_USER_DATA = 'REGISTER/SET_USER_DATA';
+import { authToggle, RegisterActions, saveUserData } from '../actions/register';
 
 export type UserType = {
   email: string;
@@ -27,11 +24,11 @@ export const registerReducer = (
   action: ActionsType,
 ) => {
   switch (action.type) {
-    case REGISTER_AUTH:
-      return { ...state, isAuth: action.isAuth };
+    case RegisterActions.REGISTER_AUTH:
+      return { ...state, isAuth: action.payload };
 
-    case REGISTER_SET_USER_DATA:
-      return { ...state, user: action.user };
+    case RegisterActions.REGISTER_SAVE_USER_DATA:
+      return { ...state, user: action.payload };
 
     default:
       return state;
@@ -39,5 +36,5 @@ export const registerReducer = (
 };
 
 type ActionsType =
-  | ReturnType<typeof authToggleAC>
-  | ReturnType<typeof setUserDataAC>;
+  | ReturnType<typeof authToggle>
+  | ReturnType<typeof saveUserData>;

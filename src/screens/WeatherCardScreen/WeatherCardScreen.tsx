@@ -14,7 +14,7 @@ import { styles } from './style';
 import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/WeatherCardTemplate';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestStatus } from '../../store/reducers/appReducer';
-import { toggleAppStatusAC } from '../../store/actions/app';
+import { toggleAppStatus } from '../../store/actions/app';
 import { selectStatusApp } from '../../store/selectors/appSelector';
 
 export const WeatherCardScreen = (
@@ -40,7 +40,7 @@ export const WeatherCardScreen = (
 
   const getWeatherInfo = async (title: string) => {
     try {
-      dispatch(toggleAppStatusAC(requestStatus.loading));
+      dispatch(toggleAppStatus(requestStatus.LOADING));
       const weatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${title}&lang=ru&units=metric&APPID=a9a3a62789de80865407c0452e9d1c27`;
       const response = await fetch(weatherURL);
       const responseForRender = await response.json();
@@ -51,7 +51,7 @@ export const WeatherCardScreen = (
       );
 
       setData((prev) => [...prev, ...filteredDays]);
-      dispatch(toggleAppStatusAC(requestStatus.idle));
+      dispatch(toggleAppStatus(requestStatus.IDLE));
     } catch (error) {
       console.warn(error);
     }
@@ -76,7 +76,7 @@ export const WeatherCardScreen = (
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      {statusApp === requestStatus.loading ? (
+      {statusApp === requestStatus.LOADING ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator />
         </View>

@@ -4,7 +4,7 @@ export interface commonInputPropsType extends InputProps {
   field: {
     name: string;
     onBlur: (name: string) => void;
-    onChange: any;
+    onChange: (name: string) => (text: string) => void;
     value: string;
   };
   form: {

@@ -13,7 +13,7 @@ import { ScreenOptionsType, TabStackParamList } from './types';
 import { AppButton } from '../../components/AppButton/AppButton';
 
 import { useDispatch } from 'react-redux';
-import { loginToggleAC } from '../../store/actions/login';
+import { loginToggle } from '../../store/actions/login';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
@@ -21,7 +21,7 @@ export const TabNavigation = () => {
   const dispatch = useDispatch();
 
   const onLogOutPress = () => {
-    dispatch(loginToggleAC(false));
+    dispatch(loginToggle(false));
   };
 
   const mainScreenOptions: BottomTabNavigationOptions = {

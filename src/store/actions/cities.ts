@@ -3,20 +3,22 @@ export enum CitiesActions {
   TOGGLE_SELECTED_CITY = 'TOGGLE_SELECTED_CITY',
 }
 
-export const getCitiesAC: getCitiesACType = () => ({
+export const getCities: GetCitiesActionType = () => ({
   type: CitiesActions.GET_CITIES,
 });
 
-export type getCitiesACType = () => {
+export type GetCitiesActionType = () => {
   type: CitiesActions.GET_CITIES;
 };
 
-export const toggleSelectedCityAC: toggleSelectedCityACType = (id) => ({
+export const toggleSelectedCity: ToggleSelectedCityActionType = (
+  payload: number,
+) => ({
   type: CitiesActions.TOGGLE_SELECTED_CITY,
-  id,
+  payload,
 });
 
-export type toggleSelectedCityACType = (id: number) => {
-  id: number;
+export type ToggleSelectedCityActionType = (payload: number) => {
+  payload: number;
   type: CitiesActions.TOGGLE_SELECTED_CITY;
 };
