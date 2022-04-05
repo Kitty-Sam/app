@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StatusBar, Text, TextInputProps, View } from 'react-native';
+import {
+  FlatList,
+  StatusBar,
+  Text,
+  TextInputProps,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { CityItem } from '../../components/CityItem/CityItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
@@ -8,11 +15,15 @@ import { DataItemType } from './types';
 import { keyExtractor } from '../../utils/keyExtractor';
 import { useSelector } from 'react-redux';
 import { getCities } from '../../store/selectors/citySelector';
+import { useNavigation } from '@react-navigation/native';
+import { COMMON_STACK_NAME } from '../../enum/enum';
 
 export const ListCitiesScreen = () => {
   const [filteredData, setFilteredData] = useState<DataItemType[]>([]);
   const [masterData, setMasterData] = useState<DataItemType[]>([]);
   const [search, setSearch] = useState<string>('');
+
+  const navigation = useNavigation();
 
   const cities = useSelector(getCities);
 
@@ -63,7 +74,22 @@ export const ListCitiesScreen = () => {
         style={styles.listContainer}
         keyExtractor={keyExtractor}
         data={filteredData}
-        renderItem={({ item }) => <CityItem title={item.city} />}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={{ margin: 8 }}
+            onPress={() => {
+              navigation.navigate(COMMON_STACK_NAME.WEATHER, {
+                title: item.city,
+              });
+            }}>
+            <CityItem
+              title={item.city}
+              id={item.id}
+              selected={item.selected}
+              isDefault={item.isDefault}
+            />
+          </TouchableOpacity>
+        )}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>

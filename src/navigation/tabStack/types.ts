@@ -3,7 +3,7 @@ import { TAB_NAVIGATION_NAME } from '../../enum/enum';
 import { RouteProp } from '@react-navigation/native';
 
 export type TabStackParamList = {
-  CityScreen: undefined;
+  CityScreen: { isDefault: boolean; title: string };
   List: undefined;
 };
 

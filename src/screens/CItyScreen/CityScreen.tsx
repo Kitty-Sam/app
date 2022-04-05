@@ -4,21 +4,42 @@ import { StatusBar, Text, View } from 'react-native';
 import { styles } from './styles';
 import { FAB, Image, Overlay } from 'react-native-elements';
 import { COLORS } from '../../theme/colors';
-import { ImagePicker } from '../../components/ImagePicker/ImagePicker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
+import { AppStoreType } from '../../store/store';
+import { DataItemType } from '../ListCitiesScreen/types';
+import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/WeatherCardTemplate';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/weather.png');
 
 export const CityScreen = () => {
+  const city = useSelector<AppStoreType, DataItemType[]>((state) =>
+    state.cities.cities.filter((city) => city.isDefault),
+  );
+
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
       <StatusBar hidden />
-      <Text style={styles.titleText}>Minsk</Text>
+      <Text style={styles.titleText}>
+        {city.length != 0 ? city[0].city : 'hello'}
+      </Text>
+      {city ? (
+        <Icon
+          name={city ? 'bookmark' : 'bookmark-outline'}
+          style={{ position: 'absolute', right: 16, top: 28 }}
+          size={24}
+          onPress={() => {
+            console.log('default');
+          }}
+        />
+      ) : null}
       <FAB
         color={COLORS.BUTTONS_COLORS.tacao}
         onPress={toggleOverlay}
@@ -37,7 +58,12 @@ export const CityScreen = () => {
           <Image source={img} style={styles.imageContainer} />
         </View>
       </Overlay>
-      <ImagePicker />
+      <WeatherCardDayTemplate
+        day={'123'}
+        feelsLike={12}
+        tempMax={12}
+        tempMin={12}
+      />
     </SafeAreaView>
   );
 };

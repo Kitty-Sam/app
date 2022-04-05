@@ -1,4 +1,6 @@
 export type CityItemProps = {
-  id?: number;
-  title: string;
+  id: number;
+  isDefault: boolean;
+  selected?: boolean;
+  title?: string;
 };

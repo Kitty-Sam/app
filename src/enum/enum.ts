@@ -12,7 +12,6 @@ export enum AUTH_NAVIGATION_NAME {
 }
 
 export enum COMMON_STACK_NAME {
-  NOTIFICATIONS = 'Notifications',
   TAB = 'Tab',
   WEATHER = 'Weather',
 }

@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { ActivityIndicator, SafeAreaView, Text, View } from 'react-native';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 import { CommonStackParamList } from '../../navigation/commonStack/types';
@@ -24,12 +18,10 @@ export const WeatherCardScreen = (
   >,
 ) => {
   const { route } = props;
-  const { title, selectedIds } = route.params!;
-
-  const [data, setData] = useState<dayWeatherInfo[]>([]);
+  const { title } = route.params!;
+  const [data, setData] = useState<dayWeatherInfo | null>(null);
 
   const dispatch = useDispatch();
-
   const statusApp = useSelector(selectStatusApp);
 
   useEffect(() => {
@@ -41,38 +33,23 @@ export const WeatherCardScreen = (
   const getWeatherInfo = async (title: string) => {
     try {
       dispatch(toggleAppStatus(requestStatus.LOADING));
-      const weatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${title}&lang=ru&units=metric&APPID=a9a3a62789de80865407c0452e9d1c27`;
+      const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${title}&lang=ru&units=metric&appid=ef8dbe91097853f46a4f5c2d9130a67d`;
       const response = await fetch(weatherURL);
       const responseForRender = await response.json();
-
-      // filtered days, the weather during 5 days from today in 9 a.m.
-      const filteredDays = responseForRender.list.filter((el: dayWeatherInfo) =>
-        el.dt_txt.includes('09:00:00'),
-      );
-
-      setData((prev) => [...prev, ...filteredDays]);
+      setData(responseForRender);
       dispatch(toggleAppStatus(requestStatus.IDLE));
-    } catch (error) {
-      console.warn(error);
+    } catch (e) {
+      console.warn(e);
     }
   };
 
-  /*
-  console.log(
-    'kitti did it',
-    selectedIds.map((el) => NOTIFICATIONS[selectedIds[el]['shortTitle']]),
-  );
-*/
+  const temp_max = data?.['main']['temp_max'];
+  const temp_min = data?.['main']['temp_min'];
+  const feels_like = data?.['main']['feels_like'];
 
-  const tempMax = data.map((day) => day['main']['temp_max']);
-  const tempMin = data.map((day) => day['main']['temp_min']);
-  const feelsLike = data.map((day) => day['main']['feels_like']);
-  const days_in_ms = data.map((day) => day['dt'] * 1000);
-  const days = days_in_ms.map((day) =>
-    new Date(day).toLocaleString('ru', {
-      weekday: 'long',
-    }),
-  );
+  // @ts-ignore
+  const day_in_ms = data?.['dt'] * 1000;
+  const current_Day = new Date(day_in_ms).toLocaleString('ru').slice(4, 16);
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -85,46 +62,14 @@ export const WeatherCardScreen = (
           <View style={styles.textContainer}>
             <Text style={styles.titleText}>Hello, {title}!</Text>
           </View>
-          <ScrollView
-            style={styles.infoContainer}
-            horizontal
-            showsHorizontalScrollIndicator={false}>
+          <View style={styles.infoContainer}>
             <WeatherCardDayTemplate
-              days={days}
-              feelsLike={feelsLike}
-              index={0}
-              tempMax={tempMax}
-              tempMin={tempMin}
+              day={current_Day}
+              tempMax={temp_max}
+              tempMin={temp_min}
+              feelsLike={feels_like}
             />
-            <WeatherCardDayTemplate
-              days={days}
-              feelsLike={feelsLike}
-              index={1}
-              tempMax={tempMax}
-              tempMin={tempMin}
-            />
-            <WeatherCardDayTemplate
-              days={days}
-              feelsLike={feelsLike}
-              index={2}
-              tempMax={tempMax}
-              tempMin={tempMin}
-            />
-            <WeatherCardDayTemplate
-              days={days}
-              feelsLike={feelsLike}
-              index={3}
-              tempMax={tempMax}
-              tempMin={tempMin}
-            />
-            <WeatherCardDayTemplate
-              days={days}
-              feelsLike={feelsLike}
-              index={4}
-              tempMax={tempMax}
-              tempMin={tempMin}
-            />
-          </ScrollView>
+          </View>
         </View>
       )}
     </SafeAreaView>
