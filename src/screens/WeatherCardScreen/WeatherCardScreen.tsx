@@ -19,10 +19,10 @@ export const WeatherCardScreen = (
 ) => {
   const { route } = props;
   const { title } = route.params!;
-  const [data, setData] = useState<dayWeatherInfo | null>(null);
 
   const dispatch = useDispatch();
   const statusApp = useSelector(selectStatusApp);
+  const [data, setData] = useState<dayWeatherInfo | null>(null);
 
   useEffect(() => {
     if (title) {
