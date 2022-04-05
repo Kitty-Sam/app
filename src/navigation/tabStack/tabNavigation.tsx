@@ -12,11 +12,16 @@ import { COLORS } from '../../theme/colors';
 import { ScreenOptionsType, TabStackParamList } from './types';
 import { AppButton } from '../../components/AppButton/AppButton';
 
+import { useDispatch } from 'react-redux';
+import { loginToggle } from '../../store/actions/login';
+
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
 export const TabNavigation = () => {
+  const dispatch = useDispatch();
+
   const onLogOutPress = () => {
-    console.log('123');
+    dispatch(loginToggle(false));
   };
 
   const mainScreenOptions: BottomTabNavigationOptions = {
@@ -33,14 +38,7 @@ export const TabNavigation = () => {
 
     tabBarActiveBackgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
     tabBarInactiveBackgroundColor: COLORS.BACKGROUND_COLORS.pampas,
-    headerRight: () => (
-      <AppButton
-        onPress={() => {
-          console.log('123');
-        }}
-        title="Log Out"
-      />
-    ),
+    headerRight: () => <AppButton onPress={onLogOutPress} title="Log Out" />,
     headerRightContainerStyle: {
       paddingRight: 16,
     },

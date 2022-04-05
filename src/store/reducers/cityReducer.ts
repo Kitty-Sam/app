@@ -1,38 +1,55 @@
-const ADD_TO_SELECT_LIST = 'ADD_TO_SELECT_LIST';
-const REMOVE_FROM_SELECT_LIST = 'REMOVE_FROM_SELECT_LIST';
-const GET_CITIES = 'GET_CITIES';
+import { getCities, toggleSelectedCity } from '../actions/cities';
+import { DataItemType } from '../../screens/ListCitiesScreen/types';
 
-const initialState = {
-  cities: [],
+export const TOGGLE_SELECTED_CITY = 'TOGGLE_SELECTED_CITY';
+export const GET_CITIES = 'GET_CITIES';
+
+export type initialStateType = {
+  cities: DataItemType[];
+  selectedCities?: DataItemType[];
+};
+const initialState: initialStateType = {
+  cities: [
+    { id: 1, city: 'Minsk', selected: false },
+    { id: 2, city: 'Moscow', selected: false },
+    { id: 3, city: 'Kiev', selected: false },
+    { id: 4, city: 'Riga', selected: false },
+    { id: 5, city: 'Orsha', selected: false },
+    { id: 6, city: 'Brest', selected: false },
+    { id: 7, city: 'Grodno', selected: false },
+    { id: 8, city: 'Bereza', selected: false },
+    { id: 9, city: 'Mogilev', selected: false },
+    { id: 10, city: 'Vitebsk', selected: false },
+  ],
   selectedCities: [],
 };
 
 export const cityReducer = (state = initialState, action: ActionsType) => {
-  return state;
-};
+  switch (action.type) {
+    case GET_CITIES:
+      return {
+        ...state,
+      };
 
-const getCitiesAC = (cities: number) => {
-  return {
-    type: GET_CITIES,
-    payload: cities,
-  };
-};
+    case TOGGLE_SELECTED_CITY: {
+      const cities = state.cities.map((city) => {
+        if (city.id === action.payload) {
+          city.selected = !city.selected;
+        }
+        return city;
+      });
+      return {
+        ...state,
+        cities: cities,
+        selectedCities: cities.filter((city) => city.selected),
+      };
+    }
 
-const selectCityAC = (city: any) => {
-  return {
-    type: ADD_TO_SELECT_LIST,
-    payload: city,
-  };
-};
-
-const unSelectCityAC = (id: number) => {
-  return {
-    type: REMOVE_FROM_SELECT_LIST,
-    payload: id,
-  };
+    default:
+      return state;
+  }
 };
 
 type ActionsType =
-  | ReturnType<typeof getCitiesAC>
-  | ReturnType<typeof selectCityAC>
-  | ReturnType<typeof unSelectCityAC>;
+  | ReturnType<typeof getCities>
+  | ReturnType<typeof toggleSelectedCity>;

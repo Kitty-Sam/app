@@ -14,4 +14,7 @@ export const COLORS = {
     iron: '#D0D1D1',
     pampas: '#F0EDEB',
   },
+  ERROR: {
+    pomegranate: '#EC2913',
+  },
 };

@@ -6,28 +6,19 @@ import { styles } from './styles';
 import { SearchBar } from 'react-native-elements';
 import { DataItemType } from './types';
 import { keyExtractor } from '../../utils/keyExtractor';
-
-const DATA: DataItemType[] = [
-  { id: 1, city: 'Minsk' },
-  { id: 2, city: 'Moscow' },
-  { id: 3, city: 'Kiev' },
-  { id: 4, city: 'Riga' },
-  { id: 5, city: 'Orsha' },
-  { id: 6, city: 'Brest' },
-  { id: 7, city: 'Grodno' },
-  { id: 8, city: 'Bereza' },
-  { id: 9, city: 'Mogilev' },
-  { id: 10, city: 'Vitebsk' },
-];
+import { useSelector } from 'react-redux';
+import { getCities } from '../../store/selectors/citySelector';
 
 export const ListCitiesScreen = () => {
   const [filteredData, setFilteredData] = useState<DataItemType[]>([]);
   const [masterData, setMasterData] = useState<DataItemType[]>([]);
   const [search, setSearch] = useState<string>('');
 
+  const cities = useSelector(getCities);
+
   const loadData = () => {
-    setMasterData(DATA);
-    setFilteredData(DATA);
+    setMasterData(cities);
+    setFilteredData(cities);
   };
 
   useEffect(() => {

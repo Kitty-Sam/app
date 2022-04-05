@@ -12,6 +12,10 @@ import { CommonStackParamList } from '../../navigation/commonStack/types';
 import { dayWeatherInfo } from './types';
 import { styles } from './style';
 import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/WeatherCardTemplate';
+import { useDispatch, useSelector } from 'react-redux';
+import { requestStatus } from '../../store/reducers/appReducer';
+import { toggleAppStatus } from '../../store/actions/app';
+import { selectStatusApp } from '../../store/selectors/appSelector';
 
 export const WeatherCardScreen = (
   props: StackScreenNavigationProps<
@@ -23,7 +27,10 @@ export const WeatherCardScreen = (
   const { title, selectedIds } = route.params!;
 
   const [data, setData] = useState<dayWeatherInfo[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+
+  const dispatch = useDispatch();
+
+  const statusApp = useSelector(selectStatusApp);
 
   useEffect(() => {
     if (title) {
@@ -33,7 +40,7 @@ export const WeatherCardScreen = (
 
   const getWeatherInfo = async (title: string) => {
     try {
-      setLoading(true);
+      dispatch(toggleAppStatus(requestStatus.LOADING));
       const weatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${title}&lang=ru&units=metric&APPID=a9a3a62789de80865407c0452e9d1c27`;
       const response = await fetch(weatherURL);
       const responseForRender = await response.json();
@@ -44,7 +51,7 @@ export const WeatherCardScreen = (
       );
 
       setData((prev) => [...prev, ...filteredDays]);
-      setLoading(false);
+      dispatch(toggleAppStatus(requestStatus.IDLE));
     } catch (error) {
       console.warn(error);
     }
@@ -69,7 +76,7 @@ export const WeatherCardScreen = (
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      {loading ? (
+      {statusApp === requestStatus.LOADING ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator />
         </View>

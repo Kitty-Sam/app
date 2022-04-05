@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+  ActivityIndicator,
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -22,6 +24,21 @@ import {
   StackScreenNavigationProps,
 } from '../../navigation/authStack/types';
 
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useDispatch, useSelector } from 'react-redux';
+import { requestStatus } from '../../store/reducers/appReducer';
+import { UserType } from '../../store/reducers/registerReducer';
+import { Formik } from 'formik';
+import { loginValidationSchema } from '../../utils/formValidation';
+import { loginToggle } from '../../store/actions/login';
+import { toggleAppStatus } from '../../store/actions/app';
+import {
+  getUserData,
+  selectAuth,
+} from '../../store/selectors/registerSelector';
+import { selectStatusApp } from '../../store/selectors/appSelector';
+
 export const LoginScreen = (
   props: StackScreenNavigationProps<
     AUTH_NAVIGATION_NAME.LOGIN,
@@ -30,12 +47,42 @@ export const LoginScreen = (
 ) => {
   const { navigation } = props;
 
+  const dispatch = useDispatch();
+
+  const statusApp = useSelector(selectStatusApp);
+  const UserDataFromRedux = useSelector(getUserData);
+  const isAuth = useSelector(selectAuth);
+
+  const onGoogleButtonPress = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const { idToken } = await GoogleSignin.signIn();
+      const credential = auth.GoogleAuthProvider.credential(idToken);
+      const { user } = await auth().signInWithCredential(credential);
+      Alert.alert('Welcome back!', `${user.displayName}`);
+      dispatch(loginToggle(true));
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   const registerPress = () => {
     navigation.navigate(AUTH_NAVIGATION_NAME.REGISTER);
   };
 
-  const loginPress = () => {
-    console.log('login');
+  const loginPress = (values: UserType) => {
+    dispatch(toggleAppStatus(requestStatus.LOADING));
+    if (
+      UserDataFromRedux.email === values.email &&
+      UserDataFromRedux.password === values.password
+    ) {
+      dispatch(loginToggle(true));
+      dispatch(toggleAppStatus(requestStatus.SUCCEEDED));
+      Alert.alert('Welcome Back!', `${UserDataFromRedux.fullName}`);
+    } else {
+      Alert.alert('OOPS!', 'Incorrect personal data, try again');
+      dispatch(toggleAppStatus(requestStatus.FAILED));
+    }
   };
 
   const onForgotDataPress = () => {
@@ -44,64 +91,107 @@ export const LoginScreen = (
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <StatusBar hidden />
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.loginContainer}>
-            <Text style={styles.headerText}>Weather App</Text>
-            <TextInput
-              style={styles.inputText}
-              placeholder="Email"
-              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-            />
-            <TextInput
-              style={styles.inputText}
-              placeholder="Password"
-              placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
-            />
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.textContainer}
-                activeOpacity={0.4}>
-                <Text style={styles.regularText} onPress={onForgotDataPress}>
-                  Forgot email/password
-                </Text>
-              </TouchableOpacity>
-              <AppButton onPress={loginPress} title={'SIGH IN'} />
-              <AppButton
-                onPress={registerPress}
-                backgroundColor={COLORS.BUTTONS_COLORS.chalet_green}
-                title={'SIGH UP'}
-              />
+      {statusApp === requestStatus.LOADING ? (
+        <View>
+          <ActivityIndicator />
+        </View>
+      ) : (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <StatusBar hidden />
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.loginContainer}>
+              <Text style={styles.headerText}>Weather App</Text>
+              <Formik
+                validationSchema={loginValidationSchema}
+                initialValues={{ email: '', password: '' }}
+                onSubmit={(values) => {
+                  loginPress(values);
+                }}>
+                {({
+                  touched,
+                  handleChange,
+                  errors,
+                  handleBlur,
+                  handleSubmit,
+                  values,
+                }) => (
+                  <>
+                    <TextInput
+                      autoCapitalize="none"
+                      style={styles.inputText}
+                      placeholder="Email"
+                      placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                      keyboardType="email-address"
+                    />
+                    {errors.email && touched.email && (
+                      <Text style={{ color: 'red' }}>{errors.email}</Text>
+                    )}
+
+                    <TextInput
+                      autoCapitalize="none"
+                      secureTextEntry={true}
+                      style={styles.inputText}
+                      placeholder="Password"
+                      placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                    />
+
+                    {errors.password && touched.password && (
+                      <Text style={{ color: 'red' }}>{errors.password}</Text>
+                    )}
+
+                    <View style={styles.buttonContainer}>
+                      <TouchableOpacity
+                        style={styles.textContainer}
+                        activeOpacity={0.4}>
+                        <Text
+                          style={styles.regularText}
+                          onPress={onForgotDataPress}>
+                          Forgot email/password
+                        </Text>
+                      </TouchableOpacity>
+                      <AppButton
+                        onPress={handleSubmit}
+                        title={'SIGH IN'}
+                        disabled={!isAuth}
+                      />
+                      <AppButton
+                        onPress={registerPress}
+                        backgroundColor={COLORS.BUTTONS_COLORS.chalet_green}
+                        title={'SIGH UP'}
+                      />
+                    </View>
+                  </>
+                )}
+              </Formik>
+
+              <Divider style={styles.divider} />
+              <View style={styles.buttonsLinkContainer}>
+                <AppButtonWithImg
+                  onPress={() => {
+                    console.log('123');
+                  }}
+                  backgroundColor={'#3b5998'}
+                  title={'Login with facebook'}
+                  icon={'facebook'}
+                />
+                <AppButtonWithImg
+                  onPress={() => onGoogleButtonPress()}
+                  backgroundColor={COLORS.BUTTONS_COLORS.tacao}
+                  title={'Login with google'}
+                  icon={'google-plus'}
+                />
+              </View>
             </View>
-            <Divider
-              style={{
-                backgroundColor: COLORS.TEXT_COLORS.zuccini,
-                marginTop: 150,
-              }}
-            />
-            <View style={styles.buttonsLinkContainer}>
-              <AppButtonWithImg
-                onPress={() => {
-                  console.log('123');
-                }}
-                backgroundColor={'#3b5998'}
-                title={'Login with facebook'}
-                icon={'facebook'}
-              />
-              <AppButtonWithImg
-                onPress={() => {
-                  console.log('123');
-                }}
-                backgroundColor={COLORS.BUTTONS_COLORS.tacao}
-                title={'Login with google'}
-                icon={'google-plus'}
-              />
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };
