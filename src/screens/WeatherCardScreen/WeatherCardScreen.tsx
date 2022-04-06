@@ -10,6 +10,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { requestStatus } from '../../store/reducers/appReducer';
 import { toggleAppStatus } from '../../store/actions/app';
 import { selectStatusApp } from '../../store/selectors/appSelector';
+import { Icon } from 'react-native-elements';
+import { AppStoreType } from '../../store/store';
+import { DataItemType } from '../ListCitiesScreen/types';
+import { toggleSelectedCity } from '../../store/actions/cities';
 
 export const WeatherCardScreen = (
   props: StackScreenNavigationProps<
@@ -22,6 +26,19 @@ export const WeatherCardScreen = (
 
   const dispatch = useDispatch();
   const statusApp = useSelector(selectStatusApp);
+
+  const currentCity = useSelector<AppStoreType, DataItemType[]>((state) =>
+    state.cities.cities.filter((city) => city.city === title),
+  );
+
+  const citiesAll = useSelector<AppStoreType, DataItemType[]>(
+    (state) => state.cities.cities,
+  );
+
+  console.log('currentCity', currentCity);
+  console.log('title', title);
+  console.log('citiesAll', citiesAll);
+
   const [data, setData] = useState<dayWeatherInfo | null>(null);
 
   useEffect(() => {
@@ -62,6 +79,13 @@ export const WeatherCardScreen = (
           <View style={styles.textContainer}>
             <Text style={styles.titleText}>Hello, {title}!</Text>
           </View>
+          <Icon
+            tvParallaxProperties
+            name={currentCity[0].selected ? 'star' : 'star-outline'}
+            // name={currentCity.length === 0 ? 'star' : 'star-outline'}
+            type="ionics"
+            onPress={() => dispatch(toggleSelectedCity(title))}
+          />
           <View style={styles.infoContainer}>
             <WeatherCardDayTemplate
               day={current_Day}

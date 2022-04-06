@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar, Text, View } from 'react-native';
+import { ActivityIndicator, StatusBar, Text, View } from 'react-native';
 import { styles } from './styles';
 import { FAB, Image, Overlay } from 'react-native-elements';
 import { COLORS } from '../../theme/colors';
@@ -13,14 +13,18 @@ import { dayWeatherInfo } from '../WeatherCardScreen/types';
 import { toggleAppStatus } from '../../store/actions/app';
 import { requestStatus } from '../../store/reducers/appReducer';
 import { toggleDefaultPosition } from '../../store/actions/cities';
+import { selectStatusApp } from '../../store/selectors/appSelector';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/weather.png');
 
 export const CityScreen = () => {
+  const statusApp = useSelector(selectStatusApp);
   const cities = useSelector<AppStoreType, DataItemType[]>((state) =>
     state.cities.cities.filter((city) => city.isDefault),
   );
+
+  // const defaultCities = useSelector(getDefaultCities);
 
   const [visible, setVisible] = useState(false);
 
@@ -60,50 +64,55 @@ export const CityScreen = () => {
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
       <StatusBar hidden />
-      <Text style={styles.titleText}>
-        {cities.length != 0 ? cities[0].city : 'hello'}
-      </Text>
-      {cities[0].selected ? (
-        <Icon
-          name={cities ? 'bookmark' : 'bookmark-outline'}
-          style={{ position: 'absolute', right: 16, top: 28 }}
-          size={24}
-          onPress={() => {
-            dispatch(toggleDefaultPosition(cities[0].id));
-          }}
-        />
-      ) : null}
-      <FAB
-        color={COLORS.BUTTONS_COLORS.tacao}
-        onPress={toggleOverlay}
-        title="?"
-        style={styles.fab}
-      />
-      <Overlay
-        isVisible={visible}
-        onBackdropPress={toggleOverlay}
-        overlayStyle={styles.overlay}>
-        <View style={styles.textOverlayContainer}>
-          <Text style={styles.overlayText}>Hello!</Text>
-          <Text style={styles.overlayText}>
-            Just use me, if you want to know the weather
-          </Text>
-          <Image source={img} style={styles.imageContainer} />
+      {statusApp === requestStatus.LOADING ? (
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator />
         </View>
-      </Overlay>
-      {cities ? (
-        <WeatherCardDayTemplate
-          day={current_Day}
-          feelsLike={feels_like}
-          tempMax={temp_max}
-          tempMin={temp_min}
-          /*  day={'123'}
-          feelsLike={12}
-          tempMax={12}
-          tempMin={12}*/
-        />
       ) : (
-        <Text>You should select city </Text>
+        <View>
+          <Text style={styles.titleText}>
+            {cities.length != 0 ? cities[0].city : 'hello'}
+          </Text>
+          {cities[0].selected ? (
+            <Icon
+              name={cities ? 'bookmark' : 'bookmark-outline'}
+              style={{ position: 'absolute', right: 16, top: 28 }}
+              size={24}
+              onPress={() => {
+                dispatch(toggleDefaultPosition(cities[0].id));
+              }}
+            />
+          ) : null}
+          <FAB
+            color={COLORS.BUTTONS_COLORS.tacao}
+            onPress={toggleOverlay}
+            title="?"
+            style={styles.fab}
+          />
+          <Overlay
+            isVisible={visible}
+            onBackdropPress={toggleOverlay}
+            overlayStyle={styles.overlay}>
+            <View style={styles.textOverlayContainer}>
+              <Text style={styles.overlayText}>Hello!</Text>
+              <Text style={styles.overlayText}>
+                Just use me, if you want to know the weather
+              </Text>
+              <Image source={img} style={styles.imageContainer} />
+            </View>
+          </Overlay>
+          {cities ? (
+            <WeatherCardDayTemplate
+              day={current_Day}
+              feelsLike={feels_like}
+              tempMax={temp_max}
+              tempMin={temp_min}
+            />
+          ) : (
+            <Text>You should select city </Text>
+          )}
+        </View>
       )}
     </SafeAreaView>
   );

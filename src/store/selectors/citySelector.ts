@@ -4,3 +4,7 @@ export const getCities = (state: AppStoreType) => state.cities.cities;
 
 export const getSelectedCities = (state: AppStoreType) =>
   state.cities.selectedCities;
+
+export const getDefaultCities = (state: AppStoreType) => {
+  state.cities.cities.map((city) => city.isDefault);
+};

@@ -20,8 +20,9 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
     color: COLORS.TEXT_COLORS.zuccini,
   },
   conditionContainer: {
-    marginVertical: 16,
+    marginVertical: 32,
     marginHorizontal: 16,
+    width: 300,
   },
   searchContainer: {
     backgroundColor: COLORS.BACKGROUND_COLORS.indian_Khaki,

@@ -14,11 +14,11 @@ export const CityItem = (props: CityItemProps): ReactElement => {
   const { title, selected, id, isDefault } = props;
   const dispatch = useDispatch();
 
-  const onFavoritePress = (id: number) => {
+  const onFavoritePress = (id: string) => {
     dispatch(toggleSelectedCity(id));
   };
 
-  const makeDefaultPress = (id: number) => {
+  const makeDefaultPress = (id: string) => {
     dispatch(toggleDefaultPosition(id));
   };
 

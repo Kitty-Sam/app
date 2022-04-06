@@ -3,77 +3,77 @@ import {
   FlatList,
   StatusBar,
   Text,
-  TextInputProps,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { CityItem } from '../../components/CityItem/CityItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
 import { SearchBar } from 'react-native-elements';
-import { DataItemType } from './types';
-import { keyExtractor } from '../../utils/keyExtractor';
-import { useSelector } from 'react-redux';
-import { getCities } from '../../store/selectors/citySelector';
 import { useNavigation } from '@react-navigation/native';
 import { COMMON_STACK_NAME } from '../../enum/enum';
+import { AppButton } from '../../components/AppButton/AppButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppStoreType } from '../../store/store';
+import { DataItemType } from './types';
+import { keyExtractor } from '../../utils/keyExtractor';
+import { CityItem } from '../../components/CityItem/CityItem';
+import { addCity } from '../../store/actions/cities';
 
 export const ListCitiesScreen = () => {
-  const [filteredData, setFilteredData] = useState<DataItemType[]>([]);
-  const [masterData, setMasterData] = useState<DataItemType[]>([]);
   const [search, setSearch] = useState<string>('');
-
   const navigation = useNavigation();
 
-  const cities = useSelector(getCities);
-
-  const loadData = () => {
-    setMasterData(cities);
-    setFilteredData(cities);
-  };
+  const cities = useSelector<AppStoreType, DataItemType[]>((state) =>
+    //state.cities.cities.filter((city) => city.selected),
+    state.cities.cities.filter((city) => city.selected),
+  );
 
   useEffect(() => {
-    loadData();
+    dispatch({ type: 'zalupa' });
   }, []);
 
-  const searchFilter = (text: string) => {
-    if (text) {
-      const newData = masterData.filter((item) => {
-        const itemData = item.city ? item.city.toUpperCase() : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredData(newData);
-      setSearch(text);
-    } else {
-      setFilteredData(masterData);
-      setSearch(text);
-    }
-  };
+  console.log('### cityFromTheList', cities);
 
-  const onChangeText: TextInputProps['onChangeText'] = (text: string) => {
-    searchFilter(text);
-  };
+  const dispatch = useDispatch();
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
       <StatusBar hidden />
       <View style={styles.conditionContainer}>
-        <Text style={styles.conditionText}>Choose the city</Text>
+        <Text style={styles.conditionText}>Choose the city...</Text>
         <SearchBar
           placeholder="Type Here..."
           // @ts-ignore
-          onChangeText={onChangeText}
+          onChangeText={setSearch}
           value={search}
           containerStyle={styles.searchContainer}
           style={styles.search}
           platform="android"
+          // onBlur={() => {
+          //   dispatch(addCity(search));
+          //   navigation.navigate(COMMON_STACK_NAME.WEATHER, {
+          //     title: search,
+          //   });
+          // }}
         />
+        <View style={{ position: 'absolute', right: -68, top: 24 }}>
+          <AppButton
+            title={'show'}
+            onPress={() => {
+              dispatch(addCity(search));
+              navigation.navigate(COMMON_STACK_NAME.WEATHER, {
+                title: search,
+              });
+            }}
+          />
+        </View>
+        <Text style={styles.conditionText}>Favorite cities list</Text>
       </View>
+
       <FlatList
         style={styles.listContainer}
         keyExtractor={keyExtractor}
-        data={filteredData}
+        data={cities}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={{ margin: 8 }}
