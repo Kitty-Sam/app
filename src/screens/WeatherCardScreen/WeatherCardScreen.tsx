@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, SafeAreaView, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  SafeAreaView,
+  Text,
+  View,
+} from 'react-native';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 import { CommonStackParamList } from '../../navigation/commonStack/types';
@@ -21,7 +27,7 @@ export const WeatherCardScreen = (
     CommonStackParamList
   >,
 ) => {
-  const { route } = props;
+  const { route, navigation } = props;
   const { title } = route.params!;
 
   const dispatch = useDispatch();
@@ -30,14 +36,6 @@ export const WeatherCardScreen = (
   const currentCity = useSelector<AppStoreType, DataItemType[]>((state) =>
     state.cities.cities.filter((city) => city.city === title),
   );
-
-  const citiesAll = useSelector<AppStoreType, DataItemType[]>(
-    (state) => state.cities.cities,
-  );
-
-  console.log('currentCity', currentCity);
-  console.log('title', title);
-  console.log('citiesAll', citiesAll);
 
   const [data, setData] = useState<dayWeatherInfo | null>(null);
 
@@ -57,16 +55,52 @@ export const WeatherCardScreen = (
       dispatch(toggleAppStatus(requestStatus.IDLE));
     } catch (e) {
       console.warn(e);
+      dispatch(toggleAppStatus(requestStatus.FAILED));
     }
   };
 
-  const temp_max = data?.['main']['temp_max'];
-  const temp_min = data?.['main']['temp_min'];
-  const feels_like = data?.['main']['feels_like'];
+  if (data === null) {
+    // Alert.alert('OOps!', 'Your city title is incorrect!');
+  }
+  const valuesForWeather = {
+    temp_max: data?.['main']['temp_max'],
+    temp_min: data?.['main']['temp_min'],
+    feels_like: data?.['main']['feels_like'],
+  };
 
-  // @ts-ignore
-  const day_in_ms = data?.['dt'] * 1000;
-  const current_Day = new Date(day_in_ms).toLocaleString('ru').slice(4, 16);
+  const toggleSelectedCityIconPress = () => {
+    setHasChanged(true);
+    dispatch(toggleSelectedCity(title));
+  };
+
+  const current_Day = new Date().toLocaleString('ru').slice(4, 16);
+
+  const [hasChanged, setHasChanged] = useState<boolean>(false);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      if (!hasChanged) {
+        return;
+      }
+      e.preventDefault();
+      Alert.alert(
+        '',
+        'You have changed favorite icon. Are you sure, that you wanted it?',
+        [
+          {
+            text: "Don't leave",
+            style: 'cancel',
+            onPress: () => {},
+          },
+          {
+            text: 'Yes',
+            style: 'destructive',
+            onPress: () => navigation.dispatch(e.data.action),
+          },
+        ],
+      );
+    });
+    return unsubscribe;
+  }, [navigation, hasChanged]);
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -82,16 +116,15 @@ export const WeatherCardScreen = (
           <Icon
             tvParallaxProperties
             name={currentCity[0].selected ? 'star' : 'star-outline'}
-            // name={currentCity.length === 0 ? 'star' : 'star-outline'}
             type="ionics"
-            onPress={() => dispatch(toggleSelectedCity(title))}
+            onPress={() => toggleSelectedCityIconPress()}
           />
           <View style={styles.infoContainer}>
             <WeatherCardDayTemplate
               day={current_Day}
-              tempMax={temp_max}
-              tempMin={temp_min}
-              feelsLike={feels_like}
+              tempMax={valuesForWeather.temp_max}
+              tempMin={valuesForWeather.temp_min}
+              feelsLike={valuesForWeather.feels_like}
             />
           </View>
         </View>

@@ -11,7 +11,7 @@ import {
 } from '../../store/actions/cities';
 
 export const CityItem = (props: CityItemProps): ReactElement => {
-  const { title, selected, id, isDefault } = props;
+  const { title, selected, id, isDefault, isActive } = props;
   const dispatch = useDispatch();
 
   const onFavoritePress = (id: string) => {
@@ -29,6 +29,7 @@ export const CityItem = (props: CityItemProps): ReactElement => {
         <View style={{ flexDirection: 'row' }}>
           {selected && (
             <Icon
+              // disabled={isActive}
               tvParallaxProperties
               name={isDefault ? 'bookmark' : 'bookmark-outline'}
               onPress={() => makeDefaultPress(id)}

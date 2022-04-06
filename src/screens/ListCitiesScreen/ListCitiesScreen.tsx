@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
+  Alert,
   FlatList,
   StatusBar,
   Text,
@@ -13,28 +14,43 @@ import { useNavigation } from '@react-navigation/native';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 import { AppButton } from '../../components/AppButton/AppButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStoreType } from '../../store/store';
-import { DataItemType } from './types';
 import { keyExtractor } from '../../utils/keyExtractor';
 import { CityItem } from '../../components/CityItem/CityItem';
 import { addCity } from '../../store/actions/cities';
+import {
+  getPinnedCities,
+  getSelectedCities,
+} from '../../store/selectors/citySelector';
+import { DataItemType } from './types';
 
 export const ListCitiesScreen = () => {
   const [search, setSearch] = useState<string>('');
+
   const navigation = useNavigation();
-
-  const cities = useSelector<AppStoreType, DataItemType[]>((state) =>
-    //state.cities.cities.filter((city) => city.selected),
-    state.cities.cities.filter((city) => city.selected),
-  );
-
-  useEffect(() => {
-    dispatch({ type: 'zalupa' });
-  }, []);
-
-  console.log('### cityFromTheList', cities);
-
   const dispatch = useDispatch();
+
+  const selectedCities = useSelector(getSelectedCities);
+  const getPinnedCity = useSelector(getPinnedCities);
+
+  console.log('getPinnedCity', getPinnedCity);
+
+  const onShowWeatherPress = () => {
+    if (!search.trim()) {
+      Alert.alert('OOPs! Type something!');
+    } else {
+      dispatch(addCity(search));
+      setSearch('');
+      navigation.navigate(COMMON_STACK_NAME.WEATHER, {
+        title: search,
+      });
+    }
+  };
+
+  const onCityItemPress = (item: DataItemType) => {
+    navigation.navigate(COMMON_STACK_NAME.WEATHER, {
+      title: item.city,
+    });
+  };
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
@@ -43,46 +59,32 @@ export const ListCitiesScreen = () => {
         <Text style={styles.conditionText}>Choose the city...</Text>
         <SearchBar
           placeholder="Type Here..."
-          // @ts-ignore
           onChangeText={setSearch}
           value={search}
           containerStyle={styles.searchContainer}
           style={styles.search}
           platform="android"
-          // onBlur={() => {
-          //   dispatch(addCity(search));
-          //   navigation.navigate(COMMON_STACK_NAME.WEATHER, {
-          //     title: search,
-          //   });
-          // }}
         />
-        <View style={{ position: 'absolute', right: -68, top: 24 }}>
-          <AppButton
-            title={'show'}
-            onPress={() => {
-              dispatch(addCity(search));
-              navigation.navigate(COMMON_STACK_NAME.WEATHER, {
-                title: search,
-              });
-            }}
-          />
+        <View style={styles.showButtonContainer}>
+          <AppButton title={'show'} onPress={onShowWeatherPress} />
         </View>
-        <Text style={styles.conditionText}>Favorite cities list</Text>
       </View>
+      <Text style={[styles.conditionText, { textAlign: 'center' }]}>
+        Favorite cities list
+      </Text>
 
       <FlatList
         style={styles.listContainer}
         keyExtractor={keyExtractor}
-        data={cities}
+        data={selectedCities}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={{ margin: 8 }}
-            onPress={() => {
-              navigation.navigate(COMMON_STACK_NAME.WEATHER, {
-                title: item.city,
-              });
-            }}>
+            style={styles.cityItemContainer}
+            onPress={() => onCityItemPress(item)}>
             <CityItem
+              isActive={
+                !getPinnedCity.filter((city) => city.city === item.city).length
+              }
               title={item.city}
               id={item.id}
               selected={item.selected}

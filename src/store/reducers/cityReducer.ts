@@ -29,12 +29,6 @@ export const cityReducer = (
       return {
         ...state,
       };
-    // case 'zalupa': {
-    //   return {
-    //     ...state,
-    //     cities: state.cities.filter((city) => city.id !== 'riga'),
-    //   };
-    // }
     case CitiesActions.ADD_CITY: {
       const hasCity = state.cities.find((city) => city.id === action.payload);
 
@@ -48,7 +42,8 @@ export const cityReducer = (
 
         return {
           ...state,
-          cities: [...state.cities, newCity],
+          cities: [newCity, ...state.cities],
+          selectedCities: state.cities.filter((city) => city.selected),
         };
       } else {
         return state;
@@ -59,7 +54,7 @@ export const cityReducer = (
       return {
         ...state,
         cities: state.cities.map((city) => {
-          if (action.payload === city.id) {
+          if (action.payload === city.city) {
             return { ...city, selected: !city.selected };
           } else {
             return city;

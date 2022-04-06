@@ -2,9 +2,8 @@ import { AppStoreType } from '../store';
 
 export const getCities = (state: AppStoreType) => state.cities.cities;
 
-export const getSelectedCities = (state: AppStoreType) =>
-  state.cities.selectedCities;
+export const getPinnedCities = (state: AppStoreType) =>
+  state.cities.cities.filter((city) => city.isDefault);
 
-export const getDefaultCities = (state: AppStoreType) => {
-  state.cities.cities.map((city) => city.isDefault);
-};
+export const getSelectedCities = (state: AppStoreType) =>
+  state.cities.cities.filter((city) => city.selected);
