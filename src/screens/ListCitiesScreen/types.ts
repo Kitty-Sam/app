@@ -1,5 +1,6 @@
 export type DataItemType = {
   city: string;
-  id: number;
+  id: string;
+  isDefault: boolean;
   selected: boolean;
 };

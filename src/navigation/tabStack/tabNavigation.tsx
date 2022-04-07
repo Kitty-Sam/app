@@ -14,14 +14,32 @@ import { AppButton } from '../../components/AppButton/AppButton';
 
 import { useDispatch } from 'react-redux';
 import { loginToggle } from '../../store/actions/login';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
 export const TabNavigation = () => {
   const dispatch = useDispatch();
 
-  const onLogOutPress = () => {
-    dispatch(loginToggle(false));
+  /*  const onLogOutPress = () => {
+      try {
+        GoogleSignin.signOut().then((result) => {
+          Alert.alert("Welcome back!");
+          dispatch(loginToggle(true));
+        })
+      }
+
+    }*/
+
+  const onLogOutPress = async () => {
+    try {
+      await GoogleSignin.signOut().then((result) => {
+        console.log('result', result);
+        dispatch(loginToggle(false));
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const mainScreenOptions: BottomTabNavigationOptions = {
@@ -38,10 +56,6 @@ export const TabNavigation = () => {
 
     tabBarActiveBackgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
     tabBarInactiveBackgroundColor: COLORS.BACKGROUND_COLORS.pampas,
-    headerRight: () => <AppButton onPress={onLogOutPress} title="Log Out" />,
-    headerRightContainerStyle: {
-      paddingRight: 16,
-    },
     headerTitleStyle: { color: COLORS.TEXT_COLORS.zuccini },
   };
 
@@ -66,6 +80,10 @@ export const TabNavigation = () => {
     },
     headerTitleAlign: 'left',
     headerTitle: 'Weather App',
+    headerRightContainerStyle: {
+      paddingRight: 16,
+    },
+    headerRight: () => <AppButton onPress={onLogOutPress} title="Log Out" />,
   };
 
   return (

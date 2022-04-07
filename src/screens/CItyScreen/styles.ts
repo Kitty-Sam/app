@@ -8,9 +8,11 @@ import {
 import { COLORS } from '../../theme/colors';
 
 type CityScreenStyleType = {
+  bookmarkIcon: ViewStyle;
   buttonContainer: ViewStyle;
   fab: ViewStyle;
   imageContainer: ImageStyle;
+  loader: ViewStyle;
   overlay: ViewStyle;
   overlayText: TextStyle;
   root: ViewStyle;
@@ -56,5 +58,15 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
   textOverlayContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bookmarkIcon: {
+    position: 'absolute',
+    right: 16,
+    top: 28,
   },
 });

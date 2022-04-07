@@ -1,69 +1,91 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, StatusBar, Text, TextInputProps, View } from 'react-native';
-import { CityItem } from '../../components/CityItem/CityItem';
+import React, { useState } from 'react';
+import {
+  Alert,
+  FlatList,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
 import { SearchBar } from 'react-native-elements';
-import { DataItemType } from './types';
+import { useNavigation } from '@react-navigation/native';
+import { COMMON_STACK_NAME } from '../../enum/enum';
+import { AppButton } from '../../components/AppButton/AppButton';
+import { useDispatch, useSelector } from 'react-redux';
 import { keyExtractor } from '../../utils/keyExtractor';
-import { useSelector } from 'react-redux';
-import { getCities } from '../../store/selectors/citySelector';
+import { CityItem } from '../../components/CityItem/CityItem';
+import { addCity } from '../../store/actions/cities';
+import { getSelectedCities } from '../../store/selectors/citySelector';
+import { DataItemType } from './types';
 
 export const ListCitiesScreen = () => {
-  const [filteredData, setFilteredData] = useState<DataItemType[]>([]);
-  const [masterData, setMasterData] = useState<DataItemType[]>([]);
   const [search, setSearch] = useState<string>('');
 
-  const cities = useSelector(getCities);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const loadData = () => {
-    setMasterData(cities);
-    setFilteredData(cities);
-  };
+  const selectedCities = useSelector(getSelectedCities);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const searchFilter = (text: string) => {
-    if (text) {
-      const newData = masterData.filter((item) => {
-        const itemData = item.city ? item.city.toUpperCase() : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredData(newData);
-      setSearch(text);
+  const onShowWeatherPress = () => {
+    if (!search.trim()) {
+      Alert.alert('OOPs! Type something!');
     } else {
-      setFilteredData(masterData);
-      setSearch(text);
+      dispatch(addCity(search));
+      setSearch('');
+      navigation.navigate(COMMON_STACK_NAME.WEATHER, {
+        title: search,
+      });
     }
   };
 
-  const onChangeText: TextInputProps['onChangeText'] = (text: string) => {
-    searchFilter(text);
+  const onCityItemPress = (item: DataItemType) => {
+    navigation.navigate(COMMON_STACK_NAME.WEATHER, {
+      title: item.city,
+    });
   };
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
       <StatusBar hidden />
       <View style={styles.conditionContainer}>
-        <Text style={styles.conditionText}>Choose the city</Text>
+        <Text style={styles.conditionText}>Choose the city...</Text>
         <SearchBar
           placeholder="Type Here..."
-          // @ts-ignore
-          onChangeText={onChangeText}
+          onChangeText={setSearch}
           value={search}
           containerStyle={styles.searchContainer}
           style={styles.search}
           platform="android"
         />
+        <View style={styles.showButtonContainer}>
+          <AppButton title={'show'} onPress={onShowWeatherPress} />
+        </View>
       </View>
+      <Text style={[styles.conditionText, { textAlign: 'center' }]}>
+        Favorite cities list
+      </Text>
+
       <FlatList
         style={styles.listContainer}
         keyExtractor={keyExtractor}
-        data={filteredData}
-        renderItem={({ item }) => <CityItem title={item.city} />}
+        data={selectedCities}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.cityItemContainer}
+            onPress={() => onCityItemPress(item)}>
+            <CityItem
+              /* isActive={
+                 !getPinnedCity.filter((city) => city.city === item.city).length
+               }*/
+              title={item.city}
+              id={item.id}
+              selected={item.selected}
+              isDefault={item.isDefault}
+            />
+          </TouchableOpacity>
+        )}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
