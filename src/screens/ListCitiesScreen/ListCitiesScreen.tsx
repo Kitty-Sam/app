@@ -17,10 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { keyExtractor } from '../../utils/keyExtractor';
 import { CityItem } from '../../components/CityItem/CityItem';
 import { addCity } from '../../store/actions/cities';
-import {
-  getPinnedCities,
-  getSelectedCities,
-} from '../../store/selectors/citySelector';
+import { getSelectedCities } from '../../store/selectors/citySelector';
 import { DataItemType } from './types';
 
 export const ListCitiesScreen = () => {
@@ -30,9 +27,6 @@ export const ListCitiesScreen = () => {
   const dispatch = useDispatch();
 
   const selectedCities = useSelector(getSelectedCities);
-  const getPinnedCity = useSelector(getPinnedCities);
-
-  console.log('getPinnedCity', getPinnedCity);
 
   const onShowWeatherPress = () => {
     if (!search.trim()) {
@@ -82,9 +76,9 @@ export const ListCitiesScreen = () => {
             style={styles.cityItemContainer}
             onPress={() => onCityItemPress(item)}>
             <CityItem
-              isActive={
-                !getPinnedCity.filter((city) => city.city === item.city).length
-              }
+              /* isActive={
+                 !getPinnedCity.filter((city) => city.city === item.city).length
+               }*/
               title={item.city}
               id={item.id}
               selected={item.selected}

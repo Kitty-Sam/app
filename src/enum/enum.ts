@@ -12,6 +12,7 @@ export enum AUTH_NAVIGATION_NAME {
 }
 
 export enum COMMON_STACK_NAME {
+  ERROR = 'Error',
   TAB = 'Tab',
   WEATHER = 'Weather',
 }

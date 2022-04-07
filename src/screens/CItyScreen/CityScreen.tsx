@@ -51,9 +51,6 @@ export const CityScreen = () => {
           onPress: () => dispatch(toggleDefaultPosition(pinnedCities[0].id)),
         },
       ]);
-      if (pinnedCities.length === 1) {
-        Alert.alert('OOps!', 'You have only ONE item in pinned position!');
-      }
     }
   };
 

@@ -38,11 +38,16 @@ export const WeatherCardScreen = (
   );
 
   const [data, setData] = useState<dayWeatherInfo | null>(null);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
+    let mounted = true;
     if (title) {
       getWeatherInfo(title);
     }
+    return () => {
+      mounted = false;
+    };
   }, [title]);
 
   const getWeatherInfo = async (title: string) => {
@@ -51,29 +56,29 @@ export const WeatherCardScreen = (
       const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${title}&lang=ru&units=metric&appid=ef8dbe91097853f46a4f5c2d9130a67d`;
       const response = await fetch(weatherURL);
       const responseForRender = await response.json();
-      setData(responseForRender);
-      dispatch(toggleAppStatus(requestStatus.IDLE));
+      if (responseForRender.cod === '404') {
+        setError(true);
+        dispatch(toggleAppStatus(requestStatus.FAILED));
+      } else {
+        setData(responseForRender);
+        dispatch(toggleAppStatus(requestStatus.IDLE));
+      }
     } catch (e) {
       console.warn(e);
-      dispatch(toggleAppStatus(requestStatus.FAILED));
     }
   };
 
-  if (data === null) {
-    // Alert.alert('OOps!', 'Your city title is incorrect!');
-  }
   const valuesForWeather = {
-    temp_max: data?.['main']['temp_max'],
-    temp_min: data?.['main']['temp_min'],
-    feels_like: data?.['main']['feels_like'],
+    temp_max: data?.['main']?.['temp_max'],
+    temp_min: data?.['main']?.['temp_min'],
+    feels_like: data?.['main']?.['feels_like'],
   };
+  const current_Day = new Date().toLocaleString('ru').slice(4, 16);
 
   const toggleSelectedCityIconPress = () => {
     setHasChanged(true);
     dispatch(toggleSelectedCity(title));
   };
-
-  const current_Day = new Date().toLocaleString('ru').slice(4, 16);
 
   const [hasChanged, setHasChanged] = useState<boolean>(false);
   useEffect(() => {
@@ -101,6 +106,10 @@ export const WeatherCardScreen = (
     });
     return unsubscribe;
   }, [navigation, hasChanged]);
+
+  if (error) {
+    navigation.navigate(COMMON_STACK_NAME.ERROR);
+  }
 
   return (
     <SafeAreaView style={styles.rootContainer}>
