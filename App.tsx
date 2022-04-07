@@ -14,9 +14,20 @@ LogBox.ignoreLogs(['EventEmitter.removeListener']);
 
 export const App: FC = () => {
   useEffect(() => {
+    /* GoogleSignin.configure({
+       webClientId:
+         '355613544936-j7vuevctvi6buvua5b08emjdvbilp7ci.apps.googleusercontent.com',
+     });*/
+
+    /* GoogleSignin.configure({
+       webClientId:
+         '989628253767-fdv67ugc181ci71upgoscfi7ve7ieg03.apps.googleusercontent.com',
+     });*/
+
     GoogleSignin.configure({
       webClientId:
-        '355613544936-j7vuevctvi6buvua5b08emjdvbilp7ci.apps.googleusercontent.com',
+        '989628253767-qm6m07eej2qef9et4ovdr7ukkr7094kb.apps.googleusercontent.com',
+      offlineAccess: true,
     });
   }, []);
 

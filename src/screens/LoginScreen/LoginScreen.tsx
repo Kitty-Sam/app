@@ -25,7 +25,10 @@ import {
 } from '../../navigation/authStack/types';
 
 import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestStatus } from '../../store/reducers/appReducer';
 import { UserType } from '../../store/reducers/registerReducer';
@@ -56,13 +59,23 @@ export const LoginScreen = (
   const onGoogleButtonPress = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const { idToken } = await GoogleSignin.signIn();
-      const credential = auth.GoogleAuthProvider.credential(idToken);
-      const { user } = await auth().signInWithCredential(credential);
-      Alert.alert('Welcome back!', `${user.displayName}`);
-      dispatch(loginToggle(true));
+      await GoogleSignin.signIn().then((result) => {
+        Alert.alert('Welcome back!', `${result.user.name}`);
+        dispatch(loginToggle(true));
+      });
     } catch (error) {
-      console.log('error', error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        Alert.alert('User cancelled the login flow !');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        Alert.alert('Signin in progress');
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        Alert.alert('Google play services not available or outdated !');
+        // play services not available or outdated
+      } else {
+        console.log(error);
+      }
     }
   };
 

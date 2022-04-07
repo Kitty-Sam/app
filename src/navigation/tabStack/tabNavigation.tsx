@@ -14,14 +14,32 @@ import { AppButton } from '../../components/AppButton/AppButton';
 
 import { useDispatch } from 'react-redux';
 import { loginToggle } from '../../store/actions/login';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
 export const TabNavigation = () => {
   const dispatch = useDispatch();
 
-  const onLogOutPress = () => {
-    dispatch(loginToggle(false));
+  /*  const onLogOutPress = () => {
+      try {
+        GoogleSignin.signOut().then((result) => {
+          Alert.alert("Welcome back!");
+          dispatch(loginToggle(true));
+        })
+      }
+
+    }*/
+
+  const onLogOutPress = async () => {
+    try {
+      await GoogleSignin.signOut().then((result) => {
+        console.log('result', result);
+        dispatch(loginToggle(false));
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const mainScreenOptions: BottomTabNavigationOptions = {
