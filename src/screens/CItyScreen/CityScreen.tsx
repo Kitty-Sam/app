@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ActivityIndicator, Alert, StatusBar, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  StatusBar,
+  Text,
+  View,
+  ToastAndroid,
+} from 'react-native';
 import { styles } from './styles';
 import { FAB, Image, Overlay } from 'react-native-elements';
 import { COLORS } from '../../theme/colors';
@@ -38,7 +45,10 @@ export const CityScreen = () => {
 
   const togglePinnedCity = () => {
     if (pinnedCities.length === 1) {
-      Alert.alert('OOps!', 'You have only ONE item in pinned position!');
+      ToastAndroid.show(
+        'OOps! You have only ONE item in pinned position!',
+        ToastAndroid.SHORT,
+      );
     } else {
       Alert.alert('Attention!', 'Do you want to change pinned city?', [
         {
@@ -84,7 +94,10 @@ export const CityScreen = () => {
         </View>
       ) : (
         <View>
-          <Text style={styles.titleText}>
+          <Text
+            style={styles.titleText}
+            selectable={true}
+            selectionColor={'red'}>
             {pinnedCities.length != 0 ? pinnedCities[0].city : 'hello'}
           </Text>
           {pinnedCities[0].selected ? (

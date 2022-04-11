@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {
-  Alert,
   FlatList,
   StatusBar,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -30,7 +30,7 @@ export const ListCitiesScreen = () => {
 
   const onShowWeatherPress = () => {
     if (!search.trim()) {
-      Alert.alert('OOPs! Type something!');
+      ToastAndroid.show('OOPs! Type something!', ToastAndroid.SHORT);
     } else {
       dispatch(addCity(search));
       setSearch('');
@@ -63,7 +63,10 @@ export const ListCitiesScreen = () => {
           <AppButton title={'show'} onPress={onShowWeatherPress} />
         </View>
       </View>
-      <Text style={[styles.conditionText, { textAlign: 'center' }]}>
+      <Text
+        style={[styles.conditionText, { textAlign: 'center' }]}
+        selectable={true}
+        selectionColor={'orange'}>
         Favorite cities list
       </Text>
 
@@ -76,9 +79,6 @@ export const ListCitiesScreen = () => {
             style={styles.cityItemContainer}
             onPress={() => onCityItemPress(item)}>
             <CityItem
-              /* isActive={
-                 !getPinnedCity.filter((city) => city.city === item.city).length
-               }*/
               title={item.city}
               id={item.id}
               selected={item.selected}

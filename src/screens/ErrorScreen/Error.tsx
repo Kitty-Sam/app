@@ -5,11 +5,18 @@ import { styles } from '../CItyScreen/styles';
 import { AppButton } from '../../components/AppButton/AppButton';
 import { useNavigation } from '@react-navigation/native';
 import { COMMON_STACK_NAME } from '../../enum/enum';
+import { StackScreenNavigationProps } from '../../navigation/authStack/types';
+import { CommonStackParamList } from '../../navigation/commonStack/types';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/not_found.png');
 
-export const ErrorScreen = () => {
+export const ErrorScreen = (
+  props: StackScreenNavigationProps<
+    COMMON_STACK_NAME.ERROR,
+    CommonStackParamList
+  >,
+) => {
   const navigation = useNavigation();
   const onBackPress = () => {
     navigation.navigate(COMMON_STACK_NAME.TAB);
