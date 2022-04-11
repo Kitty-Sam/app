@@ -38,10 +38,6 @@ export const TabNavigation = () => {
 
     tabBarActiveBackgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
     tabBarInactiveBackgroundColor: COLORS.BACKGROUND_COLORS.pampas,
-    headerRight: () => <AppButton onPress={onLogOutPress} title="Log Out" />,
-    headerRightContainerStyle: {
-      paddingRight: 16,
-    },
     headerTitleStyle: { color: COLORS.TEXT_COLORS.zuccini },
   };
 
@@ -66,6 +62,10 @@ export const TabNavigation = () => {
     },
     headerTitleAlign: 'left',
     headerTitle: 'Weather App',
+    headerRightContainerStyle: {
+      paddingRight: 16,
+    },
+    headerRight: () => <AppButton onPress={onLogOutPress} title="Log Out" />,
   };
 
   return (

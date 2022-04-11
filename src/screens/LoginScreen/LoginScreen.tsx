@@ -38,6 +38,7 @@ import {
   selectAuth,
 } from '../../store/selectors/registerSelector';
 import { selectStatusApp } from '../../store/selectors/appSelector';
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
 
 export const LoginScreen = (
   props: StackScreenNavigationProps<
@@ -62,7 +63,7 @@ export const LoginScreen = (
       Alert.alert('Welcome back!', `${user.displayName}`);
       dispatch(loginToggle(true));
     } catch (error) {
-      console.log('error', error);
+      Alert.alert('Something goes wrong!');
     }
   };
 
@@ -87,6 +88,22 @@ export const LoginScreen = (
 
   const onForgotDataPress = () => {
     navigation.navigate(AUTH_NAVIGATION_NAME.FORGOT);
+  };
+
+  const onFacebookButtonPress = async () => {
+    try {
+      await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      const dataToken = await AccessToken.getCurrentAccessToken();
+      const accessToken = dataToken?.accessToken;
+      const facebookCredential = await auth.FacebookAuthProvider.credential(
+        accessToken,
+      );
+      const { user } = await auth().signInWithCredential(facebookCredential);
+      Alert.alert('Welcome back!', `${user.displayName}`);
+      dispatch(loginToggle(true));
+    } catch (e) {
+      Alert.alert('Something goes wrong!');
+    }
   };
 
   return (
@@ -174,9 +191,7 @@ export const LoginScreen = (
               <Divider style={styles.divider} />
               <View style={styles.buttonsLinkContainer}>
                 <AppButtonWithImg
-                  onPress={() => {
-                    console.log('123');
-                  }}
+                  onPress={() => onFacebookButtonPress()}
                   backgroundColor={'#3b5998'}
                   title={'Login with facebook'}
                   icon={'facebook'}
