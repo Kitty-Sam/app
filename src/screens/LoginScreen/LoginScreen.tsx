@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -8,7 +8,6 @@ import {
   StatusBar,
   Text,
   TextInput,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -33,12 +32,10 @@ import { Formik } from 'formik';
 import { loginValidationSchema } from '../../utils/formValidation';
 import { loginToggle } from '../../store/actions/login';
 import { toggleAppStatus } from '../../store/actions/app';
-import {
-  getUserData,
-  selectAuth,
-} from '../../store/selectors/registerSelector';
+import { selectAuth } from '../../store/selectors/registerSelector';
 import { selectStatusApp } from '../../store/selectors/appSelector';
 import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
+import database from '@react-native-firebase/database';
 
 export const LoginScreen = (
   props: StackScreenNavigationProps<
@@ -48,11 +45,10 @@ export const LoginScreen = (
 ) => {
   const { navigation } = props;
 
-  const dispatch = useDispatch();
-
   const statusApp = useSelector(selectStatusApp);
-  const UserDataFromRedux = useSelector(getUserData);
   const isAuth = useSelector(selectAuth);
+
+  const dispatch = useDispatch();
 
   const onGoogleButtonPress = async () => {
     try {
@@ -60,8 +56,9 @@ export const LoginScreen = (
       const { idToken } = await GoogleSignin.signIn();
       const credential = auth.GoogleAuthProvider.credential(idToken);
       const { user } = await auth().signInWithCredential(credential);
-      Alert.alert('Welcome back!', `${user.displayName}`);
       dispatch(loginToggle(true));
+      dispatch(toggleAppStatus(requestStatus.SUCCEEDED));
+      Alert.alert('Welcome!', `${user.displayName}`);
     } catch (error) {
       Alert.alert('Something goes wrong!');
     }
@@ -71,37 +68,40 @@ export const LoginScreen = (
     navigation.navigate(AUTH_NAVIGATION_NAME.REGISTER);
   };
 
-  const loginPress = (values: UserType) => {
-    dispatch(toggleAppStatus(requestStatus.LOADING));
-    if (
-      UserDataFromRedux.email === values.email &&
-      UserDataFromRedux.password === values.password
-    ) {
+  const loginPress = async ({ email, password }: UserType) => {
+    try {
+      dispatch(toggleAppStatus(requestStatus.LOADING));
+      await database()
+        .ref('/users/')
+        .once('value')
+        .then((snapshot) => {
+          const users = Object.values(snapshot.val()).filter(
+            (user) => user.email === email && user.password === password,
+          );
+          console.log('Users data ', users);
+        });
       dispatch(loginToggle(true));
       dispatch(toggleAppStatus(requestStatus.SUCCEEDED));
-      Alert.alert('Welcome Back!', `${UserDataFromRedux.fullName}`);
-    } else {
-      Alert.alert('OOPS!', 'Incorrect personal data, try again');
+    } catch (e) {
       dispatch(toggleAppStatus(requestStatus.FAILED));
+      Alert.alert('Something goes wrong! Try again!');
+      console.log(e);
     }
-  };
-
-  const onForgotDataPress = () => {
-    navigation.navigate(AUTH_NAVIGATION_NAME.FORGOT);
   };
 
   const onFacebookButtonPress = async () => {
     try {
       await LoginManager.logInWithPermissions(['public_profile', 'email']);
       const dataToken = await AccessToken.getCurrentAccessToken();
-      const accessToken = dataToken?.accessToken;
+      const { accessToken } = dataToken!;
       const facebookCredential = await auth.FacebookAuthProvider.credential(
         accessToken,
       );
       const { user } = await auth().signInWithCredential(facebookCredential);
-      Alert.alert('Welcome back!', `${user.displayName}`);
       dispatch(loginToggle(true));
-    } catch (e) {
+      dispatch(toggleAppStatus(requestStatus.SUCCEEDED));
+      Alert.alert('Welcome!', `${user.displayName}`);
+    } catch (error) {
       Alert.alert('Something goes wrong!');
     }
   };
@@ -109,7 +109,8 @@ export const LoginScreen = (
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
       {statusApp === requestStatus.LOADING ? (
-        <View>
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator />
         </View>
       ) : (
@@ -164,15 +165,6 @@ export const LoginScreen = (
                     )}
 
                     <View style={styles.buttonContainer}>
-                      <TouchableOpacity
-                        style={styles.textContainer}
-                        activeOpacity={0.4}>
-                        <Text
-                          style={styles.regularText}
-                          onPress={onForgotDataPress}>
-                          Forgot email/password
-                        </Text>
-                      </TouchableOpacity>
                       <AppButton
                         onPress={handleSubmit}
                         title={'SIGH IN'}
@@ -195,12 +187,14 @@ export const LoginScreen = (
                   backgroundColor={'#3b5998'}
                   title={'Login with facebook'}
                   icon={'facebook'}
+                  disabled={!isAuth}
                 />
                 <AppButtonWithImg
                   onPress={() => onGoogleButtonPress()}
                   backgroundColor={COLORS.BUTTONS_COLORS.tacao}
                   title={'Login with google'}
                   icon={'google-plus'}
+                  disabled={!isAuth}
                 />
               </View>
             </View>

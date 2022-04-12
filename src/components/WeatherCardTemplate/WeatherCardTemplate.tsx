@@ -11,10 +11,14 @@ export const WeatherCardDayTemplate = (
   return (
     <View style={styles.container}>
       <Text style={styles.textItemTitle}>today is {day}</Text>
-      <Text style={styles.textItem}>tempMax: {Number(tempMax).toFixed()}</Text>
-      <Text style={styles.textItem}>tempMin: {Number(tempMin).toFixed()}</Text>
       <Text style={styles.textItem}>
-        feelsLike: {Number(feelsLike).toFixed()}
+        max temperature: {Number(tempMax).toFixed()}
+      </Text>
+      <Text style={styles.textItem}>
+        min temperature: {Number(tempMin).toFixed()}
+      </Text>
+      <Text style={styles.textItem}>
+        but feels like: {Number(feelsLike).toFixed()}
       </Text>
     </View>
   );

@@ -43,10 +43,10 @@ export const styles = StyleSheet.create<LoginScreenStyleType>({
     textAlign: 'center',
   },
   buttonContainer: {
+    marginTop: 50,
     justifyContent: 'space-around',
     alignItems: 'stretch',
     marginVertical: 20,
-    height: height / 3.5,
   },
   regularText: {
     color: COLORS.TEXT_COLORS.zuccini,

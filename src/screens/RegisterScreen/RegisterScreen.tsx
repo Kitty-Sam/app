@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -18,36 +17,37 @@ import {
   StackScreenNavigationProps,
 } from '../../navigation/authStack/types';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Field, Formik } from 'formik';
 import { CustomInput } from '../../components/CustomInput/CustomInput';
 import { signUpValidationSchema } from '../../utils/formValidation';
 import { authToggle, saveUserData } from '../../store/actions/register';
 import { UserType } from '../../store/reducers/registerReducer';
-import { getUserData } from '../../store/selectors/registerSelector';
+import database from '@react-native-firebase/database';
 
 export const RegisterScreen = (
   props: StackScreenNavigationProps<
-    AUTH_NAVIGATION_NAME.CONFIRM,
+    AUTH_NAVIGATION_NAME.REGISTER,
     AuthStackParamList
   >,
 ) => {
   const { navigation } = props;
-
   const dispatch = useDispatch();
-  const userDataFromRedux = useSelector(getUserData);
-  const { email, password, fullName } = userDataFromRedux;
 
-  const registerUserPress = (userData: UserType) => {
-    if (
-      email === userData.email &&
-      password === userData.password &&
-      fullName === userData.fullName
-    ) {
-      Alert.alert('OOPS!', 'This user is already registered, please, sign in');
-      navigation.navigate(AUTH_NAVIGATION_NAME.LOGIN);
+  const registerUserPress = async ({ fullName, email, password }: UserType) => {
+    try {
+      const newReference = await database().ref('/users').push();
+      newReference
+        .set({
+          fullName,
+          email,
+          password,
+        })
+        .then(() => console.log('new person added'));
+    } catch (e) {
+      console.log(e);
     }
-    dispatch(saveUserData(userData));
+    dispatch(saveUserData({ email, password, fullName }));
     dispatch(authToggle(true));
     navigation.navigate(AUTH_NAVIGATION_NAME.LOGIN);
   };

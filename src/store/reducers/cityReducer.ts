@@ -11,13 +11,11 @@ export type initialStateType = {
   cities: DataItemType[];
   selectedCities: DataItemType[];
 };
+/*{ id: 'Minsk', city: 'Minsk', selected: true, isDefault: true }*/
 
 const initialState: initialStateType = {
-  cities: [{ id: 'Minsk', city: 'Minsk', selected: true, isDefault: true }],
-  //favoriteCities
-  selectedCities: [
-    { id: 'Minsk', city: 'Minsk', selected: true, isDefault: true },
-  ],
+  cities: [],
+  selectedCities: [],
 };
 
 export const cityReducer = (
@@ -66,9 +64,15 @@ export const cityReducer = (
     case CitiesActions.TOGGLE_DEFAULT_POSITION: {
       const cities = state.cities.map((city) => {
         if (city.city === action.payload) {
-          city.isDefault = !city.isDefault;
+          return {
+            ...city,
+            isDefault: true,
+          };
         }
-        return city;
+        return {
+          ...city,
+          isDefault: false,
+        };
       });
       return {
         ...state,

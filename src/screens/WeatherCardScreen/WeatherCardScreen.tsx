@@ -17,9 +17,8 @@ import { requestStatus } from '../../store/reducers/appReducer';
 import { toggleAppStatus } from '../../store/actions/app';
 import { selectStatusApp } from '../../store/selectors/appSelector';
 import { Icon } from 'react-native-elements';
-import { AppStoreType } from '../../store/store';
-import { DataItemType } from '../ListCitiesScreen/types';
 import { toggleSelectedCity } from '../../store/actions/cities';
+import { getCities } from '../../store/selectors/citySelector';
 
 export const WeatherCardScreen = (
   props: StackScreenNavigationProps<
@@ -28,17 +27,20 @@ export const WeatherCardScreen = (
   >,
 ) => {
   const { route, navigation } = props;
-  const { title } = route.params!;
+  const { title, data } = route.params!;
 
   const dispatch = useDispatch();
+
+  const [dataRen, setData] = useState<dayWeatherInfo | null>(null);
+
   const statusApp = useSelector(selectStatusApp);
+  const cities = useSelector(getCities);
 
-  const currentCity = useSelector<AppStoreType, DataItemType[]>((state) =>
-    state.cities.cities.filter((city) => city.city === title),
-  );
-
-  const [data, setData] = useState<dayWeatherInfo | null>(null);
-  const [error, setError] = useState<boolean>(false);
+  const currentCity = cities.find((city) => {
+    if (title && city.city === title) {
+      return city;
+    }
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -57,7 +59,6 @@ export const WeatherCardScreen = (
       const response = await fetch(weatherURL);
       const responseForRender = await response.json();
       if (responseForRender.cod === '404') {
-        setError(true);
         dispatch(toggleAppStatus(requestStatus.FAILED));
       } else {
         setData(responseForRender);
@@ -69,9 +70,9 @@ export const WeatherCardScreen = (
   };
 
   const valuesForWeather = {
-    temp_max: data?.['main']?.['temp_max'],
-    temp_min: data?.['main']?.['temp_min'],
-    feels_like: data?.['main']?.['feels_like'],
+    temp_max: dataRen?.['main']?.['temp_max'],
+    temp_min: dataRen?.['main']?.['temp_min'],
+    feels_like: dataRen?.['main']?.['feels_like'],
   };
   const current_Day = new Date().toLocaleString('ru').slice(4, 16);
 
@@ -94,7 +95,9 @@ export const WeatherCardScreen = (
           {
             text: "Don't leave",
             style: 'cancel',
-            onPress: () => {},
+            onPress: () => {
+              console.log('Cancel');
+            },
           },
           {
             text: 'Yes',
@@ -106,10 +109,6 @@ export const WeatherCardScreen = (
     });
     return unsubscribe;
   }, [navigation, hasChanged]);
-
-  if (error) {
-    navigation.navigate(COMMON_STACK_NAME.ERROR);
-  }
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -124,16 +123,16 @@ export const WeatherCardScreen = (
           </View>
           <Icon
             tvParallaxProperties
-            name={currentCity[0].selected ? 'star' : 'star-outline'}
+            name={currentCity!.selected ? 'star' : 'star-outline'}
             type="ionics"
             onPress={() => toggleSelectedCityIconPress()}
           />
           <View style={styles.infoContainer}>
             <WeatherCardDayTemplate
               day={current_Day}
-              tempMax={valuesForWeather.temp_max}
-              tempMin={valuesForWeather.temp_min}
-              feelsLike={valuesForWeather.feels_like}
+              tempMax={data ? data.temp_max : valuesForWeather.temp_max}
+              tempMin={data ? data.temp_min : valuesForWeather.temp_min}
+              feelsLike={data ? data.feels_like : valuesForWeather.feels_like}
             />
           </View>
         </View>

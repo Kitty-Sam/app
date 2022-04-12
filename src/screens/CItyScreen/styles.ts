@@ -34,6 +34,7 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
     marginVertical: 24,
     color: COLORS.TEXT_COLORS.zuccini,
     fontSize: 18,
+    textAlign: 'center',
   },
   fab: {
     position: 'absolute',
