@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Keyboard,
@@ -26,6 +26,7 @@ import { CommonStackParamList } from '../../navigation/commonStack/types';
 import { getError } from '../../store/selectors/appSelector';
 import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
 import { weatherGetInfo } from '../../store/sagas/sagasActions';
+import { toggleAppError } from '../../store/actions/app';
 
 export const ListCitiesScreen = (
   props: StackScreenNavigationProps<
@@ -41,7 +42,13 @@ export const ListCitiesScreen = (
   const data = useSelector(getDayWeatherInfo);
   const selectedCities = useSelector(getSelectedCities);
 
+  console.log('error', error);
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(toggleAppError(false));
+  }, []);
 
   const onShowWeatherPress = () => {
     if (!search.trim()) {
@@ -66,55 +73,53 @@ export const ListCitiesScreen = (
     });
   };
 
-  if (error) {
-    navigation.navigate(COMMON_STACK_NAME.ERROR);
-  }
-
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
-      <StatusBar hidden />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.conditionContainer}>
-            <Text style={styles.conditionText}>Choose the city...</Text>
-            <SearchBar
-              placeholder="Type Here..."
-              onChangeText={setSearch}
-              value={search}
-              containerStyle={styles.searchContainer}
-              style={styles.search}
-              platform="android"
-            />
-            <View style={styles.showButtonContainer}>
-              <AppButton title={'show'} onPress={onShowWeatherPress} />
+      <View>
+        <StatusBar hidden />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.conditionContainer}>
+              <Text style={styles.conditionText}>Choose the city...</Text>
+              <SearchBar
+                placeholder="Type Here..."
+                onChangeText={setSearch}
+                value={search}
+                containerStyle={styles.searchContainer}
+                style={styles.search}
+                platform="android"
+              />
+              <View style={styles.showButtonContainer}>
+                <AppButton title={'show'} onPress={onShowWeatherPress} />
+              </View>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
 
-      <Text style={[styles.conditionText, { textAlign: 'center' }]}>
-        Favorite cities list
-      </Text>
+        <Text style={[styles.conditionText, { textAlign: 'center' }]}>
+          Favorite cities list
+        </Text>
 
-      <FlatList
-        style={styles.listContainer}
-        keyExtractor={keyExtractor}
-        data={selectedCities}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.cityItemContainer}
-            onPress={() => onCityItemPress(item)}>
-            <CityItem
-              title={item.city}
-              id={item.id}
-              selected={item.selected}
-              isDefault={item.isDefault}
-            />
-          </TouchableOpacity>
-        )}
-        showsVerticalScrollIndicator={false}
-      />
+        <FlatList
+          style={styles.listContainer}
+          keyExtractor={keyExtractor}
+          data={selectedCities}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.cityItemContainer}
+              onPress={() => onCityItemPress(item)}>
+              <CityItem
+                title={item.city}
+                id={item.id}
+                selected={item.selected}
+                isDefault={item.isDefault}
+              />
+            </TouchableOpacity>
+          )}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
     </SafeAreaView>
   );
 };

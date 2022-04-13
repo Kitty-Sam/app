@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Image,
   SafeAreaView,
   Text,
   View,
@@ -9,16 +10,17 @@ import {
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 import { CommonStackParamList } from '../../navigation/commonStack/types';
-import { styles } from './style';
 import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/WeatherCardTemplate';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestStatus } from '../../store/reducers/appReducer';
-import { selectStatusApp } from '../../store/selectors/appSelector';
+import { getError, selectStatusApp } from '../../store/selectors/appSelector';
 import { Icon } from 'react-native-elements';
 import { toggleSelectedCity } from '../../store/actions/cities';
 import { getCities } from '../../store/selectors/citySelector';
 import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
 import { weatherGetInfo } from '../../store/sagas/sagasActions';
+import { AppButton } from '../../components/AppButton/AppButton';
+import { styles } from './style';
 
 export const WeatherCardScreen = (
   props: StackScreenNavigationProps<
@@ -34,6 +36,7 @@ export const WeatherCardScreen = (
   const statusApp = useSelector(selectStatusApp);
   const cities = useSelector(getCities);
   const dataFromRedux = useSelector(getDayWeatherInfo);
+  const error = useSelector(getError);
 
   const currentCity = cities.find((city) => {
     if (title && city.city === title) {
@@ -86,6 +89,8 @@ export const WeatherCardScreen = (
     });
     return unsubscribe;
   }, [navigation, hasChanged]);
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const img = require('../../../assets/not_found.png');
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -95,23 +100,35 @@ export const WeatherCardScreen = (
         </View>
       ) : (
         <View style={{ alignItems: 'center' }}>
-          <View style={styles.textContainer}>
-            <Text style={styles.titleText}>Hello, {title}!</Text>
-          </View>
-          <Icon
-            tvParallaxProperties
-            name={currentCity!.selected ? 'star' : 'star-outline'}
-            type="ionics"
-            onPress={() => toggleSelectedCityIconPress()}
-          />
-          <View style={styles.infoContainer}>
-            <WeatherCardDayTemplate
-              day={current_Day}
-              tempMax={dataFromRedux.main.temp_max || info.temp_max}
-              tempMin={dataFromRedux.main.temp_min || info.temp_min}
-              feelsLike={dataFromRedux.main.feels_like || info.feels_like}
-            />
-          </View>
+          {error ? (
+            <View style={{}}>
+              <Image source={img} style={styles.imageContainer} />
+              <AppButton
+                onPress={() => navigation.goBack()}
+                title="Try again"
+              />
+            </View>
+          ) : (
+            <View style={{ alignItems: 'center' }}>
+              {/*<View style={styles.textContainer}>*/}
+              <Text style={styles.titleText}>Hello, {title}!</Text>
+              {/*</View>*/}
+              <Icon
+                tvParallaxProperties
+                name={currentCity?.selected ? 'star' : 'star-outline'}
+                type="ionics"
+                onPress={() => toggleSelectedCityIconPress()}
+              />
+              <View style={styles.infoContainer}>
+                <WeatherCardDayTemplate
+                  day={current_Day}
+                  tempMax={dataFromRedux.main.temp_max || info.temp_max}
+                  tempMin={dataFromRedux.main.temp_min || info.temp_min}
+                  feelsLike={dataFromRedux.main.feels_like || info.feels_like}
+                />
+              </View>
+            </View>
+          )}
         </View>
       )}
     </SafeAreaView>

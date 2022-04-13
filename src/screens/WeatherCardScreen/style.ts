@@ -1,7 +1,16 @@
-import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import {
+  Dimensions,
+  ImageStyle,
+  StyleSheet,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import { COLORS } from '../../theme/colors';
 
+const { width, height } = Dimensions.get('window');
+
 type WeatherCardScreenStyleType = {
+  imageContainer: ImageStyle;
   infoContainer: ViewStyle;
   itemText: TextStyle;
   loaderContainer: ViewStyle;
@@ -26,6 +35,7 @@ export const styles = StyleSheet.create<WeatherCardScreenStyleType>({
   rootContainer: {
     backgroundColor: COLORS.BACKGROUND_COLORS.pampas,
     flex: 1,
+    justifyContent: 'center',
   },
   titleText: {
     fontSize: 18,
@@ -42,5 +52,9 @@ export const styles = StyleSheet.create<WeatherCardScreenStyleType>({
   infoContainer: {
     margin: 16,
     flexDirection: 'row',
+  },
+  imageContainer: {
+    width: width / 2,
+    height: height / 3,
   },
 });

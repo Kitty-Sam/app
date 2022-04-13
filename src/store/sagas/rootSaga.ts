@@ -22,6 +22,7 @@ export function* workerSaga(action: WeatherGetInfoType) {
     }
   } catch (e) {
     yield put(toggleAppStatus(requestStatus.FAILED));
+    yield put(toggleAppError(true));
     console.warn(e);
   }
 }
