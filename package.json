@@ -25,6 +25,7 @@
     "eslint-plugin-import": "^2.25.4",
     "formik": "^2.2.9",
     "react": "17.0.2",
+    "react-devtools": "^4.24.4",
     "react-native": "0.67.4",
     "react-native-elements": "^3.4.2",
     "react-native-fbsdk-next": "^7.3.3",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   FlatList,
   Keyboard,
@@ -19,15 +19,13 @@ import { AppButton } from '../../components/AppButton/AppButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { keyExtractor } from '../../utils/keyExtractor';
 import { CityItem } from '../../components/CityItem/CityItem';
-import { addCity } from '../../store/actions/cities';
 import { getSelectedCities } from '../../store/selectors/citySelector';
 import { DataItemType } from './types';
-import { toggleAppStatus } from '../../store/actions/app';
-import { requestStatus } from '../../store/reducers/appReducer';
-import { dayWeatherInfo } from '../WeatherCardScreen/types';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { CommonStackParamList } from '../../navigation/commonStack/types';
-import database from '@react-native-firebase/database';
+import { getError } from '../../store/selectors/appSelector';
+import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
+import { weatherGetInfo } from '../../store/sagas/sagasActions';
 
 export const ListCitiesScreen = (
   props: StackScreenNavigationProps<
@@ -36,70 +34,33 @@ export const ListCitiesScreen = (
   >,
 ) => {
   const { navigation } = props;
+
   const [search, setSearch] = useState<string>('');
-  const [data, setData] = useState<dayWeatherInfo | null>(null);
-  const [error, setError] = useState<boolean>(false);
+
+  const error = useSelector(getError);
+  const data = useSelector(getDayWeatherInfo);
+  const selectedCities = useSelector(getSelectedCities);
 
   const dispatch = useDispatch();
 
-  const selectedCities = useSelector(getSelectedCities);
-
-  useEffect(() => {
-    const newReference = database().ref('/users/').push();
-    newReference
-      .set({
-        user: 'userTitle',
-      })
-      .then(() => console.log('Data updated.'));
-  }, []);
-
-  useEffect(() => {
-    setError(false);
-  });
-
-  type ValuesForWeatherType = {
-    feels_like: number | undefined;
-    temp_max: number | undefined;
-    temp_min: number | undefined;
-  };
-
-  const valuesForWeather: ValuesForWeatherType = {
-    temp_max: data?.['main']?.['temp_max'],
-    temp_min: data?.['main']?.['temp_min'],
-    feels_like: data?.['main']?.['feels_like'],
-  };
-
-  // console.log('ERROR', error);
-  // console.log('valuesForWeather from the list', valuesForWeather);
-
-  const onShowWeatherPress = async () => {
+  const onShowWeatherPress = () => {
     if (!search.trim()) {
       ToastAndroid.show('OOPs! Type something!', ToastAndroid.LONG);
     } else {
-      dispatch(toggleAppStatus(requestStatus.LOADING));
-      const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${search}&lang=ru&units=metric&appid=ef8dbe91097853f46a4f5c2d9130a67d`;
-      const response = await fetch(weatherURL);
-      const responseForRender = await response.json();
-      if (responseForRender.cod === '404') {
-        setError(true);
-        setSearch('');
-        dispatch(toggleAppStatus(requestStatus.FAILED));
-      } else {
-        dispatch(toggleAppStatus(requestStatus.IDLE));
-        setData(responseForRender);
-        dispatch(addCity(search));
-        setSearch('');
-        setError(false);
-        navigation.navigate(COMMON_STACK_NAME.WEATHER, {
-          data: valuesForWeather,
-          title: search,
-        });
-      }
+      dispatch(weatherGetInfo(search));
+      setSearch('');
+      navigation.navigate(COMMON_STACK_NAME.WEATHER, {
+        info: {
+          temp_max: data.main.temp_max,
+          temp_min: data.main.temp_min,
+          feels_like: data.main.feels_like,
+        },
+        title: search,
+      });
     }
   };
 
   const onCityItemPress = (item: DataItemType) => {
-    setError(false);
     navigation.navigate(COMMON_STACK_NAME.WEATHER, {
       title: item.city,
     });

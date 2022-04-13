@@ -9,16 +9,16 @@ import {
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 import { CommonStackParamList } from '../../navigation/commonStack/types';
-import { dayWeatherInfo } from './types';
 import { styles } from './style';
 import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/WeatherCardTemplate';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestStatus } from '../../store/reducers/appReducer';
-import { toggleAppStatus } from '../../store/actions/app';
 import { selectStatusApp } from '../../store/selectors/appSelector';
 import { Icon } from 'react-native-elements';
 import { toggleSelectedCity } from '../../store/actions/cities';
 import { getCities } from '../../store/selectors/citySelector';
+import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
+import { weatherGetInfo } from '../../store/sagas/sagasActions';
 
 export const WeatherCardScreen = (
   props: StackScreenNavigationProps<
@@ -27,14 +27,13 @@ export const WeatherCardScreen = (
   >,
 ) => {
   const { route, navigation } = props;
-  const { title, data } = route.params!;
+  const { title, info } = route.params;
 
   const dispatch = useDispatch();
 
-  const [dataRen, setData] = useState<dayWeatherInfo | null>(null);
-
   const statusApp = useSelector(selectStatusApp);
   const cities = useSelector(getCities);
+  const dataFromRedux = useSelector(getDayWeatherInfo);
 
   const currentCity = cities.find((city) => {
     if (title && city.city === title) {
@@ -45,35 +44,13 @@ export const WeatherCardScreen = (
   useEffect(() => {
     let mounted = true;
     if (title) {
-      getWeatherInfo(title);
+      dispatch(weatherGetInfo(title));
     }
     return () => {
       mounted = false;
     };
   }, [title]);
 
-  const getWeatherInfo = async (title: string) => {
-    try {
-      dispatch(toggleAppStatus(requestStatus.LOADING));
-      const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${title}&lang=ru&units=metric&appid=ef8dbe91097853f46a4f5c2d9130a67d`;
-      const response = await fetch(weatherURL);
-      const responseForRender = await response.json();
-      if (responseForRender.cod === '404') {
-        dispatch(toggleAppStatus(requestStatus.FAILED));
-      } else {
-        setData(responseForRender);
-        dispatch(toggleAppStatus(requestStatus.IDLE));
-      }
-    } catch (e) {
-      console.warn(e);
-    }
-  };
-
-  const valuesForWeather = {
-    temp_max: dataRen?.['main']?.['temp_max'],
-    temp_min: dataRen?.['main']?.['temp_min'],
-    feels_like: dataRen?.['main']?.['feels_like'],
-  };
   const current_Day = new Date().toLocaleString('ru').slice(4, 16);
 
   const toggleSelectedCityIconPress = () => {
@@ -130,9 +107,9 @@ export const WeatherCardScreen = (
           <View style={styles.infoContainer}>
             <WeatherCardDayTemplate
               day={current_Day}
-              tempMax={data ? data.temp_max : valuesForWeather.temp_max}
-              tempMin={data ? data.temp_min : valuesForWeather.temp_min}
-              feelsLike={data ? data.feels_like : valuesForWeather.feels_like}
+              tempMax={dataFromRedux.main.temp_max || info.temp_max}
+              tempMin={dataFromRedux.main.temp_min || info.temp_min}
+              feelsLike={dataFromRedux.main.feels_like || info.feels_like}
             />
           </View>
         </View>

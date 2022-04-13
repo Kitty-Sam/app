@@ -11,7 +11,6 @@ export type initialStateType = {
   cities: DataItemType[];
   selectedCities: DataItemType[];
 };
-/*{ id: 'Minsk', city: 'Minsk', selected: true, isDefault: true }*/
 
 const initialState: initialStateType = {
   cities: [],

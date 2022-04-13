@@ -1,4 +1,4 @@
-import { AppActions, toggleAppStatus } from '../actions/app';
+import { AppActions, toggleAppError, toggleAppStatus } from '../actions/app';
 
 export enum requestStatus {
   FAILED = 'FAILED',
@@ -9,9 +9,11 @@ export enum requestStatus {
 
 const initialState = {
   status: requestStatus.IDLE,
+  error: false,
 };
 
 type initialStateType = {
+  error: boolean;
   status: RequestStatusType;
 };
 
@@ -25,9 +27,14 @@ export const appReducer = (
     case AppActions.APP_SET_STATUS:
       return { ...state, status: action.payload };
 
+    case AppActions.APP_SET_ERROR: {
+      return { ...state, error: action.payload };
+    }
     default:
       return state;
   }
 };
 
-type ActionsType = ReturnType<typeof toggleAppStatus>;
+type ActionsType =
+  | ReturnType<typeof toggleAppStatus>
+  | ReturnType<typeof toggleAppError>;
