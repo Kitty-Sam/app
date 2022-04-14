@@ -7,8 +7,9 @@ import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/Wea
 import { requestStatus } from '../../store/reducers/appReducer';
 import { getPinnedCities } from '../../store/selectors/citySelector';
 import { selectStatusApp } from '../../store/selectors/appSelector';
-import { weatherGetInfo } from '../../store/sagas/sagasActions';
+import { fetchUsers, weatherGetInfo } from '../../store/sagas/sagasActions';
 import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
+import { getUsers } from '../../store/selectors/loginSelector';
 
 export const CityScreen = () => {
   const dispatch = useDispatch();
@@ -17,11 +18,18 @@ export const CityScreen = () => {
   const statusApp = useSelector(selectStatusApp);
   const data = useSelector(getDayWeatherInfo);
 
+  const users = useSelector(getUsers);
+  console.log('users', users);
+
   useEffect(() => {
     if (defaultCity) {
       dispatch(weatherGetInfo(defaultCity.city));
     }
   }, [defaultCity]);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []);
 
   const current_Day = new Date().toLocaleString('ru').slice(4, 16);
 
@@ -39,13 +47,13 @@ export const CityScreen = () => {
               <ActivityIndicator />
             </View>
           ) : (
-            <View>
+            <View style={styles.cardContainer}>
               <Text style={styles.titleText}>{defaultCity.city}</Text>
               <WeatherCardDayTemplate
                 day={current_Day}
-                feelsLike={data['main']['feels_like']}
-                tempMax={data['main']['temp_max']}
-                tempMin={data['main']['temp_min']}
+                feelsLike={data.main.feels_like}
+                tempMax={data.main.temp_max}
+                tempMin={data.main.temp_min}
               />
             </View>
           )}

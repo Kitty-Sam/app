@@ -1,8 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-import { RegisterScreen } from '../../screens/RegisterScreen/RegisterScreen';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { LoginScreen } from '../../screens/LoginScreen/LoginScreen';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
@@ -23,10 +21,6 @@ export const AuthStackNavigation = () => {
         <AuthStack.Screen
           name={AUTH_NAVIGATION_NAME.LOGIN}
           component={LoginScreen}
-        />
-        <AuthStack.Screen
-          name={AUTH_NAVIGATION_NAME.REGISTER}
-          component={RegisterScreen}
         />
       </AuthStack.Navigator>
     </NavigationContainer>

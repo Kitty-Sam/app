@@ -14,8 +14,6 @@ import { AppButton } from '../../components/AppButton/AppButton';
 
 import { useDispatch } from 'react-redux';
 import { loginToggle } from '../../store/actions/login';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
@@ -24,9 +22,8 @@ export const TabNavigation = () => {
 
   const onLogOutPress = async () => {
     dispatch(loginToggle(false));
-    await GoogleSignin.signOut();
-    await auth().signOut();
-    dispatch(loginToggle(false));
+    // await GoogleSignin.signOut();
+    // await auth().signOut();
   };
 
   const mainScreenOptions: BottomTabNavigationOptions = {

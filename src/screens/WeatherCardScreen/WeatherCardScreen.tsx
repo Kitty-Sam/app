@@ -22,6 +22,9 @@ import { weatherGetInfo } from '../../store/sagas/sagasActions';
 import { AppButton } from '../../components/AppButton/AppButton';
 import { styles } from './style';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const img = require('../../../assets/not_found.png');
+
 export const WeatherCardScreen = (
   props: StackScreenNavigationProps<
     COMMON_STACK_NAME.WEATHER,
@@ -89,8 +92,6 @@ export const WeatherCardScreen = (
     });
     return unsubscribe;
   }, [navigation, hasChanged]);
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const img = require('../../../assets/not_found.png');
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -101,7 +102,7 @@ export const WeatherCardScreen = (
       ) : (
         <View style={{ alignItems: 'center' }}>
           {error ? (
-            <View style={{}}>
+            <View>
               <Image source={img} style={styles.imageContainer} />
               <AppButton
                 onPress={() => navigation.goBack()}
@@ -110,9 +111,9 @@ export const WeatherCardScreen = (
             </View>
           ) : (
             <View style={{ alignItems: 'center' }}>
-              {/*<View style={styles.textContainer}>*/}
-              <Text style={styles.titleText}>Hello, {title}!</Text>
-              {/*</View>*/}
+              <View style={styles.textContainer}>
+                <Text style={styles.titleText}>Hello, {title}!</Text>
+              </View>
               <Icon
                 tvParallaxProperties
                 name={currentCity?.selected ? 'star' : 'star-outline'}

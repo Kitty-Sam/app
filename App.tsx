@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-
 import { LogBox } from 'react-native';
 import { useSelector } from 'react-redux';
 import { AuthStackNavigation } from './src/navigation/authStack/AuthStack';
@@ -13,14 +12,14 @@ LogBox.ignoreLogs([
 LogBox.ignoreLogs(['EventEmitter.removeListener']);
 
 export const App: FC = () => {
+  const isLoggedIn = useSelector(selectLoginIn);
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
         '355613544936-j7vuevctvi6buvua5b08emjdvbilp7ci.apps.googleusercontent.com',
     });
   }, []);
-
-  const isLoggedIn = useSelector(selectLoginIn);
 
   if (!isLoggedIn) {
     return <AuthStackNavigation />;

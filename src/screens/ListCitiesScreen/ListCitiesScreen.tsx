@@ -23,7 +23,6 @@ import { getSelectedCities } from '../../store/selectors/citySelector';
 import { DataItemType } from './types';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { CommonStackParamList } from '../../navigation/commonStack/types';
-import { getError } from '../../store/selectors/appSelector';
 import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
 import { weatherGetInfo } from '../../store/sagas/sagasActions';
 import { toggleAppError } from '../../store/actions/app';
@@ -38,11 +37,8 @@ export const ListCitiesScreen = (
 
   const [search, setSearch] = useState<string>('');
 
-  const error = useSelector(getError);
   const data = useSelector(getDayWeatherInfo);
   const selectedCities = useSelector(getSelectedCities);
-
-  console.log('error', error);
 
   const dispatch = useDispatch();
 
