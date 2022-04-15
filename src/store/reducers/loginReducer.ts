@@ -5,18 +5,26 @@ export type UserType = {
   password?: string;
 };
 
-const initialState = {
-  isLoggedIn: false,
-  users: [] as UserType[],
+export type initialStateType = {
+  isLoggedIn: boolean;
+  users: UserType[];
 };
 
-export const loginReducer = (state = initialState, action: ActionsType) => {
+const initialState = {
+  isLoggedIn: false,
+  users: [],
+};
+
+export const loginReducer = (
+  state: initialStateType = initialState,
+  action: ActionsType,
+): initialStateType => {
   switch (action.type) {
     case LoginActions.LOGIN_TOGGLE_LOGIN:
       return { ...state, isLoggedIn: action.payload };
 
     case LoginActions.SAVE_USERS:
-      return { ...state, users: [...action.payload] };
+      return { ...state, users: action.payload };
 
     default:
       return state;

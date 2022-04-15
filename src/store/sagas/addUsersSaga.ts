@@ -5,7 +5,7 @@ import { saveUsers } from '../actions/login';
 import { Alert } from 'react-native';
 import { database } from '../../utils/getDataBaseURL';
 
-export function* fetchUsersWorker(action: any) {
+export function* fetchUsersWorker() {
   try {
     yield put(toggleAppStatus(requestStatus.LOADING));
     yield database
@@ -14,7 +14,6 @@ export function* fetchUsersWorker(action: any) {
       .then((snapshot) => {
         const users = snapshot.val();
         put(saveUsers([users]));
-        console.log('users value', [snapshot.val()]);
       });
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
   } catch (e: any) {

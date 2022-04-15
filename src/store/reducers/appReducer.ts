@@ -22,7 +22,7 @@ export type RequestStatusType = requestStatus;
 export const appReducer = (
   state: initialStateType = initialState,
   action: ActionsType,
-) => {
+): initialStateType => {
   switch (action.type) {
     case AppActions.APP_SET_STATUS:
       return { ...state, status: action.payload };

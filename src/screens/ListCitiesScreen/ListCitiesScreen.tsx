@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   FlatList,
   Keyboard,
@@ -23,9 +23,8 @@ import { getSelectedCities } from '../../store/selectors/citySelector';
 import { DataItemType } from './types';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { CommonStackParamList } from '../../navigation/commonStack/types';
-import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
 import { weatherGetInfo } from '../../store/sagas/sagasActions';
-import { toggleAppError } from '../../store/actions/app';
+import { getError } from '../../store/selectors/appSelector';
 
 export const ListCitiesScreen = (
   props: StackScreenNavigationProps<
@@ -37,14 +36,9 @@ export const ListCitiesScreen = (
 
   const [search, setSearch] = useState<string>('');
 
-  const data = useSelector(getDayWeatherInfo);
   const selectedCities = useSelector(getSelectedCities);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(toggleAppError(false));
-  }, []);
 
   const onShowWeatherPress = () => {
     if (!search.trim()) {
@@ -53,11 +47,6 @@ export const ListCitiesScreen = (
       dispatch(weatherGetInfo(search));
       setSearch('');
       navigation.navigate(COMMON_STACK_NAME.WEATHER, {
-        info: {
-          temp_max: data.main.temp_max,
-          temp_min: data.main.temp_min,
-          feels_like: data.main.feels_like,
-        },
         title: search,
       });
     }

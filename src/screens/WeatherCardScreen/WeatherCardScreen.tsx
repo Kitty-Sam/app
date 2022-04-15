@@ -32,7 +32,7 @@ export const WeatherCardScreen = (
   >,
 ) => {
   const { route, navigation } = props;
-  const { title, info } = route.params;
+  const { title } = route.params;
 
   const dispatch = useDispatch();
 
@@ -123,9 +123,9 @@ export const WeatherCardScreen = (
               <View style={styles.infoContainer}>
                 <WeatherCardDayTemplate
                   day={current_Day}
-                  tempMax={dataFromRedux.main.temp_max || info.temp_max}
-                  tempMin={dataFromRedux.main.temp_min || info.temp_min}
-                  feelsLike={dataFromRedux.main.feels_like || info.feels_like}
+                  tempMax={dataFromRedux.main.temp_max}
+                  tempMin={dataFromRedux.main.temp_min}
+                  feelsLike={dataFromRedux.main.feels_like}
                 />
               </View>
             </View>

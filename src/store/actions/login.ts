@@ -1,8 +1,8 @@
 import { UserType } from '../reducers/loginReducer';
 
 export enum LoginActions {
-  LOGIN_TOGGLE_LOGIN = 'LOGIN/TOGGLE_LOGIN',
-  SAVE_USERS = 'LOGIN/SAVE_USERS',
+  LOGIN_TOGGLE_LOGIN = 'LOGIN_TOGGLE_LOGIN',
+  SAVE_USERS = 'LOGIN_SAVE_USERS',
 }
 
 export const loginToggle: LoginToggleActionType = (payload: boolean) => ({
@@ -15,12 +15,12 @@ export type LoginToggleActionType = (payload: boolean) => {
   type: LoginActions.LOGIN_TOGGLE_LOGIN;
 };
 
-export const saveUsers: saveUserActionType = (payload: UserType[]) => ({
+export const saveUsers: saveUsersActionType = (payload: UserType[]) => ({
   type: LoginActions.SAVE_USERS,
   payload,
 });
 
-export type saveUserActionType = (payload: UserType[]) => {
+export type saveUsersActionType = (payload: UserType[]) => {
   payload: UserType[];
   type: LoginActions.SAVE_USERS;
 };

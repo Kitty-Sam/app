@@ -4,14 +4,13 @@ import { toggleAppStatus } from '../actions/app';
 import { requestStatus } from '../reducers/appReducer';
 import { Alert } from 'react-native';
 import { put } from '@redux-saga/core/effects';
-import { facebookSignInType } from './sagasActions';
 import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
 
-export function* facebookSignInWorker(action: facebookSignInType) {
+export function* facebookSignInWorker() {
   try {
     yield LoginManager.logInWithPermissions(['public_profile', 'email']);
     const dataToken = yield AccessToken.getCurrentAccessToken();
-    const { accessToken } = dataToken!;
+    const { accessToken } = dataToken;
     const facebookCredential = yield auth.FacebookAuthProvider.credential(
       accessToken,
     );

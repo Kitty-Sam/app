@@ -17,9 +17,9 @@ export const CityScreen = () => {
   const defaultCity = useSelector(getPinnedCities);
   const statusApp = useSelector(selectStatusApp);
   const data = useSelector(getDayWeatherInfo);
+  // const users = useSelector(getUsers);
 
-  const users = useSelector(getUsers);
-  console.log('users', users);
+  // console.log('users', users);
 
   useEffect(() => {
     if (defaultCity) {

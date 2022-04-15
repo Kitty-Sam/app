@@ -18,7 +18,7 @@ const initialState: initialStateType = {
 };
 
 export const cityReducer = (
-  state = initialState,
+  state: initialStateType = initialState,
   action: ActionsType,
 ): initialStateType => {
   switch (action.type) {

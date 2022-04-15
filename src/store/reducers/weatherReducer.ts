@@ -12,7 +12,7 @@ type initialStateType = {
 export const weatherReducer = (
   state: initialStateType = initialState,
   action: ActionsType,
-) => {
+): initialStateType => {
   switch (action.type) {
     case WeatherActions.WEATHER_SAVE_INFO:
       return { ...state, dataItem: action.payload };
