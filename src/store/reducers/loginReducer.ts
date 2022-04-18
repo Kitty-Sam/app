@@ -24,7 +24,7 @@ export const loginReducer = (
       return { ...state, isLoggedIn: action.payload };
 
     case LoginActions.SAVE_USERS:
-      return { ...state, users: action.payload };
+      return { ...state, users: [...state.users, ...action.payload] };
 
     default:
       return state;

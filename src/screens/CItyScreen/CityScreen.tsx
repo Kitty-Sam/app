@@ -9,7 +9,6 @@ import { getPinnedCities } from '../../store/selectors/citySelector';
 import { selectStatusApp } from '../../store/selectors/appSelector';
 import { fetchUsers, weatherGetInfo } from '../../store/sagas/sagasActions';
 import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
-import { getUsers } from '../../store/selectors/loginSelector';
 
 export const CityScreen = () => {
   const dispatch = useDispatch();
@@ -17,9 +16,6 @@ export const CityScreen = () => {
   const defaultCity = useSelector(getPinnedCities);
   const statusApp = useSelector(selectStatusApp);
   const data = useSelector(getDayWeatherInfo);
-  // const users = useSelector(getUsers);
-
-  // console.log('users', users);
 
   useEffect(() => {
     if (defaultCity) {

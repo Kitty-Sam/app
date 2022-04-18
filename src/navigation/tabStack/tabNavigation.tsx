@@ -6,24 +6,20 @@ import {
 import { CityScreen } from '../../screens/CItyScreen/CityScreen';
 import { ListCitiesScreen } from '../../screens/ListCitiesScreen/ListCitiesScreen';
 import { Icon } from 'react-native-elements';
-
 import { TAB_NAVIGATION_NAME } from '../../enum/enum';
 import { COLORS } from '../../theme/colors';
 import { ScreenOptionsType, TabStackParamList } from './types';
 import { AppButton } from '../../components/AppButton/AppButton';
-
 import { useDispatch } from 'react-redux';
-import { loginToggle } from '../../store/actions/login';
+import { googleSignOut } from '../../store/sagas/sagasActions';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
 export const TabNavigation = () => {
   const dispatch = useDispatch();
 
-  const onLogOutPress = async () => {
-    dispatch(loginToggle(false));
-    // await GoogleSignin.signOut();
-    // await auth().signOut();
+  const onLogOutPress = () => {
+    dispatch(googleSignOut());
   };
 
   const mainScreenOptions: BottomTabNavigationOptions = {

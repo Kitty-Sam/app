@@ -5,19 +5,23 @@ import { toggleAppStatus } from '../actions/app';
 import { requestStatus } from '../reducers/appReducer';
 import { Alert } from 'react-native';
 import { put } from '@redux-saga/core/effects';
-import { googleSignInType } from './sagasActions';
 import { database } from '../../utils/getDataBaseURL';
 
-export function* googleSignInWorker(action: googleSignInType) {
+export function* googleSignInWorker() {
   try {
     yield GoogleSignin.hasPlayServices();
     const { idToken } = yield GoogleSignin.signIn();
     const credential = auth.GoogleAuthProvider.credential(idToken);
     const { user } = yield auth().signInWithCredential(credential);
     const userId = user.uid;
+    const userName = user.displayName;
+    const userEmail = user.email;
     yield put(loginToggle(true));
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
-    yield database.ref('/users/').child('userId').set(userId);
+    yield database
+      .ref('/users/')
+      .child('userInfo')
+      .set({ userId, userEmail, userName });
     Alert.alert('Welcome!', `${user.displayName}`);
   } catch (error: any) {
     yield put(loginToggle(false));

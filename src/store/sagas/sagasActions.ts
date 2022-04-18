@@ -1,5 +1,6 @@
 export const WEATHER_GET_INFO = 'WEATHER_GET_INFO';
 export const GOOGLE_SIGN_IN = 'GOOGLE_SIGN_IN';
+export const GOOGLE_SIGN_OUT = 'GOOGLE_SIGN_OUT';
 export const FACEBOOK_SIGN_IN = 'FACEBOOK_SIGN_IN';
 export const FETCH_USERS = 'FETCH_USERS';
 
@@ -13,26 +14,34 @@ export type WeatherGetInfoType = {
   type: typeof WEATHER_GET_INFO;
 };
 
-export const googleSignIn = (): googleSignInType => ({
+export const googleSignIn = (): GoogleSignInType => ({
   type: GOOGLE_SIGN_IN,
 });
 
-export type googleSignInType = {
+export type GoogleSignInType = {
   type: typeof GOOGLE_SIGN_IN;
 };
 
-export const facebookSignIn = (): facebookSignInType => ({
+export const facebookSignIn = (): FacebookSignInType => ({
   type: FACEBOOK_SIGN_IN,
 });
 
-export type facebookSignInType = {
+export type FacebookSignInType = {
   type: typeof FACEBOOK_SIGN_IN;
 };
 
-export const fetchUsers = (): fetchUsersType => ({
+export const fetchUsers = (): FetchUsersType => ({
   type: FETCH_USERS,
 });
 
-export type fetchUsersType = {
+export type FetchUsersType = {
   type: typeof FETCH_USERS;
+};
+
+export const googleSignOut = (): GoogleSignOutType => ({
+  type: GOOGLE_SIGN_OUT,
+});
+
+export type GoogleSignOutType = {
+  type: typeof GOOGLE_SIGN_OUT;
 };
