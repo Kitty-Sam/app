@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
@@ -24,7 +25,7 @@ import { DataItemType } from './types';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { CommonStackParamList } from '../../navigation/commonStack/types';
 import { weatherGetInfo } from '../../store/sagas/sagasActions';
-import { getError } from '../../store/selectors/appSelector';
+import { getCurrentUser, getUsers } from '../../store/selectors/loginSelector';
 
 export const ListCitiesScreen = (
   props: StackScreenNavigationProps<
@@ -37,6 +38,18 @@ export const ListCitiesScreen = (
   const [search, setSearch] = useState<string>('');
 
   const selectedCities = useSelector(getSelectedCities);
+  const users = useSelector(getUsers);
+  const current_user = useSelector(getCurrentUser);
+
+  console.log('users from redux', users);
+  console.log('current_user', current_user);
+
+  useEffect(() => {
+    const currentUser = users.find(
+      (user) => user.userId === current_user.userId,
+    );
+    Alert.alert(`${currentUser?.userName} hello`);
+  }, []);
 
   const dispatch = useDispatch();
 

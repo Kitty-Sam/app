@@ -1,18 +1,30 @@
-import { LoginActions, loginToggle, saveUsers } from '../actions/login';
+import {
+  LoginActions,
+  loginToggle,
+  saveUsers,
+  setCurrentUser,
+} from '../actions/login';
 
 export type UserType = {
-  name?: string;
-  password?: string;
+  userEmail?: string;
+  userId: string;
+  userName: string;
 };
 
 export type initialStateType = {
+  currentUser: {
+    userEmail?: string;
+    userId: string;
+    userName: string;
+  };
   isLoggedIn: boolean;
   users: UserType[];
 };
 
 const initialState = {
   isLoggedIn: false,
-  users: [],
+  users: [] as UserType[],
+  currentUser: {} as UserType,
 };
 
 export const loginReducer = (
@@ -24,7 +36,12 @@ export const loginReducer = (
       return { ...state, isLoggedIn: action.payload };
 
     case LoginActions.SAVE_USERS:
+      console.log('hello, its me');
       return { ...state, users: [...state.users, ...action.payload] };
+
+    case LoginActions.SET_CURRENT_USER:
+      console.log('hello, its me, user');
+      return { ...state, currentUser: action.payload };
 
     default:
       return state;
@@ -33,4 +50,5 @@ export const loginReducer = (
 
 type ActionsType =
   | ReturnType<typeof loginToggle>
-  | ReturnType<typeof saveUsers>;
+  | ReturnType<typeof saveUsers>
+  | ReturnType<typeof setCurrentUser>;
