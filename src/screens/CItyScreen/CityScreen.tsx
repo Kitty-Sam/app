@@ -7,7 +7,7 @@ import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/Wea
 import { requestStatus } from '../../store/reducers/appReducer';
 import { getPinnedCities } from '../../store/selectors/citySelector';
 import { selectStatusApp } from '../../store/selectors/appSelector';
-import { fetchUsers, weatherGetInfo } from '../../store/sagas/sagasActions';
+import { weatherGetInfo } from '../../store/sagas/sagasActions';
 import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
 
 export const CityScreen = () => {
@@ -15,7 +15,7 @@ export const CityScreen = () => {
 
   const defaultCity = useSelector(getPinnedCities);
   const statusApp = useSelector(selectStatusApp);
-  const data = useSelector(getDayWeatherInfo);
+  const dayWeatherInfo = useSelector(getDayWeatherInfo);
 
   useEffect(() => {
     if (defaultCity) {
@@ -23,16 +23,12 @@ export const CityScreen = () => {
     }
   }, [defaultCity]);
 
-  useEffect(() => {
-    dispatch(fetchUsers());
-  }, []);
-
   const current_Day = new Date().toLocaleString('ru').slice(4, 16);
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
       <StatusBar hidden />
-      {!defaultCity || !data ? (
+      {!defaultCity || !dayWeatherInfo ? (
         <View style={styles.loader}>
           <Text>You should select one city to make it default</Text>
         </View>
@@ -47,9 +43,9 @@ export const CityScreen = () => {
               <Text style={styles.titleText}>{defaultCity.city}</Text>
               <WeatherCardDayTemplate
                 day={current_Day}
-                feelsLike={data.main.feels_like}
-                tempMax={data.main.temp_max}
-                tempMin={data.main.temp_min}
+                feelsLike={dayWeatherInfo.main.feels_like}
+                tempMax={dayWeatherInfo.main.temp_max}
+                tempMin={dayWeatherInfo.main.temp_min}
               />
             </View>
           )}

@@ -9,9 +9,11 @@ export function* getWeatherWorker({ payload }: WeatherGetInfoType) {
   try {
     yield put(toggleAppStatus(requestStatus.LOADING));
     yield put(toggleAppError(false));
+
     const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${payload}&lang=ru&units=metric&appid=ef8dbe91097853f46a4f5c2d9130a67d`;
     const response = yield call(() => fetch(weatherURL));
     const responseForRender = yield response.json();
+
     if (responseForRender.cod === '404') {
       yield put(toggleAppError(true));
       yield put(toggleAppStatus(requestStatus.FAILED));
@@ -20,9 +22,9 @@ export function* getWeatherWorker({ payload }: WeatherGetInfoType) {
       yield put(addCity(payload));
       yield put(toggleAppStatus(requestStatus.IDLE));
     }
-  } catch (e) {
+  } catch (error) {
     yield put(toggleAppStatus(requestStatus.FAILED));
     yield put(toggleAppError(true));
-    console.warn(e);
+    console.error(error);
   }
 }

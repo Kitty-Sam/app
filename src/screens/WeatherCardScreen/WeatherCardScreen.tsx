@@ -21,6 +21,8 @@ import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
 import { weatherGetInfo } from '../../store/sagas/sagasActions';
 import { AppButton } from '../../components/AppButton/AppButton';
 import { styles } from './style';
+import { database } from '../../utils/getDataBaseURL';
+import { getCurrentUser } from '../../store/selectors/loginSelector';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/not_found.png');
@@ -34,12 +36,18 @@ export const WeatherCardScreen = (
   const { route, navigation } = props;
   const { title } = route.params;
 
+  const current_Day = new Date().toLocaleString('ru').slice(4, 16);
+
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const [hasChanged, setHasChanged] = useState<boolean>(false);
+
   const dispatch = useDispatch();
 
   const statusApp = useSelector(selectStatusApp);
   const cities = useSelector(getCities);
-  const dataFromRedux = useSelector(getDayWeatherInfo);
+  const data = useSelector(getDayWeatherInfo);
   const error = useSelector(getError);
+  const current_user = useSelector(getCurrentUser);
 
   const currentCity = cities.find((city) => {
     if (title && city.city === title) {
@@ -57,16 +65,25 @@ export const WeatherCardScreen = (
     };
   }, [title]);
 
-  const current_Day = new Date().toLocaleString('ru').slice(4, 16);
-
-  const toggleSelectedCityIconPress = () => {
+  const toggleSelectedCityIconPress = async () => {
     setHasChanged(true);
     dispatch(toggleSelectedCity(title));
+    setIsActive(!isActive);
+    if (isActive) {
+      await database
+        .ref(`/users/${current_user.userId}/selected`)
+        .child(`${title}`)
+        .remove();
+    } else {
+      await database
+        .ref(`/users/${current_user.userId}/selected`)
+        .child(`${title}`)
+        .set({ city: title, id: title, selected: true, isDefault: false });
+    }
   };
 
-  const [hasChanged, setHasChanged] = useState<boolean>(false);
   useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+    /* const unsubscribe =*/ navigation.addListener('beforeRemove', (e) => {
       if (!hasChanged) {
         return;
       }
@@ -90,7 +107,7 @@ export const WeatherCardScreen = (
         ],
       );
     });
-    return unsubscribe;
+    // return unsubscribe;
   }, [navigation, hasChanged]);
 
   return (
@@ -123,9 +140,9 @@ export const WeatherCardScreen = (
               <View style={styles.infoContainer}>
                 <WeatherCardDayTemplate
                   day={current_Day}
-                  tempMax={dataFromRedux.main.temp_max}
-                  tempMin={dataFromRedux.main.temp_min}
-                  feelsLike={dataFromRedux.main.feels_like}
+                  tempMax={data.main.temp_max}
+                  tempMin={data.main.temp_min}
+                  feelsLike={data.main.feels_like}
                 />
               </View>
             </View>

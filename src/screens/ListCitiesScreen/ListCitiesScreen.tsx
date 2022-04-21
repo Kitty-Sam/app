@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Alert,
   FlatList,
@@ -7,7 +7,6 @@ import {
   Platform,
   StatusBar,
   Text,
-  ToastAndroid,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -25,7 +24,6 @@ import { DataItemType } from './types';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
 import { CommonStackParamList } from '../../navigation/commonStack/types';
 import { weatherGetInfo } from '../../store/sagas/sagasActions';
-import { getCurrentUser, getUsers } from '../../store/selectors/loginSelector';
 
 export const ListCitiesScreen = (
   props: StackScreenNavigationProps<
@@ -36,26 +34,13 @@ export const ListCitiesScreen = (
   const { navigation } = props;
 
   const [search, setSearch] = useState<string>('');
-
   const selectedCities = useSelector(getSelectedCities);
-  const users = useSelector(getUsers);
-  const current_user = useSelector(getCurrentUser);
-
-  console.log('users from redux', users);
-  console.log('current_user', current_user);
-
-  useEffect(() => {
-    const currentUser = users.find(
-      (user) => user.userId === current_user.userId,
-    );
-    Alert.alert(`${currentUser?.userName} hello`);
-  }, []);
 
   const dispatch = useDispatch();
 
   const onShowWeatherPress = () => {
     if (!search.trim()) {
-      ToastAndroid.show('OOPs! Type something!', ToastAndroid.LONG);
+      Alert.alert('OOPs! Type something!');
     } else {
       dispatch(weatherGetInfo(search));
       setSearch('');

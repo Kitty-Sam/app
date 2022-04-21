@@ -23,5 +23,6 @@ export function* facebookSignInWorker() {
     }
   } catch (error) {
     Alert.alert('Something goes wrong!');
+    console.error(error);
   }
 }

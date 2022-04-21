@@ -2,6 +2,7 @@ import {
   addCity,
   CitiesActions,
   getCities,
+  setSelectedCities,
   toggleDefaultPosition,
   toggleSelectedCity,
 } from '../actions/cities';
@@ -22,6 +23,13 @@ export const cityReducer = (
   action: ActionsType,
 ): initialStateType => {
   switch (action.type) {
+    case CitiesActions.SET_SELECTED_CITIES: {
+      return {
+        ...state,
+        cities: action.payload.selectedCities,
+      };
+    }
+
     case CitiesActions.GET_CITIES:
       return {
         ...state,
@@ -89,4 +97,5 @@ type ActionsType =
   | ReturnType<typeof getCities>
   | ReturnType<typeof toggleSelectedCity>
   | ReturnType<typeof toggleDefaultPosition>
-  | ReturnType<typeof addCity>;
+  | ReturnType<typeof addCity>
+  | ReturnType<typeof setSelectedCities>;

@@ -6,7 +6,7 @@ import { Alert } from 'react-native';
 import { database } from '../../utils/getDataBaseURL';
 import { UserType } from '../reducers/loginReducer';
 
-type ShapshotType = {
+export type ShapshotType = {
   [K: string]: UserType;
 };
 
@@ -17,9 +17,9 @@ export function* fetchUsersWorker() {
     const users: UserType[] = Object.values(snapshot);
     yield put(saveUsers(users));
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
-  } catch (e: any) {
+  } catch (error: any) {
     yield put(toggleAppStatus(requestStatus.FAILED));
-    Alert.alert(`${e.message}`);
-    console.warn(e);
+    Alert.alert(`${error.message}`);
+    console.error(error);
   }
 }

@@ -36,11 +36,9 @@ export const loginReducer = (
       return { ...state, isLoggedIn: action.payload };
 
     case LoginActions.SAVE_USERS:
-      console.log('hello, its me');
       return { ...state, users: [...state.users, ...action.payload] };
 
     case LoginActions.SET_CURRENT_USER:
-      console.log('hello, its me, user');
       return { ...state, currentUser: action.payload };
 
     default:

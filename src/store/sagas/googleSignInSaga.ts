@@ -4,9 +4,11 @@ import { loginToggle, setCurrentUser } from '../actions/login';
 import { toggleAppStatus } from '../actions/app';
 import { requestStatus } from '../reducers/appReducer';
 import { Alert } from 'react-native';
-import { put } from '@redux-saga/core/effects';
+import { call, put } from '@redux-saga/core/effects';
 import { database } from '../../utils/getDataBaseURL';
 import { UserCredential } from '@firebase/auth';
+import { ShapshotType } from './addUsersSaga';
+import { fetchSelectedCitiesWorker } from './addSelectedCitiesSaga';
 
 export function* googleSignInWorker() {
   try {
@@ -25,12 +27,21 @@ export function* googleSignInWorker() {
 
     yield put(loginToggle(true));
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
-    yield database
-      .ref('/users/')
-      .child(`${userId}`)
-      .set({ userId, userEmail, userName });
     yield put(setCurrentUser({ userId, userEmail, userName }));
-    Alert.alert('Welcome!', `${userName}`);
+
+    const snapshot: ShapshotType = yield database.ref('/users/').once('value');
+    const users = Object.values(snapshot.val());
+    const USER = users.find((user) => user.userId === userId);
+
+    yield call(() => fetchSelectedCitiesWorker());
+
+    if (!USER) {
+      yield database
+        .ref('/users/')
+        .child(`${userId}`)
+        .set({ userId, userEmail, userName });
+      Alert.alert('Welcome!', `${userName}`);
+    }
   } catch (error: any) {
     yield put(loginToggle(false));
     Alert.alert('Something goes wrong!', `${error.message}`);

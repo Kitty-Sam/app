@@ -5,6 +5,8 @@ import { put } from '@redux-saga/core/effects';
 import auth from '@react-native-firebase/auth';
 import { toggleAppStatus } from '../actions/app';
 import { requestStatus } from '../reducers/appReducer';
+import { DataItemType } from '../../screens/ListCitiesScreen/types';
+import { setSelectedCities } from '../actions/cities';
 
 export function* signOutWorker() {
   try {
@@ -13,6 +15,8 @@ export function* signOutWorker() {
     yield auth().signOut();
     yield put(loginToggle(false));
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
+    const emptyArray: DataItemType[] = [];
+    yield put(setSelectedCities({ selectedCities: emptyArray }));
   } catch (error: any) {
     yield put(toggleAppStatus(requestStatus.FAILED));
     Alert.alert('Something goes wrong!', `${error.message}`);
