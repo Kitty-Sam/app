@@ -4,15 +4,10 @@ export enum TAB_NAVIGATION_NAME {
 }
 
 export enum AUTH_NAVIGATION_NAME {
-  CONFIRM = 'Confirm',
-  FORGOT = 'Forgot',
-  FORGOT_SUBMIT = 'Forgot_Submit',
   LOGIN = 'Login',
-  REGISTER = 'Register',
 }
 
 export enum COMMON_STACK_NAME {
-  ERROR = 'Error',
   TAB = 'Tab',
   WEATHER = 'Weather',
 }

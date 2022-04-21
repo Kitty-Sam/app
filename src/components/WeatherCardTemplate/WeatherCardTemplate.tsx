@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import { styles } from './styles';
 import { WeatherCardTemplateProps } from './types';
+import { getRoundItem } from '../../utils/getRoundItem';
 
 export const WeatherCardDayTemplate = (
   props: WeatherCardTemplateProps,
@@ -11,10 +12,14 @@ export const WeatherCardDayTemplate = (
   return (
     <View style={styles.container}>
       <Text style={styles.textItemTitle}>today is {day}</Text>
-      <Text style={styles.textItem}>tempMax: {Number(tempMax).toFixed()}</Text>
-      <Text style={styles.textItem}>tempMin: {Number(tempMin).toFixed()}</Text>
       <Text style={styles.textItem}>
-        feelsLike: {Number(feelsLike).toFixed()}
+        max temperature: {getRoundItem(tempMax)}
+      </Text>
+      <Text style={styles.textItem}>
+        min temperature: {getRoundItem(tempMin)}
+      </Text>
+      <Text style={styles.textItem}>
+        but feels like: {getRoundItem(feelsLike)}
       </Text>
     </View>
   );

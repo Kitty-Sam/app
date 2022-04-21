@@ -4,22 +4,32 @@ import { Icon } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
 import { CityItemProps } from './types';
-import { useDispatch } from 'react-redux';
-import {
-  toggleDefaultPosition,
-  toggleSelectedCity,
-} from '../../store/actions/cities';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleSelectedCity } from '../../store/actions/cities';
+import { database } from '../../utils/getDataBaseURL';
+import { getCurrentUser } from '../../store/selectors/loginSelector';
+import { makeDefault } from '../../store/sagas/sagasActions';
 
 export const CityItem = (props: CityItemProps): ReactElement => {
-  const { title, selected, id, isDefault, isActive } = props;
+  const { title, selected, id, isDefault } = props;
   const dispatch = useDispatch();
+  const current_user = useSelector(getCurrentUser);
 
-  const onFavoritePress = (id: string) => {
+  const onFavoritePress = async (id: string) => {
     dispatch(toggleSelectedCity(id));
+    await database
+      .ref(`/users/${current_user.userId}/selected`)
+      .child(`${title}`)
+      .remove();
   };
 
   const makeDefaultPress = (id: string) => {
-    dispatch(toggleDefaultPosition(id));
+    dispatch(makeDefault(id));
+    /*  await database.ref(`/users/${current_user.userId}`).update({
+        default: id,
+      });
+
+      dispatch(toggleDefaultPosition(id));*/
   };
 
   return (
@@ -29,7 +39,6 @@ export const CityItem = (props: CityItemProps): ReactElement => {
         <View style={{ flexDirection: 'row' }}>
           {selected && (
             <Icon
-              // disabled={isActive}
               tvParallaxProperties
               name={isDefault ? 'bookmark' : 'bookmark-outline'}
               onPress={() => makeDefaultPress(id)}

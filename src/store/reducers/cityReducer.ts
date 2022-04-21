@@ -2,6 +2,7 @@ import {
   addCity,
   CitiesActions,
   getCities,
+  setSelectedCities,
   toggleDefaultPosition,
   toggleSelectedCity,
 } from '../actions/cities';
@@ -13,18 +14,22 @@ export type initialStateType = {
 };
 
 const initialState: initialStateType = {
-  cities: [{ id: 'Minsk', city: 'Minsk', selected: true, isDefault: true }],
-  //favoriteCities
-  selectedCities: [
-    { id: 'Minsk', city: 'Minsk', selected: true, isDefault: true },
-  ],
+  cities: [],
+  selectedCities: [],
 };
 
 export const cityReducer = (
-  state = initialState,
+  state: initialStateType = initialState,
   action: ActionsType,
 ): initialStateType => {
   switch (action.type) {
+    case CitiesActions.SET_SELECTED_CITIES: {
+      return {
+        ...state,
+        cities: action.payload.selectedCities,
+      };
+    }
+
     case CitiesActions.GET_CITIES:
       return {
         ...state,
@@ -66,9 +71,15 @@ export const cityReducer = (
     case CitiesActions.TOGGLE_DEFAULT_POSITION: {
       const cities = state.cities.map((city) => {
         if (city.city === action.payload) {
-          city.isDefault = !city.isDefault;
+          return {
+            ...city,
+            isDefault: true,
+          };
         }
-        return city;
+        return {
+          ...city,
+          isDefault: false,
+        };
       });
       return {
         ...state,
@@ -86,4 +97,5 @@ type ActionsType =
   | ReturnType<typeof getCities>
   | ReturnType<typeof toggleSelectedCity>
   | ReturnType<typeof toggleDefaultPosition>
-  | ReturnType<typeof addCity>;
+  | ReturnType<typeof addCity>
+  | ReturnType<typeof setSelectedCities>;

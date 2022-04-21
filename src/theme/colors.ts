@@ -13,6 +13,7 @@ export const COLORS = {
     akaroa: '#DACEB9',
     iron: '#D0D1D1',
     pampas: '#F0EDEB',
+    facebook: '#3b5998',
   },
   ERROR: {
     pomegranate: '#EC2913',
