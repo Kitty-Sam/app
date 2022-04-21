@@ -15,9 +15,9 @@ import { makeDefaultWorker } from './makeDefaultSaga';
 import { fetchSelectedCitiesWorker } from './addSelectedCitiesSaga';
 
 export function* watchClickSaga() {
+  yield takeEvery(WEATHER_GET_INFO, getWeatherWorker);
   yield takeLatest(GOOGLE_SIGN_IN, googleSignInWorker);
   yield takeLatest(FACEBOOK_SIGN_IN, facebookSignInWorker);
-  yield takeEvery(WEATHER_GET_INFO, getWeatherWorker);
   yield takeLatest(MAKE_DEFAULT, makeDefaultWorker);
   yield takeEvery(FETCH_SELECTED_CITIES, fetchSelectedCitiesWorker);
   yield takeLatest(GOOGLE_SIGN_OUT, signOutWorker);
