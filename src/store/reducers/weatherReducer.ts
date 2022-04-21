@@ -1,12 +1,12 @@
 import { WeatherActions, weatherSave } from '../actions/weather';
 import { dayWeatherInfo } from '../../screens/WeatherCardScreen/types';
 
-const initialState = {
-  dataItem: {} as dayWeatherInfo,
+const initialState: initialStateType = {
+  dataItem: null,
 };
 
 type initialStateType = {
-  dataItem: dayWeatherInfo;
+  dataItem: dayWeatherInfo | null;
 };
 
 export const weatherReducer = (

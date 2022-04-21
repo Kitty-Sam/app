@@ -56,13 +56,9 @@ export const WeatherCardScreen = (
   });
 
   useEffect(() => {
-    let mounted = true;
     if (title) {
       dispatch(weatherGetInfo(title));
     }
-    return () => {
-      mounted = false;
-    };
   }, [title]);
 
   const toggleSelectedCityIconPress = async () => {
@@ -83,7 +79,7 @@ export const WeatherCardScreen = (
   };
 
   useEffect(() => {
-    /* const unsubscribe =*/ navigation.addListener('beforeRemove', (e) => {
+    navigation.addListener('beforeRemove', (e) => {
       if (!hasChanged) {
         return;
       }
@@ -107,7 +103,6 @@ export const WeatherCardScreen = (
         ],
       );
     });
-    // return unsubscribe;
   }, [navigation, hasChanged]);
 
   return (
@@ -138,12 +133,16 @@ export const WeatherCardScreen = (
                 onPress={() => toggleSelectedCityIconPress()}
               />
               <View style={styles.infoContainer}>
-                <WeatherCardDayTemplate
-                  day={current_Day}
-                  tempMax={data.main.temp_max}
-                  tempMin={data.main.temp_min}
-                  feelsLike={data.main.feels_like}
-                />
+                {data?.main ? (
+                  <WeatherCardDayTemplate
+                    day={current_Day}
+                    tempMax={data.main.temp_max}
+                    tempMin={data.main.temp_min}
+                    feelsLike={data.main.feels_like}
+                  />
+                ) : (
+                  <ActivityIndicator />
+                )}
               </View>
             </View>
           )}
