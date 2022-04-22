@@ -23,6 +23,9 @@ import { AppButton } from '../../components/AppButton/AppButton';
 import { styles } from './style';
 import { database } from '../../utils/getDataBaseURL';
 import { getCurrentUser } from '../../store/selectors/loginSelector';
+import { iconsName, iconsType } from '../../utils/constants/icons';
+import { buttonsName } from '../../utils/constants/buttons';
+import { getWeekDay } from '../../utils/getRoundItem';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/not_found.png');
@@ -36,7 +39,7 @@ export const WeatherCardScreen = (
   const { route, navigation } = props;
   const { title } = route.params;
 
-  const current_Day = new Date().toLocaleString('ru').slice(4, 16);
+  const current_Day = getWeekDay(new Date());
 
   const [isActive, setIsActive] = useState<boolean>(false);
   const [hasChanged, setHasChanged] = useState<boolean>(false);
@@ -84,24 +87,18 @@ export const WeatherCardScreen = (
         return;
       }
       e.preventDefault();
-      Alert.alert(
-        '',
-        'You have changed favorite icon. Are you sure, that you wanted it?',
-        [
-          {
-            text: "Don't leave",
-            style: 'cancel',
-            onPress: () => {
-              console.log('Cancel');
-            },
-          },
-          {
-            text: 'Yes',
-            style: 'destructive',
-            onPress: () => navigation.dispatch(e.data.action),
-          },
-        ],
-      );
+      Alert.alert('', 'Note! You have changed favorite icon. Sure?', [
+        {
+          text: "Don't leave",
+          style: 'cancel',
+          onPress: () => {},
+        },
+        {
+          text: 'Yes',
+          style: 'destructive',
+          onPress: () => navigation.dispatch(e.data.action),
+        },
+      ]);
     });
   }, [navigation, hasChanged]);
 
@@ -112,32 +109,42 @@ export const WeatherCardScreen = (
           <ActivityIndicator />
         </View>
       ) : (
-        <View style={{ alignItems: 'center' }}>
+        <View style={styles.errorContainer}>
           {error ? (
             <View>
               <Image source={img} style={styles.imageContainer} />
               <AppButton
                 onPress={() => navigation.goBack()}
-                title="Try again"
+                title={buttonsName.TRY}
               />
             </View>
           ) : (
-            <View style={{ alignItems: 'center' }}>
-              <View style={styles.textContainer}>
-                <Text style={styles.titleText}>Hello, {title}!</Text>
+            <View style={styles.weatherContainer}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>{title}</Text>
+                <View style={styles.favoriteIconContainer}>
+                  <Icon
+                    tvParallaxProperties
+                    name={
+                      currentCity?.selected
+                        ? iconsName.STAR
+                        : iconsName.STAR_OUTLINE
+                    }
+                    type={iconsType.IONICS}
+                    onPress={() => toggleSelectedCityIconPress()}
+                  />
+                </View>
               </View>
-              <Icon
-                tvParallaxProperties
-                name={currentCity?.selected ? 'star' : 'star-outline'}
-                type="ionics"
-                onPress={() => toggleSelectedCityIconPress()}
-              />
+              <Text>{current_Day}</Text>
               <View style={styles.infoContainer}>
                 {data?.main ? (
                   <WeatherCardDayTemplate
+                    description={data.weather[0].description}
+                    humidity={data.main.humidity}
+                    pressure={data.main.pressure}
+                    speed={data.wind.speed}
+                    icon={data.weather[0].icon}
                     day={current_Day}
-                    tempMax={data.main.temp_max}
-                    tempMin={data.main.temp_min}
                     feelsLike={data.main.feels_like}
                   />
                 ) : (

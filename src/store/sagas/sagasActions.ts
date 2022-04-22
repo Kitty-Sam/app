@@ -32,22 +32,6 @@ export type FacebookSignInType = {
   type: typeof FACEBOOK_SIGN_IN;
 };
 
-export const fetchSelectedCities = (): fetchSelectedCitiesType => ({
-  type: FETCH_SELECTED_CITIES,
-});
-
-export type fetchSelectedCitiesType = {
-  type: typeof FETCH_SELECTED_CITIES;
-};
-
-export const fetchUsers = (): FetchUsersType => ({
-  type: FETCH_USERS,
-});
-
-export type FetchUsersType = {
-  type: typeof FETCH_USERS;
-};
-
 export const googleSignOut = (): GoogleSignOutType => ({
   type: GOOGLE_SIGN_OUT,
 });

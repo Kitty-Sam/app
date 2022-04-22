@@ -23,10 +23,12 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
     paddingHorizontal: 16,
   },
   titleText: {
-    marginVertical: 24,
+    marginTop: 24,
     color: COLORS.TEXT_COLORS.zuccini,
-    fontSize: 18,
     textAlign: 'center',
+    fontSize: 26,
+    fontWeight: '600',
+    textTransform: 'capitalize',
   },
   imageContainer: {
     width: width / 2,

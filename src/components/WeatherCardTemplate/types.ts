@@ -1,6 +1,11 @@
 export type WeatherCardTemplateProps = {
-  day: string;
+  day?: string;
+  description: string;
   feelsLike: number;
-  tempMax: number;
-  tempMin: number;
+  humidity: number;
+  icon: string;
+  pressure: number;
+  speed: number;
+  tempMax?: number;
+  tempMin?: number;
 };

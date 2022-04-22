@@ -9,13 +9,19 @@ import { toggleSelectedCity } from '../../store/actions/cities';
 import { database } from '../../utils/getDataBaseURL';
 import { getCurrentUser } from '../../store/selectors/loginSelector';
 import { makeDefault } from '../../store/sagas/sagasActions';
+import { COLORS } from '../../theme/colors';
+import { iconsName, iconsType } from '../../utils/constants/icons';
+import { getSelectedCities } from '../../store/selectors/citySelector';
 
 export const CityItem = (props: CityItemProps): ReactElement => {
-  const { title, selected, id, isDefault } = props;
-  const dispatch = useDispatch();
-  const current_user = useSelector(getCurrentUser);
+  const { title, id, isDefault } = props;
 
-  const onFavoritePress = async (id: string) => {
+  const dispatch = useDispatch();
+
+  const current_user = useSelector(getCurrentUser);
+  const selectedCities = useSelector(getSelectedCities);
+
+  const onDeletePress = async (id: string) => {
     dispatch(toggleSelectedCity(id));
     await database
       .ref(`/users/${current_user.userId}/selected`)
@@ -25,31 +31,36 @@ export const CityItem = (props: CityItemProps): ReactElement => {
 
   const makeDefaultPress = (id: string) => {
     dispatch(makeDefault(id));
-    /*  await database.ref(`/users/${current_user.userId}`).update({
-        default: id,
-      });
-
-      dispatch(toggleDefaultPosition(id));*/
   };
 
   return (
-    <SafeAreaView edges={['top', 'left', 'right']}>
-      <View style={styles.textContainer}>
+    <SafeAreaView>
+      <View
+        style={[
+          styles.textContainer,
+          {
+            backgroundColor: isDefault
+              ? COLORS.BACKGROUND_COLORS.iron
+              : COLORS.BACKGROUND_COLORS.akaroa,
+          },
+        ]}>
         <Text style={styles.itemText}>{title}</Text>
-        <View style={{ flexDirection: 'row' }}>
-          {selected && (
+        <View style={styles.iconsContainer}>
+          <Icon
+            type={iconsType.IONICS}
+            tvParallaxProperties
+            name={isDefault ? iconsName.BOOKMARK : iconsName.BOOKMARK_OUTLINE}
+            onPress={() => makeDefaultPress(id)}
+          />
+          {selectedCities.length === 1 || isDefault ? null : (
             <Icon
+              disabled={selectedCities.length === 1}
               tvParallaxProperties
-              name={isDefault ? 'bookmark' : 'bookmark-outline'}
-              onPress={() => makeDefaultPress(id)}
+              name={iconsName.DELETE}
+              type={iconsType.MATERIAL}
+              onPress={() => onDeletePress(id)}
             />
           )}
-          <Icon
-            tvParallaxProperties
-            name={selected ? 'star' : 'star-outline'}
-            type="ionics"
-            onPress={() => onFavoritePress(id)}
-          />
         </View>
       </View>
     </SafeAreaView>

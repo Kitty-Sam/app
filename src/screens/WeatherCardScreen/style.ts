@@ -10,13 +10,17 @@ import { COLORS } from '../../theme/colors';
 const { width, height } = Dimensions.get('window');
 
 type WeatherCardScreenStyleType = {
+  errorContainer: ViewStyle;
+  favoriteIconContainer: ViewStyle;
   imageContainer: ImageStyle;
   infoContainer: ViewStyle;
   itemText: TextStyle;
   loaderContainer: ViewStyle;
   rootContainer: ViewStyle;
   textContainer: ViewStyle;
+  titleContainer: ViewStyle;
   titleText: TextStyle;
+  weatherContainer: ViewStyle;
 };
 
 export const styles = StyleSheet.create<WeatherCardScreenStyleType>({
@@ -38,10 +42,10 @@ export const styles = StyleSheet.create<WeatherCardScreenStyleType>({
     justifyContent: 'center',
   },
   titleText: {
-    fontSize: 18,
-    fontWeight: '400',
+    fontSize: 26,
+    fontWeight: '600',
     color: COLORS.TEXT_COLORS.zuccini,
-    margin: 16,
+    textTransform: 'capitalize',
   },
 
   itemText: {
@@ -56,5 +60,19 @@ export const styles = StyleSheet.create<WeatherCardScreenStyleType>({
   imageContainer: {
     width: width / 2,
     height: height / 3,
+  },
+  favoriteIconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  errorContainer: {
+    alignItems: 'center',
+  },
+  titleContainer: {
+    flexDirection: 'row',
+  },
+  weatherContainer: {
+    alignItems: 'center',
   },
 });

@@ -13,16 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { requestStatus } from '../../store/reducers/appReducer';
 import { selectStatusApp } from '../../store/selectors/appSelector';
 import { facebookSignIn, googleSignIn } from '../../store/sagas/sagasActions';
-
-enum buttonsName {
-  FACEBOOK = 'Login with facebook',
-  GOOGLE = 'Login with google',
-}
-
-enum iconsName {
-  FACEBOOK = 'facebook',
-  GOOGLE = 'google-plus',
-}
+import { buttonsName } from '../../utils/constants/buttons';
+import { iconsName } from '../../utils/constants/icons';
 
 export const LoginScreen = (
   props: StackScreenNavigationProps<

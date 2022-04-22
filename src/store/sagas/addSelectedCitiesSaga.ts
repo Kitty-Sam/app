@@ -15,6 +15,7 @@ export function* fetchSelectedCitiesWorker() {
   try {
     const current_user = (state: AppStoreType) => state.login.currentUser;
     const { userId } = yield select(current_user);
+
     yield put(toggleAppStatus(requestStatus.LOADING));
 
     const reference: FirebaseDatabaseTypes.Reference = yield database.ref(
@@ -27,7 +28,6 @@ export function* fetchSelectedCitiesWorker() {
 
     if (snapshot.val()) {
       const values: CitiesTypeFromFirebase = snapshot.val();
-
       const selectedCities: DataItemType[] = Object.values(values);
       yield put(setSelectedCities({ selectedCities }));
     } else {
