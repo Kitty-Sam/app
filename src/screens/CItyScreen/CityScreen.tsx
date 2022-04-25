@@ -7,8 +7,8 @@ import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/Wea
 import { requestStatus } from '../../store/reducers/appReducer';
 import { getPinnedCities } from '../../store/selectors/citySelector';
 import { selectStatusApp } from '../../store/selectors/appSelector';
-import { weatherGetInfo } from '../../store/sagas/sagasActions';
-import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
+import { defaultWeatherGetInfo } from '../../store/sagas/sagasActions';
+import { getDefaultDayWeatherInfo } from '../../store/selectors/weatherSelector';
 import { getWeekDay } from '../../utils/getRoundItem';
 import { useTranslation } from 'react-i18next';
 
@@ -17,13 +17,13 @@ export const CityScreen = () => {
 
   const defaultCity = useSelector(getPinnedCities);
   const statusApp = useSelector(selectStatusApp);
-  const dayWeatherInfo = useSelector(getDayWeatherInfo);
+  const dayWeatherInfo = useSelector(getDefaultDayWeatherInfo);
 
   const currentDay = getWeekDay();
 
   useEffect(() => {
     if (defaultCity) {
-      dispatch(weatherGetInfo(defaultCity.city));
+      dispatch(defaultWeatherGetInfo(defaultCity.city));
     }
   }, [defaultCity]);
 

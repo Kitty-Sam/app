@@ -1,4 +1,5 @@
 export const WEATHER_GET_INFO = 'WEATHER_GET_INFO';
+export const DEFAULT_WEATHER_GET_INFO = 'DEFAULT_WEATHER_GET_INFO';
 export const GOOGLE_SIGN_IN = 'GOOGLE_SIGN_IN';
 export const GOOGLE_SIGN_OUT = 'GOOGLE_SIGN_OUT';
 export const FACEBOOK_SIGN_IN = 'FACEBOOK_SIGN_IN';
@@ -15,6 +16,18 @@ export const weatherGetInfo = (payload: string): WeatherGetInfoType => ({
 export type WeatherGetInfoType = {
   payload: string;
   type: typeof WEATHER_GET_INFO;
+};
+
+export const defaultWeatherGetInfo = (
+  payload: string,
+): DefaultWeatherGetInfoType => ({
+  type: DEFAULT_WEATHER_GET_INFO,
+  payload,
+});
+
+export type DefaultWeatherGetInfoType = {
+  payload: string;
+  type: typeof DEFAULT_WEATHER_GET_INFO;
 };
 
 export const googleSignIn = (): GoogleSignInType => ({

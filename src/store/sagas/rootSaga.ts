@@ -8,6 +8,7 @@ import {
   GOOGLE_SIGN_OUT,
   MAKE_DEFAULT,
   WEATHER_GET_INFO,
+  DEFAULT_WEATHER_GET_INFO,
 } from './sagasActions';
 import { getWeatherWorker } from './getWeatherSaga';
 import { googleSignInWorker } from './googleSignInSaga';
@@ -17,6 +18,7 @@ import { makeDefaultWorker } from './makeDefaultSaga';
 import { fetchSelectedCitiesWorker } from './addSelectedCitiesSaga';
 import { deleteItemWorker } from './deleteItemSaga';
 import { fetchUsersWorker } from './addUsersSaga';
+import { getDefaultWeatherWorker } from './getDefaultWeatherSaga';
 
 export function* watchClickSaga() {
   yield takeEvery(WEATHER_GET_INFO, getWeatherWorker);
@@ -27,6 +29,7 @@ export function* watchClickSaga() {
   yield takeLatest(GOOGLE_SIGN_OUT, signOutWorker);
   yield takeLatest(DELETE_ITEM, deleteItemWorker);
   yield takeLatest(FETCH_USERS, fetchUsersWorker);
+  yield takeEvery(DEFAULT_WEATHER_GET_INFO, getDefaultWeatherWorker);
 }
 
 export default function* rootSaga() {
