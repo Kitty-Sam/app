@@ -6,7 +6,9 @@ export const getPressure = (a: number) => {
   return a * 0.75;
 };
 
-export const getWeekDay = (date: any) => {
+export const getWeekDay = () => {
+  const date = new Date();
+
   const days = [
     'Sunday',
     'Monday',
@@ -16,5 +18,6 @@ export const getWeekDay = (date: any) => {
     'Friday',
     'Saturday',
   ];
+
   return days[date.getDay()];
 };

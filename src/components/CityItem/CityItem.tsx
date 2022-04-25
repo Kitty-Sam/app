@@ -5,10 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
 import { CityItemProps } from './types';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSelectedCity } from '../../store/actions/cities';
-import { database } from '../../utils/getDataBaseURL';
-import { getCurrentUser } from '../../store/selectors/loginSelector';
-import { makeDefault } from '../../store/sagas/sagasActions';
+import { deleteItem, makeDefault } from '../../store/sagas/sagasActions';
 import { COLORS } from '../../theme/colors';
 import { iconsName, iconsType } from '../../utils/constants/icons';
 import { getSelectedCities } from '../../store/selectors/citySelector';
@@ -18,15 +15,10 @@ export const CityItem = (props: CityItemProps): ReactElement => {
 
   const dispatch = useDispatch();
 
-  const current_user = useSelector(getCurrentUser);
   const selectedCities = useSelector(getSelectedCities);
 
   const onDeletePress = async (id: string) => {
-    dispatch(toggleSelectedCity(id));
-    await database
-      .ref(`/users/${current_user.userId}/selected`)
-      .child(`${title}`)
-      .remove();
+    dispatch(deleteItem({ id, title }));
   };
 
   const makeDefaultPress = (id: string) => {

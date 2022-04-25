@@ -5,12 +5,15 @@ import { WeatherCardTemplateProps } from './types';
 import { getPressure, getRoundItem } from '../../utils/getRoundItem';
 import { Icon } from 'react-native-elements';
 import { iconsName, iconsType } from '../../utils/constants/icons';
+import { useTranslation } from 'react-i18next';
 
 export const WeatherCardDayTemplate = (
   props: WeatherCardTemplateProps,
 ): ReactElement => {
   const { feelsLike, icon, speed, pressure, humidity, description } = props;
   const img = `https://openweathermap.org/img/w/${icon}.png`;
+
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -33,8 +36,10 @@ export const WeatherCardDayTemplate = (
             name={iconsName.WIND}
             type={iconsType.FONTISTO}
           />
-          <Text>wind</Text>
-          <Text>{speed} m/s</Text>
+          <Text>{t('weatherScreen.wind')}</Text>
+          <Text>
+            {speed} {t('weatherScreen.wind_unit')}
+          </Text>
         </View>
         <View style={styles.paramContainer}>
           <Icon
@@ -42,8 +47,10 @@ export const WeatherCardDayTemplate = (
             name={iconsName.PRESSURE}
             type={iconsType.MATERIAL}
           />
-          <Text>pressure</Text>
-          <Text style={styles.pressureText}>{getPressure(pressure)} mmHg</Text>
+          <Text>{t('weatherScreen.pressure')}</Text>
+          <Text style={styles.pressureText}>
+            {getPressure(pressure)} {t('weatherScreen.pressure_unit')}
+          </Text>
         </View>
         <View style={styles.paramContainer}>
           <Icon
@@ -51,8 +58,10 @@ export const WeatherCardDayTemplate = (
             name={iconsName.HUMIDITY}
             type={iconsType.MATERIAL}
           />
-          <Text>humidity</Text>
-          <Text>{humidity} %</Text>
+          <Text>{t('weatherScreen.humidity')}</Text>
+          <Text>
+            {humidity} {t('weatherScreen.humidity_unit')}
+          </Text>
         </View>
       </View>
     </View>

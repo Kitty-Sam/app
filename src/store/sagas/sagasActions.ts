@@ -2,9 +2,10 @@ export const WEATHER_GET_INFO = 'WEATHER_GET_INFO';
 export const GOOGLE_SIGN_IN = 'GOOGLE_SIGN_IN';
 export const GOOGLE_SIGN_OUT = 'GOOGLE_SIGN_OUT';
 export const FACEBOOK_SIGN_IN = 'FACEBOOK_SIGN_IN';
-export const FETCH_USERS = 'FETCH_USERS';
 export const MAKE_DEFAULT = 'MAKE_DEFAULT';
 export const FETCH_SELECTED_CITIES = 'FETCH_SELECTED_CITIES';
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const FETCH_USERS = 'FETCH_USERS';
 
 export const weatherGetInfo = (payload: string): WeatherGetInfoType => ({
   type: WEATHER_GET_INFO,
@@ -48,4 +49,28 @@ export const makeDefault = (payload: string): makeDefaultType => ({
 export type makeDefaultType = {
   payload: string;
   type: typeof MAKE_DEFAULT;
+};
+
+export const deleteItem = (payload: {
+  id: string;
+  title: string | undefined;
+}): deleteItemType => ({
+  type: DELETE_ITEM,
+  payload,
+});
+
+export type deleteItemType = {
+  payload: {
+    id: string;
+    title: string | undefined;
+  };
+  type: typeof DELETE_ITEM;
+};
+
+export const fetchUsers = (): fetchUsersType => ({
+  type: FETCH_USERS,
+});
+
+export type fetchUsersType = {
+  type: typeof FETCH_USERS;
 };

@@ -60,7 +60,7 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
   },
   overlay: {
     width: width / 1.5,
-    height: width / 2,
+    height: width / 1.5,
     alignItems: 'center',
     borderRadius: 10,
     justifyContent: 'center',

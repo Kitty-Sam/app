@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../../theme/colors';
@@ -12,7 +12,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { requestStatus } from '../../store/reducers/appReducer';
 import { selectStatusApp } from '../../store/selectors/appSelector';
-import { facebookSignIn, googleSignIn } from '../../store/sagas/sagasActions';
+import {
+  facebookSignIn,
+  fetchUsers,
+  googleSignIn,
+} from '../../store/sagas/sagasActions';
 import { buttonsName } from '../../utils/constants/buttons';
 import { iconsName } from '../../utils/constants/icons';
 
@@ -23,6 +27,10 @@ export const LoginScreen = (
   >,
 ) => {
   const statusApp = useSelector(selectStatusApp);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []);
 
   const dispatch = useDispatch();
 

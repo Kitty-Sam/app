@@ -26,6 +26,7 @@ import { getCurrentUser } from '../../store/selectors/loginSelector';
 import { iconsName, iconsType } from '../../utils/constants/icons';
 import { buttonsName } from '../../utils/constants/buttons';
 import { getWeekDay } from '../../utils/getRoundItem';
+import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/not_found.png');
@@ -39,7 +40,7 @@ export const WeatherCardScreen = (
   const { route, navigation } = props;
   const { title } = route.params;
 
-  const current_Day = getWeekDay(new Date());
+  const currentDay = getWeekDay();
 
   const [isActive, setIsActive] = useState<boolean>(false);
   const [hasChanged, setHasChanged] = useState<boolean>(false);
@@ -80,6 +81,7 @@ export const WeatherCardScreen = (
         .set({ city: title, id: title, selected: true, isDefault: false });
     }
   };
+  const { t } = useTranslation();
 
   useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
@@ -87,14 +89,14 @@ export const WeatherCardScreen = (
         return;
       }
       e.preventDefault();
-      Alert.alert('', 'Note! You have changed favorite icon. Sure?', [
+      Alert.alert('', t('alert.goBack'), [
         {
-          text: "Don't leave",
+          text: buttonsName.STAY,
           style: 'cancel',
           onPress: () => {},
         },
         {
-          text: 'Yes',
+          text: buttonsName.YES,
           style: 'destructive',
           onPress: () => navigation.dispatch(e.data.action),
         },
@@ -135,7 +137,7 @@ export const WeatherCardScreen = (
                   />
                 </View>
               </View>
-              <Text>{current_Day}</Text>
+              <Text>{currentDay}</Text>
               <View style={styles.infoContainer}>
                 {data?.main ? (
                   <WeatherCardDayTemplate
@@ -144,7 +146,6 @@ export const WeatherCardScreen = (
                     pressure={data.main.pressure}
                     speed={data.wind.speed}
                     icon={data.weather[0].icon}
-                    day={current_Day}
                     feelsLike={data.main.feels_like}
                   />
                 ) : (

@@ -7,14 +7,13 @@ import { AppButtonWithImgPropsType } from './types';
 export const AppButtonWithImg = (
   props: AppButtonWithImgPropsType,
 ): ReactElement => {
-  const { backgroundColor, icon, title, onPress, disabled } = props;
+  const { backgroundColor, icon, title, onPress } = props;
   return (
     <View style={styles.appButtonContainer}>
       <Icon.Button
         activeOpacity={0.8}
         name={icon}
         backgroundColor={backgroundColor}
-        disabled={disabled}
         onPress={onPress}
         style={styles.appButton}>
         <Text style={styles.appButtonText}>{title}</Text>

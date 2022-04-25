@@ -14,7 +14,7 @@ export function* fetchUsersWorker() {
   try {
     yield put(toggleAppStatus(requestStatus.LOADING));
     const snapshot: ShapshotType = yield database.ref('/users/').once('value');
-    const users: UserType[] = Object.values(snapshot);
+    const users: UserType[] = Object.values(snapshot.val());
     yield put(saveUsers(users));
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
   } catch (error: any) {

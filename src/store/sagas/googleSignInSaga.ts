@@ -30,7 +30,7 @@ export function* googleSignInWorker() {
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
     yield put(setCurrentUser({ userId, userEmail, userName }));
 
-    yield call(() => fetchSelectedCitiesWorker());
+    yield call(fetchSelectedCitiesWorker);
 
     const snapshot: FirebaseDatabaseTypes.DataSnapshot = yield database
       .ref('/users/')
