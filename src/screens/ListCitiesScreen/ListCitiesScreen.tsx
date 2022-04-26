@@ -78,37 +78,58 @@ export const ListCitiesScreen = (
           <ActivityIndicator />
         </View>
       ) : (
-        <View>
-          <StatusBar hidden />
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <View style={styles.conditionContainer}>
-                <Text style={styles.conditionText}>
-                  {t('listScreen.choice')}
-                </Text>
-                <TextInput
-                  placeholder={t('listScreen.input')}
-                  onChangeText={setSearch}
-                  value={search}
-                  style={styles.search}
-                />
-                <View style={styles.showButtonContainer}>
-                  <Icon
-                    tvParallaxProperties
-                    name={iconsName.SEARCH}
-                    type={iconsType.MATERIAL}
-                    onPress={onShowWeatherPress}
-                    color={COLORS.TEXT_COLORS.zuccini}
-                    size={36}
+        <>
+          <View>
+            <StatusBar hidden />
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.conditionContainer}>
+                  <Text style={styles.conditionText}>
+                    {t('listScreen.choice')}
+                  </Text>
+                  <TextInput
+                    placeholder={t('listScreen.input')}
+                    onChangeText={setSearch}
+                    value={search}
+                    style={styles.search}
                   />
+                  <View style={styles.showButtonContainer}>
+                    <Icon
+                      tvParallaxProperties
+                      name={iconsName.SEARCH}
+                      type={iconsType.MATERIAL}
+                      onPress={onShowWeatherPress}
+                      color={COLORS.TEXT_COLORS.zuccini}
+                      size={36}
+                    />
+                  </View>
                 </View>
-              </View>
-            </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
-          <Text style={[styles.conditionText, { textAlign: 'center' }]}>
-            {t('listScreen.favorite')}
-          </Text>
+              </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
+            <Text style={[styles.conditionText, { textAlign: 'center' }]}>
+              {t('listScreen.favorite')}
+            </Text>
+            <FlatList
+              style={styles.listContainer}
+              keyExtractor={keyExtractor}
+              data={selectedCities}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  style={styles.cityItemContainer}
+                  onPress={() => onCityItemPress(item)}>
+                  <CityItem
+                    title={item.city}
+                    id={item.id}
+                    selected={item.selected}
+                    isDefault={item.isDefault}
+                  />
+                </TouchableOpacity>
+              )}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
           <FAB
             color={COLORS.BUTTONS_COLORS.default_button_Buddha_Gold}
             onPress={toggleOverlay}
@@ -133,26 +154,7 @@ export const ListCitiesScreen = (
               />
             </View>
           </Overlay>
-          <FlatList
-            style={styles.listContainer}
-            keyExtractor={keyExtractor}
-            data={selectedCities}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                activeOpacity={0.5}
-                style={styles.cityItemContainer}
-                onPress={() => onCityItemPress(item)}>
-                <CityItem
-                  title={item.city}
-                  id={item.id}
-                  selected={item.selected}
-                  isDefault={item.isDefault}
-                />
-              </TouchableOpacity>
-            )}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
+        </>
       )}
     </SafeAreaView>
   );

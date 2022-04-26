@@ -55,7 +55,7 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
   fab: {
     position: 'absolute',
     right: 16,
-    bottom: -height / 1.7,
+    bottom: height * 0.05,
     zIndex: 10,
   },
   overlay: {

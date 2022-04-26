@@ -10,10 +10,10 @@ import { toggleAppStatus } from '../actions/app';
 import { requestStatus } from '../reducers/appReducer';
 
 export function* makeDefaultWorker({ payload }: makeDefaultType) {
+  put(toggleAppStatus(requestStatus.LOADING));
   const current_user = (state: AppStoreType) => state.login.currentUser;
   const { userId } = yield select(current_user);
   try {
-    put(toggleAppStatus(requestStatus.LOADING));
     const snapshot: FirebaseDatabaseTypes.DataSnapshot = yield database
       .ref(`/users/${userId}/selected`)
       .once('value');
