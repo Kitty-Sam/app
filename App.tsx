@@ -1,12 +1,14 @@
 import React, { FC, useEffect } from 'react';
+// eslint-disable-next-line import/default
+import PushNotification from 'react-native-push-notification';
+
 import { LogBox } from 'react-native';
 import { useSelector } from 'react-redux';
 import { AuthStackNavigation } from './src/navigation/authStack/AuthStack';
 import { MainStackNavigation } from './src/navigation/commonStack/CommonStack';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { selectLoginIn } from './src/store/selectors/loginSelector';
-// eslint-disable-next-line import/default
-import PushNotification from 'react-native-push-notification';
+
 import messaging from '@react-native-firebase/messaging';
 
 import SplashScreen from 'react-native-splash-screen';
@@ -29,7 +31,7 @@ export const App: FC = () => {
 
   useEffect(() => {
     SplashScreen.hide();
-  });
+  }, []);
 
   useEffect(() => {
     messaging().onMessage(getPushData);

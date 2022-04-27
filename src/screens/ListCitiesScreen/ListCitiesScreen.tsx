@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
@@ -40,9 +39,9 @@ export const ListCitiesScreen = (
   const { navigation } = props;
 
   const { t } = useTranslation();
-  const alert = t('alert.empty');
 
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState('');
+  const [isVisibleSearch, setVisibleSearch] = useState(false);
   const [visible, setVisible] = useState(false);
   const selectedCities = useSelector(getSelectedCities);
   const statusApp = useSelector(selectStatusApp);
@@ -51,7 +50,7 @@ export const ListCitiesScreen = (
 
   const onShowWeatherPress = () => {
     if (!search.trim()) {
-      Alert.alert(alert);
+      toggleSearchOverlay();
     } else {
       dispatch(weatherGetInfo(search));
       setSearch('');
@@ -61,14 +60,35 @@ export const ListCitiesScreen = (
     }
   };
 
-  const onCityItemPress = (item: DataItemType) => {
+  const onCityItemPress = (city: string) => {
     navigation.navigate(COMMON_STACK_NAME.WEATHER, {
-      title: item.city,
+      title: city,
     });
   };
 
   const toggleOverlay = () => {
     setVisible(!visible);
+  };
+
+  const toggleSearchOverlay = () => {
+    setVisibleSearch(!isVisibleSearch);
+  };
+
+  const renderItem = ({ item }) => {
+    const { city, id, selected, isDefault } = item;
+    return (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.cityItemContainer}
+        onPress={() => onCityItemPress(city)}>
+        <CityItem
+          title={city}
+          id={id}
+          selected={selected}
+          isDefault={isDefault}
+        />
+      </TouchableOpacity>
+    );
   };
 
   return (
@@ -110,30 +130,20 @@ export const ListCitiesScreen = (
             <Text style={[styles.conditionText, { textAlign: 'center' }]}>
               {t('listScreen.favorite')}
             </Text>
-            <FlatList
-              style={styles.listContainer}
-              keyExtractor={keyExtractor}
-              data={selectedCities}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  style={styles.cityItemContainer}
-                  onPress={() => onCityItemPress(item)}>
-                  <CityItem
-                    title={item.city}
-                    id={item.id}
-                    selected={item.selected}
-                    isDefault={item.isDefault}
-                  />
-                </TouchableOpacity>
-              )}
-              showsVerticalScrollIndicator={false}
-            />
+            <View style={styles.citiesContainer}>
+              <FlatList
+                style={styles.listContainer}
+                keyExtractor={keyExtractor}
+                data={selectedCities}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
           </View>
           <FAB
             color={COLORS.BUTTONS_COLORS.default_button_Buddha_Gold}
             onPress={toggleOverlay}
-            title="?"
+            title={'?'}
             style={styles.fab}
           />
           <Overlay
@@ -153,6 +163,14 @@ export const ListCitiesScreen = (
                 type={iconsType.MATERIAL}
               />
             </View>
+          </Overlay>
+          <Overlay
+            isVisible={isVisibleSearch}
+            onBackdropPress={toggleSearchOverlay}
+            overlayStyle={styles.overlaySearch}>
+            <Text style={styles.textOverlaySearch}>
+              {t('listScreen.search')}
+            </Text>
           </Overlay>
         </>
       )}

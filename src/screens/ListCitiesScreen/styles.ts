@@ -2,17 +2,20 @@ import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { COLORS } from '../../theme/colors';
 
 type ListCitiesScreenStyleType = {
+  citiesContainer: ViewStyle;
   cityItemContainer: ViewStyle;
   conditionContainer: ViewStyle;
   conditionText: TextStyle;
   fab: ViewStyle;
   listContainer: ViewStyle;
   overlay: ViewStyle;
+  overlaySearch: ViewStyle;
   overlayText: TextStyle;
   root: ViewStyle;
   search: ViewStyle;
   showButtonContainer: ViewStyle;
   textOverlayContainer: ViewStyle;
+  textOverlaySearch: TextStyle;
   timerContainer: ViewStyle;
 };
 
@@ -41,6 +44,9 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
     paddingHorizontal: 15,
     fontSize: 18,
   },
+  citiesContainer: {
+    alignItems: 'center',
+  },
   listContainer: {
     margin: 16,
   },
@@ -50,7 +56,7 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
   showButtonContainer: {
     position: 'absolute',
     right: -55,
-    top: 39,
+    top: 43,
   },
   fab: {
     position: 'absolute',
@@ -59,8 +65,8 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
     zIndex: 10,
   },
   overlay: {
-    width: width / 1.5,
-    height: width / 1.5,
+    width: width / 1.3,
+    height: width / 1.3,
     alignItems: 'center',
     borderRadius: 10,
     justifyContent: 'center',
@@ -69,6 +75,7 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
   overlayText: {
     color: COLORS.TEXT_COLORS.zuccini,
     textAlign: 'center',
+    marginHorizontal: 10,
     fontSize: 20,
   },
 
@@ -80,5 +87,15 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+  },
+  overlaySearch: {
+    width: 200,
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+  },
+  textOverlaySearch: {
+    textAlign: 'center',
   },
 });

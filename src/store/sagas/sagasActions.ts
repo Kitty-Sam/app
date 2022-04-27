@@ -66,7 +66,7 @@ export type makeDefaultType = {
 
 export const deleteItem = (payload: {
   id: string;
-  title: string | undefined;
+  title?: string;
 }): deleteItemType => ({
   type: DELETE_ITEM,
   payload,
@@ -75,7 +75,7 @@ export const deleteItem = (payload: {
 export type deleteItemType = {
   payload: {
     id: string;
-    title: string | undefined;
+    title?: string;
   };
   type: typeof DELETE_ITEM;
 };

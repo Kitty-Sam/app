@@ -3,22 +3,22 @@ import {
   WeatherActions,
   weatherSave,
 } from '../actions/weather';
-import { dayWeatherInfo } from '../../screens/WeatherCardScreen/types';
+import { DayWeatherInfo } from '../../screens/WeatherCardScreen/types';
 
-const initialState: initialStateType = {
+const initialState: InitialStateType = {
   dataItem: null,
   dataItemDefault: null,
 };
 
-type initialStateType = {
-  dataItem: dayWeatherInfo | null;
-  dataItemDefault: dayWeatherInfo | null;
+type InitialStateType = {
+  dataItem: DayWeatherInfo | null;
+  dataItemDefault: DayWeatherInfo | null;
 };
 
 export const weatherReducer = (
-  state: initialStateType = initialState,
+  state: InitialStateType = initialState,
   action: ActionsType,
-): initialStateType => {
+): InitialStateType => {
   switch (action.type) {
     case WeatherActions.WEATHER_SAVE_INFO:
       return { ...state, dataItem: action.payload };

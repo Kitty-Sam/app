@@ -8,11 +8,12 @@ import { DataItemType } from '../../screens/ListCitiesScreen/types';
 import { FirebaseDatabaseTypes } from '@react-native-firebase/database';
 import { toggleAppStatus } from '../actions/app';
 import { requestStatus } from '../reducers/appReducer';
+import { getCurrentUser } from '../selectors/loginSelector';
 
 export function* makeDefaultWorker({ payload }: makeDefaultType) {
   put(toggleAppStatus(requestStatus.LOADING));
-  const current_user = (state: AppStoreType) => state.login.currentUser;
-  const { userId } = yield select(current_user);
+  const { userId } = yield select(getCurrentUser);
+
   try {
     const snapshot: FirebaseDatabaseTypes.DataSnapshot = yield database
       .ref(`/users/${userId}/selected`)
@@ -20,7 +21,7 @@ export function* makeDefaultWorker({ payload }: makeDefaultType) {
 
     if (snapshot.val()) {
       const cities: DataItemType[] = Object.values(snapshot.val());
-      cities.map((city: DataItemType) =>
+      cities.forEach((city: DataItemType) =>
         database.ref(`/users/${userId}/selected/${city.city}`).update({
           city: city.city,
           id: city.city,
@@ -44,7 +45,7 @@ export function* makeDefaultWorker({ payload }: makeDefaultType) {
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
     yield put(toggleDefaultPosition(payload));
   } catch (error: any) {
-    put(toggleAppStatus(requestStatus.FAILED));
+    yield put(toggleAppStatus(requestStatus.FAILED));
     Alert.alert('Something goes wrong!');
   }
 }

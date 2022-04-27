@@ -9,9 +9,11 @@ import { COLORS } from '../../theme/colors';
 
 type CityScreenStyleType = {
   cardContainer: ViewStyle;
+  image: ImageStyle;
   imageContainer: ImageStyle;
   loader: ViewStyle;
   root: ViewStyle;
+  text: TextStyle;
   titleText: TextStyle;
 };
 const { width, height } = Dimensions.get('window');
@@ -22,6 +24,10 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
     flex: 1,
     paddingHorizontal: 16,
   },
+  image: {
+    width: 50,
+    height: 50,
+  },
   titleText: {
     marginTop: 24,
     color: COLORS.TEXT_COLORS.zuccini,
@@ -29,6 +35,11 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
     fontSize: 26,
     fontWeight: '600',
     textTransform: 'capitalize',
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '400',
   },
   imageContainer: {
     width: width / 2,

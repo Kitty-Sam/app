@@ -1,4 +1,4 @@
-export type dayWeatherInfo = {
+export type DayWeatherInfo = {
   clouds: {
     all: number;
   };

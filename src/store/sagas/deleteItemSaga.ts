@@ -1,15 +1,15 @@
 import { put, select } from '@redux-saga/core/effects';
-import { AppStoreType } from '../store';
 import { toggleSelectedCity } from '../actions/cities';
 import { database } from '../../utils/getDataBaseURL';
 import { Alert } from 'react-native';
 import { deleteItemType } from './sagasActions';
+import { getCurrentUser } from '../selectors/loginSelector';
 
 export function* deleteItemWorker({ payload }: deleteItemType) {
-  const current_user = (state: AppStoreType) => state.login.currentUser;
-  const { userId } = yield select(current_user);
+  const { userId } = yield select(getCurrentUser);
   try {
     yield put(toggleSelectedCity(payload.id));
+
     yield database
       .ref(`/users/${userId}/selected`)
       .child(`${payload.title}`)

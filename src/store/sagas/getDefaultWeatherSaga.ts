@@ -12,7 +12,7 @@ export function* getDefaultWeatherWorker({
     yield put(toggleAppError(false));
 
     const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${payload}&lang=ru&units=metric&appid=ef8dbe91097853f46a4f5c2d9130a67d`;
-    const response = yield call(() => fetch(weatherURL));
+    const response = yield call(fetch, weatherURL);
     const responseForRender = yield response.json();
 
     yield put(defaultWeatherSave(responseForRender));

@@ -28,11 +28,11 @@ export const LoginScreen = (
 ) => {
   const statusApp = useSelector(selectStatusApp);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
-
-  const dispatch = useDispatch();
 
   const onGoogleButtonPress = () => {
     dispatch(googleSignIn());
@@ -50,7 +50,7 @@ export const LoginScreen = (
         </View>
       ) : (
         <View>
-          <Text>Weather App</Text>
+          <Text style={styles.text}>Weather Now</Text>
           <AppButtonWithImg
             onPress={onFacebookButtonPress}
             backgroundColor={COLORS.BACKGROUND_COLORS.facebook}

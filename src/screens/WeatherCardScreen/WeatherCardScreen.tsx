@@ -27,6 +27,7 @@ import { iconsName, iconsType } from '../../utils/constants/icons';
 import { buttonsName } from '../../utils/constants/buttons';
 import { getWeekDay } from '../../utils/getRoundItem';
 import { useTranslation } from 'react-i18next';
+import { language } from '../CItyScreen/CityScreen';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/not_found.png');
@@ -40,7 +41,7 @@ export const WeatherCardScreen = (
   const { route, navigation } = props;
   const { title } = route.params;
 
-  const currentDay = getWeekDay();
+  const currentDay = getWeekDay(language);
 
   const [isActive, setIsActive] = useState<boolean>(false);
   const [hasChanged, setHasChanged] = useState<boolean>(false);

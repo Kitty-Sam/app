@@ -6,6 +6,7 @@ import { AppStoreType } from '../store';
 import { setSelectedCities } from '../actions/cities';
 import { DataItemType } from '../../screens/ListCitiesScreen/types';
 import { FirebaseDatabaseTypes } from '@react-native-firebase/database';
+import { getCurrentUser } from '../selectors/loginSelector';
 
 type CitiesTypeFromFirebase = {
   [K: string]: DataItemType;
@@ -13,8 +14,7 @@ type CitiesTypeFromFirebase = {
 
 export function* fetchSelectedCitiesWorker() {
   try {
-    const current_user = (state: AppStoreType) => state.login.currentUser;
-    const { userId } = yield select(current_user);
+    const { userId } = yield select(getCurrentUser);
 
     yield put(toggleAppStatus(requestStatus.LOADING));
 

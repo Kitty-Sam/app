@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ActivityIndicator, StatusBar, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  NativeModules,
+  StatusBar,
+  Text,
+  View,
+} from 'react-native';
 import { styles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/WeatherCardTemplate';
@@ -12,6 +19,11 @@ import { getDefaultDayWeatherInfo } from '../../store/selectors/weatherSelector'
 import { getWeekDay } from '../../utils/getRoundItem';
 import { useTranslation } from 'react-i18next';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const img = require('../../../assets/city.png');
+export const language =
+  NativeModules.I18nManager?.localeIdentifier.split('_')[0];
+
 export const CityScreen = () => {
   const dispatch = useDispatch();
 
@@ -19,7 +31,7 @@ export const CityScreen = () => {
   const statusApp = useSelector(selectStatusApp);
   const dayWeatherInfo = useSelector(getDefaultDayWeatherInfo);
 
-  const currentDay = getWeekDay();
+  const currentDay = getWeekDay(language);
 
   useEffect(() => {
     if (defaultCity) {
@@ -34,7 +46,8 @@ export const CityScreen = () => {
       <StatusBar hidden />
       {!defaultCity || !dayWeatherInfo ? (
         <View style={styles.loader}>
-          <Text>{t('cityScreen.firstLaunch')}</Text>
+          <Image source={img} style={styles.image} />
+          <Text style={styles.text}>{t('cityScreen.firstLaunch')}</Text>
         </View>
       ) : (
         <View style={styles.root}>

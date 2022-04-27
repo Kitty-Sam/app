@@ -11,10 +11,13 @@ import { setSelectedCities } from '../actions/cities';
 export function* signOutWorker() {
   try {
     yield put(toggleAppStatus(requestStatus.LOADING));
+
     yield GoogleSignin.signOut();
     yield auth().signOut();
+
     yield put(loginToggle(false));
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
+
     const emptyArray: DataItemType[] = [];
     yield put(setSelectedCities({ selectedCities: emptyArray }));
   } catch (error: any) {

@@ -52,13 +52,14 @@ export const styles = StyleSheet.create<WeatherCardTemplateStyle>({
   paramContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginHorizontal: 8,
   },
   pressureText: {
     marginHorizontal: 20,
   },
   paramsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     width: width / 1.2,
   },
   temperatureContainer: {

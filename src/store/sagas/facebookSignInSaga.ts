@@ -6,17 +6,16 @@ import { Alert } from 'react-native';
 import { put, select } from '@redux-saga/core/effects';
 import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
 import FBAccessToken from 'react-native-fbsdk-next/lib/typescript/src/FBAccessToken';
-import { AppStoreType } from '../store';
 import { UserType } from '../reducers/loginReducer';
 import { FirebaseDatabaseTypes } from '@react-native-firebase/database';
 import { database } from '../../utils/getDataBaseURL';
 import { DataItemType } from '../../screens/ListCitiesScreen/types';
 import { setSelectedCities } from '../actions/cities';
+import { getUsers } from '../selectors/loginSelector';
 
 export function* facebookSignInWorker() {
   try {
-    const usersRedux = (state: AppStoreType) => state.login.users;
-    const USERS: UserType[] = yield select(usersRedux);
+    const usersRedux: UserType[] = yield select(getUsers);
 
     yield LoginManager.logInWithPermissions(['public_profile', 'email']);
     const dataToken: FBAccessToken | null =
@@ -31,7 +30,9 @@ export function* facebookSignInWorker() {
       const userName = user.providerData[0].displayName;
       const userId = user.providerData[0].userId;
 
-      const facebookUser = USERS.find((user) => user.userEmail === userEmail);
+      const facebookUser = usersRedux.find(
+        (user) => user.userEmail === userEmail,
+      );
 
       if (facebookUser) {
         yield put(toggleAppStatus(requestStatus.LOADING));
