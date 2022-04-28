@@ -2,7 +2,6 @@ import { requestStatus } from '../reducers/appReducer';
 import { put, select } from '@redux-saga/core/effects';
 import { toggleAppStatus } from '../actions/app';
 import { database } from '../../utils/getDataBaseURL';
-import { AppStoreType } from '../store';
 import { setSelectedCities } from '../actions/cities';
 import { DataItemType } from '../../screens/ListCitiesScreen/types';
 import { FirebaseDatabaseTypes } from '@react-native-firebase/database';
