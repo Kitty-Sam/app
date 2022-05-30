@@ -2,15 +2,14 @@ import { Alert } from 'react-native';
 import { put, select } from '@redux-saga/core/effects';
 import { database } from '../../utils/getDataBaseURL';
 import { toggleDefaultPosition } from '../actions/cities';
-import { AppStoreType } from '../store';
-import { makeDefaultType } from './sagasActions';
 import { DataItemType } from '../../screens/ListCitiesScreen/types';
 import { FirebaseDatabaseTypes } from '@react-native-firebase/database';
 import { toggleAppStatus } from '../actions/app';
 import { requestStatus } from '../reducers/appReducer';
 import { getCurrentUser } from '../selectors/loginSelector';
+import { MakeDefaultItemActionType } from './sagasActions/makeDefaultItem';
 
-export function* makeDefaultWorker({ payload }: makeDefaultType) {
+export function* makeDefaultWorker({ payload }: MakeDefaultItemActionType) {
   put(toggleAppStatus(requestStatus.LOADING));
   const { userId } = yield select(getCurrentUser);
 
@@ -32,18 +31,18 @@ export function* makeDefaultWorker({ payload }: makeDefaultType) {
     }
 
     yield database.ref(`/users/${userId}`).update({
-      default: payload,
+      default: payload.id,
     });
 
-    yield database.ref(`/users/${userId}/selected/${payload}`).update({
-      city: payload,
-      id: payload,
+    yield database.ref(`/users/${userId}/selected/${payload.id}`).update({
+      city: payload.id,
+      id: payload.id,
       isDefault: true,
       selected: true,
     });
 
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
-    yield put(toggleDefaultPosition(payload));
+    yield put(toggleDefaultPosition(payload.id));
   } catch (error: any) {
     yield put(toggleAppStatus(requestStatus.FAILED));
     Alert.alert('Something goes wrong!');

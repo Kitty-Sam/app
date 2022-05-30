@@ -1,12 +1,11 @@
 import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 
 type ListCitiesScreenStyleType = {
   citiesContainer: ViewStyle;
   cityItemContainer: ViewStyle;
   conditionContainer: ViewStyle;
   conditionText: TextStyle;
-  fab: ViewStyle;
   listContainer: ViewStyle;
   overlay: ViewStyle;
   overlaySearch: ViewStyle;
@@ -19,17 +18,17 @@ type ListCitiesScreenStyleType = {
   timerContainer: ViewStyle;
 };
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
   root: {
-    backgroundColor: COLORS.BACKGROUND_COLORS.pampas,
+    backgroundColor: colors.background_colors.pampas,
     flex: 1,
   },
   conditionText: {
     marginVertical: 6,
     fontSize: 18,
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
   },
   conditionContainer: {
     marginVertical: 16,
@@ -37,8 +36,8 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
     width: width / 1.4,
   },
   search: {
-    backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
-    color: COLORS.TEXT_COLORS.zuccini,
+    backgroundColor: colors.background_colors.akaroa,
+    color: colors.text_colors.zuccini,
     borderRadius: 10,
     textTransform: 'capitalize',
     paddingHorizontal: 15,
@@ -46,23 +45,20 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
   },
   citiesContainer: {
     alignItems: 'center',
+    // flex: 1,
   },
   listContainer: {
     margin: 16,
+    // backgroundColor: 'red',
+    // flex: 1,
   },
   cityItemContainer: {
     margin: 8,
   },
   showButtonContainer: {
     position: 'absolute',
-    right: -55,
+    left: 300,
     top: 43,
-  },
-  fab: {
-    position: 'absolute',
-    right: 16,
-    bottom: height * 0.05,
-    zIndex: 10,
   },
   overlay: {
     width: width / 1.3,
@@ -70,10 +66,10 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
     alignItems: 'center',
     borderRadius: 10,
     justifyContent: 'center',
-    backgroundColor: COLORS.BACKGROUND_COLORS.pampas,
+    backgroundColor: colors.background_colors.pampas,
   },
   overlayText: {
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
     textAlign: 'center',
     marginHorizontal: 10,
     fontSize: 20,

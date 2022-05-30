@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/store/configureStore';
-// eslint-disable-next-line import/default
 import PushNotification from 'react-native-push-notification';
+
 import i18n from './src/i18n/i18n';
 
 const ReduxProvider = () => {

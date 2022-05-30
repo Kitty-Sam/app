@@ -1,5 +1,5 @@
 import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 
 type AppButtonStyleType = {
   appButtonContainer: ViewStyle;
@@ -19,6 +19,6 @@ export const styles = StyleSheet.create<AppButtonStyleType>({
     fontWeight: 'normal',
     alignSelf: 'center',
     textTransform: 'uppercase',
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
   },
 });

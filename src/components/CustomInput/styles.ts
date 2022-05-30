@@ -1,5 +1,5 @@
 import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 
 type CustomInputStyleType = {
   errorInput: ViewStyle;
@@ -9,18 +9,18 @@ type CustomInputStyleType = {
 
 export const styles = StyleSheet.create<CustomInputStyleType>({
   textInput: {
-    borderBottomColor: COLORS.TEXT_COLORS.zuccini,
+    borderBottomColor: colors.text_colors.zuccini,
     borderBottomWidth: 2,
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
     fontWeight: '400',
     fontSize: 16,
     textAlign: 'center',
   },
   errorText: {
     fontSize: 10,
-    color: COLORS.ERROR.pomegranate,
+    color: colors.error.pomegranate,
   },
   errorInput: {
-    borderColor: COLORS.ERROR.pomegranate,
+    borderColor: colors.error.pomegranate,
   },
 });

@@ -33,6 +33,7 @@ export function* fetchSelectedCitiesWorker() {
       const emptyArray: DataItemType[] = [];
       yield put(setSelectedCities({ selectedCities: emptyArray }));
     }
+
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
   } catch (error: any) {
     yield put(toggleAppStatus(requestStatus.FAILED));

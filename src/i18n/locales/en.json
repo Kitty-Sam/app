@@ -24,5 +24,8 @@
   "modal": {
     "greetings": "Hello!",
     "fab": " Just type city title, if you want to know the weather there.Have a nice day!"
+  },
+  "overlay": {
+    "question": "You have changed favorite city list! Are you sure?"
   }
 }

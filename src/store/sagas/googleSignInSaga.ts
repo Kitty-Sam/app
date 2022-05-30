@@ -38,9 +38,9 @@ export function* googleSignInWorker() {
 
     if (snapshot.val()) {
       const users: UserType[] = Object.values(snapshot.val());
-      const USER = users.find((user) => user.userId === userId);
+      const current_user = users.find((user) => user.userId === userId);
 
-      if (!USER) {
+      if (!current_user) {
         yield database
           .ref('/users/')
           .child(`${userId}`)

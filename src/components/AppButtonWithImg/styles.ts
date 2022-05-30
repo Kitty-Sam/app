@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 
 type AppButtonWithImgStyleType = {
   appButton: ViewStyle;
@@ -16,9 +16,9 @@ export const styles = StyleSheet.create<AppButtonWithImgStyleType>({
     marginVertical: 10,
   },
   appButton: {
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
   },
   appButtonText: {
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
   },
 });

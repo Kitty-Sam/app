@@ -6,8 +6,7 @@ import {
 } from '@react-navigation/stack';
 
 export type AuthStackParamList = {
-  Login: undefined;
-  Register: undefined;
+  [AUTH_NAVIGATION_NAME.LOGIN]: undefined;
 };
 
 export type StackScreenNavigationProps<

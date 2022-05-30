@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Image,
   SafeAreaView,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
@@ -14,11 +14,11 @@ import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/Wea
 import { useDispatch, useSelector } from 'react-redux';
 import { requestStatus } from '../../store/reducers/appReducer';
 import { getError, selectStatusApp } from '../../store/selectors/appSelector';
-import { Icon } from 'react-native-elements';
+import { Icon, Overlay } from 'react-native-elements';
 import { toggleSelectedCity } from '../../store/actions/cities';
 import { getCities } from '../../store/selectors/citySelector';
 import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
-import { weatherGetInfo } from '../../store/sagas/sagasActions';
+
 import { AppButton } from '../../components/AppButton/AppButton';
 import { styles } from './style';
 import { database } from '../../utils/getDataBaseURL';
@@ -28,6 +28,8 @@ import { buttonsName } from '../../utils/constants/buttons';
 import { getWeekDay } from '../../utils/getRoundItem';
 import { useTranslation } from 'react-i18next';
 import { language } from '../CItyScreen/CityScreen';
+import { colors } from '../../theme/colors';
+import { weatherGetInfoAction } from '../../store/sagas/sagasActions/weatherGetInfo';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/not_found.png');
@@ -45,6 +47,7 @@ export const WeatherCardScreen = (
 
   const [isActive, setIsActive] = useState<boolean>(false);
   const [hasChanged, setHasChanged] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -60,50 +63,56 @@ export const WeatherCardScreen = (
     }
   });
 
+  const onPressIcon = () => {
+    if (hasChanged) {
+      setIsVisible(!isVisible);
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity style={{ marginLeft: 16 }} onPress={onPressIcon}>
+          <Icon
+            tvParallaxProperties
+            type={iconsType.MATERIAL}
+            name={iconsName.ARROW_LEFT}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, [hasChanged, isVisible]);
+
   useEffect(() => {
     if (title) {
-      dispatch(weatherGetInfo(title));
+      dispatch(weatherGetInfoAction({ search: title }));
     }
   }, [title]);
 
-  const toggleSelectedCityIconPress = async () => {
-    setHasChanged(true);
-    dispatch(toggleSelectedCity(title));
-    setIsActive(!isActive);
+  useEffect(() => {
     if (isActive) {
-      await database
+      database
         .ref(`/users/${current_user.userId}/selected`)
         .child(`${title}`)
         .remove();
-    } else {
-      await database
+    }
+
+    if (statusApp === requestStatus.SUCCEEDED) {
+      database
         .ref(`/users/${current_user.userId}/selected`)
         .child(`${title}`)
         .set({ city: title, id: title, selected: true, isDefault: false });
     }
+  }, [isActive, statusApp]);
+
+  const toggleSelectedCityIconPress = () => {
+    setHasChanged(true);
+    dispatch(toggleSelectedCity(title));
+    setIsActive(!isActive);
   };
   const { t } = useTranslation();
-
-  useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      if (!hasChanged) {
-        return;
-      }
-      e.preventDefault();
-      Alert.alert('', t('alert.goBack'), [
-        {
-          text: buttonsName.STAY,
-          style: 'cancel',
-          onPress: () => {},
-        },
-        {
-          text: buttonsName.YES,
-          style: 'destructive',
-          onPress: () => navigation.dispatch(e.data.action),
-        },
-      ]);
-    });
-  }, [navigation, hasChanged]);
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -141,14 +150,37 @@ export const WeatherCardScreen = (
               <Text>{currentDay}</Text>
               <View style={styles.infoContainer}>
                 {data?.main ? (
-                  <WeatherCardDayTemplate
-                    description={data.weather[0].description}
-                    humidity={data.main.humidity}
-                    pressure={data.main.pressure}
-                    speed={data.wind.speed}
-                    icon={data.weather[0].icon}
-                    feelsLike={data.main.feels_like}
-                  />
+                  <>
+                    <WeatherCardDayTemplate
+                      description={data.weather[0].description}
+                      humidity={data.main.humidity}
+                      pressure={data.main.pressure}
+                      speed={data.wind.speed}
+                      icon={data.weather[0].icon}
+                      feelsLike={data.main.feels_like}
+                    />
+                    <Overlay
+                      isVisible={isVisible}
+                      overlayStyle={styles.overlay}>
+                      <Text style={styles.textOverlayContainer}>
+                        {t('overlay.question')}
+                      </Text>
+                      <View style={styles.overlayButtonsContainer}>
+                        <AppButton
+                          onPress={() => {
+                            setIsVisible(!isVisible);
+                            navigation.goBack();
+                          }}
+                          title={buttonsName.YES}
+                        />
+                        <AppButton
+                          onPress={() => setIsVisible(!isVisible)}
+                          title={buttonsName.STAY}
+                          backgroundColor={colors.button_colors.tacao}
+                        />
+                      </View>
+                    </Overlay>
+                  </>
                 ) : (
                   <ActivityIndicator />
                 )}

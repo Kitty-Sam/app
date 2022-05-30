@@ -5,7 +5,7 @@ import {
   TextStyle,
   ViewStyle,
 } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 
 type CityScreenStyleType = {
   cardContainer: ViewStyle;
@@ -20,7 +20,7 @@ const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create<CityScreenStyleType>({
   root: {
-    backgroundColor: COLORS.BACKGROUND_COLORS.pampas,
+    backgroundColor: colors.background_colors.pampas,
     flex: 1,
     paddingHorizontal: 16,
   },
@@ -30,7 +30,7 @@ export const styles = StyleSheet.create<CityScreenStyleType>({
   },
   titleText: {
     marginTop: 24,
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
     textAlign: 'center',
     fontSize: 26,
     fontWeight: '600',

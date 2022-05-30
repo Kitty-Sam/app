@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, TextInput } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 import { commonInputPropsType } from './types';
 import { styles } from './styles';
 
@@ -16,7 +16,7 @@ export const CustomInput = (props: commonInputPropsType) => {
   return (
     <>
       <TextInput
-        placeholderTextColor={COLORS.TEXT_COLORS.soya_Bean}
+        placeholderTextColor={colors.text_colors.soya_Bean}
         style={[styles.textInput, hasError && styles.errorInput]}
         value={value}
         onChangeText={(text) => onChange(name)(text)}

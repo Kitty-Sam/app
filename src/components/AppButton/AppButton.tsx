@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 import { styles } from './styles';
 import { AppButtonPropsType } from './types';
 
@@ -9,7 +9,7 @@ export const AppButton = (props: AppButtonPropsType): ReactElement => {
     onPress,
     title,
     disabled,
-    backgroundColor = COLORS.BUTTONS_COLORS.default_button_Buddha_Gold,
+    backgroundColor = colors.button_colors.default_button_Buddha_Gold,
   } = props;
 
   return (
@@ -21,7 +21,7 @@ export const AppButton = (props: AppButtonPropsType): ReactElement => {
         styles.appButtonContainer,
         {
           backgroundColor: disabled
-            ? COLORS.BACKGROUND_COLORS.iron
+            ? colors.background_colors.iron
             : backgroundColor,
         },
       ]}>

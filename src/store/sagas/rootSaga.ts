@@ -1,15 +1,5 @@
 import { takeEvery, takeLatest } from '@redux-saga/core/effects';
-import {
-  DELETE_ITEM,
-  FACEBOOK_SIGN_IN,
-  FETCH_SELECTED_CITIES,
-  FETCH_USERS,
-  GOOGLE_SIGN_IN,
-  GOOGLE_SIGN_OUT,
-  MAKE_DEFAULT,
-  WEATHER_GET_INFO,
-  DEFAULT_WEATHER_GET_INFO,
-} from './sagasActions';
+
 import { getWeatherWorker } from './getWeatherSaga';
 import { googleSignInWorker } from './googleSignInSaga';
 import { facebookSignInWorker } from './facebookSignInSaga';
@@ -19,6 +9,17 @@ import { fetchSelectedCitiesWorker } from './addSelectedCitiesSaga';
 import { deleteItemWorker } from './deleteItemSaga';
 import { fetchUsersWorker } from './addUsersSaga';
 import { getDefaultWeatherWorker } from './getDefaultWeatherSaga';
+import {
+  DEFAULT_WEATHER_GET_INFO,
+  DELETE_ITEM,
+  FACEBOOK_SIGN_IN,
+  FETCH_SELECTED_CITIES,
+  FETCH_USERS,
+  GOOGLE_SIGN_IN,
+  GOOGLE_SIGN_OUT,
+  MAKE_DEFAULT,
+  WEATHER_GET_INFO,
+} from './sagasActionTypes/sagasActionsTypes';
 
 export function* watchClickSaga() {
   yield takeEvery(WEATHER_GET_INFO, getWeatherWorker);

@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 
 type CityItemStyleType = {
   buttonsContainer: ViewStyle;
@@ -20,12 +20,12 @@ export const styles = StyleSheet.create<CityItemStyleType>({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
+    backgroundColor: colors.background_colors.akaroa,
     width: width / 1.2,
   },
   itemText: {
     textAlign: 'left',
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
     fontSize: 18,
   },
   iconsContainer: {

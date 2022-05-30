@@ -25,6 +25,7 @@ export const weatherReducer = (
 
     case WeatherActions.DEFAULT_WEATHER_SAVE_INFO:
       return { ...state, dataItemDefault: action.payload };
+
     default:
       return state;
   }

@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-// eslint-disable-next-line import/default
+
 import PushNotification from 'react-native-push-notification';
 
 import { LogBox } from 'react-native';
@@ -15,8 +15,8 @@ import SplashScreen from 'react-native-splash-screen';
 
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
+  'EventEmitter.removeListener',
 ]);
-LogBox.ignoreLogs(['EventEmitter.removeListener']);
 
 export const App: FC = () => {
   const isLoggedIn = useSelector(selectLoginIn);

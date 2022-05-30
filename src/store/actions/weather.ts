@@ -1,4 +1,4 @@
-import { dayWeatherInfo } from '../../screens/WeatherCardScreen/types';
+import { DayWeatherInfo } from '../../screens/WeatherCardScreen/types';
 
 export enum WeatherActions {
   DEFAULT_WEATHER_SAVE_INFO = 'DEFAULT_WEATHER_SAVE_INFO',
@@ -6,23 +6,23 @@ export enum WeatherActions {
 }
 
 export const weatherSave: WeatherSaveActionType = (
-  payload: dayWeatherInfo,
+  payload: DayWeatherInfo,
 ) => ({
   type: WeatherActions.WEATHER_SAVE_INFO,
   payload,
 });
-export type WeatherSaveActionType = (payload: dayWeatherInfo) => {
-  payload: dayWeatherInfo;
+export type WeatherSaveActionType = (payload: DayWeatherInfo) => {
+  payload: DayWeatherInfo;
   type: WeatherActions.WEATHER_SAVE_INFO;
 };
 
 export const defaultWeatherSave: DefaultWeatherSaveActionType = (
-  payload: dayWeatherInfo,
+  payload: DayWeatherInfo,
 ) => ({
   type: WeatherActions.DEFAULT_WEATHER_SAVE_INFO,
   payload,
 });
-export type DefaultWeatherSaveActionType = (payload: dayWeatherInfo) => {
-  payload: dayWeatherInfo;
+export type DefaultWeatherSaveActionType = (payload: DayWeatherInfo) => {
+  payload: DayWeatherInfo;
   type: WeatherActions.DEFAULT_WEATHER_SAVE_INFO;
 };

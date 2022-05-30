@@ -5,13 +5,20 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
 import { CityItemProps } from './types';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteItem, makeDefault } from '../../store/sagas/sagasActions';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 import { iconsName, iconsType } from '../../utils/constants/icons';
 import { getSelectedCities } from '../../store/selectors/citySelector';
 import { AppButton } from '../AppButton/AppButton';
 import { buttonsName } from '../../utils/constants/buttons';
 import { useTranslation } from 'react-i18next';
+import {
+  deleteItemAction,
+  deleteItemPayload,
+} from '../../store/sagas/sagasActions/deleteItem';
+import {
+  makeDefaultItemAction,
+  makeDefaultItemPayload,
+} from '../../store/sagas/sagasActions/makeDefaultItem';
 
 export const CityItem = (props: CityItemProps): ReactElement => {
   const { title, id, isDefault } = props;
@@ -23,16 +30,18 @@ export const CityItem = (props: CityItemProps): ReactElement => {
 
   const selectedCities = useSelector(getSelectedCities);
 
+  const citiesLen = selectedCities.length === 1;
+
   const onDeletePress = () => {
     toggleOverlay();
   };
 
-  const deleteItemPress = (id: string) => {
-    dispatch(deleteItem({ id, title }));
+  const deleteItemPress = (id: deleteItemPayload['id']) => {
+    dispatch(deleteItemAction({ id, title }));
   };
 
-  const makeDefaultPress = (id: string) => {
-    dispatch(makeDefault(id));
+  const makeDefaultPress = (id: makeDefaultItemPayload['id']) => {
+    dispatch(makeDefaultItemAction({ id }));
   };
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -45,8 +54,8 @@ export const CityItem = (props: CityItemProps): ReactElement => {
           styles.textContainer,
           {
             backgroundColor: isDefault
-              ? COLORS.BACKGROUND_COLORS.iron
-              : COLORS.BACKGROUND_COLORS.akaroa,
+              ? colors.background_colors.iron
+              : colors.background_colors.akaroa,
           },
         ]}>
         <Text style={styles.itemText}>{title}</Text>
@@ -57,7 +66,7 @@ export const CityItem = (props: CityItemProps): ReactElement => {
             name={isDefault ? iconsName.BOOKMARK : iconsName.BOOKMARK_OUTLINE}
             onPress={() => makeDefaultPress(id)}
           />
-          {selectedCities.length === 1 || isDefault ? null : (
+          {citiesLen || isDefault ? null : (
             <Icon
               disabled={selectedCities.length === 1}
               tvParallaxProperties
@@ -85,7 +94,7 @@ export const CityItem = (props: CityItemProps): ReactElement => {
                   toggleOverlay();
                 }}
                 title={buttonsName.CLOSE}
-                backgroundColor={COLORS.BUTTONS_COLORS.tacao}
+                backgroundColor={colors.button_colors.tacao}
               />
             </View>
           </View>

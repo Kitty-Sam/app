@@ -5,7 +5,7 @@ import {
   TextStyle,
   ViewStyle,
 } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 
 type WeatherCardTemplateStyle = {
   container: ViewStyle;
@@ -31,15 +31,15 @@ export const styles = StyleSheet.create<WeatherCardTemplateStyle>({
     justifyContent: 'space-around',
     alignItems: 'center',
     margin: 8,
-    backgroundColor: COLORS.BACKGROUND_COLORS.iron,
+    backgroundColor: colors.background_colors.iron,
   },
   textItem: {
     fontSize: 36,
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
   },
   textItemTitle: {
     fontSize: 24,
-    color: COLORS.TEXT_COLORS.zuccini,
+    color: colors.text_colors.zuccini,
   },
   weatherImage: {
     width: 100,

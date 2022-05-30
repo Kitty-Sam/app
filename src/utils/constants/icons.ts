@@ -1,4 +1,5 @@
 export enum iconsName {
+  ARROW_LEFT = 'arrow-left',
   BOOKMARK = 'bookmark',
   BOOKMARK_OUTLINE = 'bookmark-outline',
   DELETE = 'delete',

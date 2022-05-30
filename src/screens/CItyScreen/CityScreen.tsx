@@ -14,10 +14,10 @@ import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/Wea
 import { requestStatus } from '../../store/reducers/appReducer';
 import { getPinnedCities } from '../../store/selectors/citySelector';
 import { selectStatusApp } from '../../store/selectors/appSelector';
-import { defaultWeatherGetInfo } from '../../store/sagas/sagasActions';
 import { getDefaultDayWeatherInfo } from '../../store/selectors/weatherSelector';
 import { getWeekDay } from '../../utils/getRoundItem';
 import { useTranslation } from 'react-i18next';
+import { defaultWeatherGetInfoAction } from '../../store/sagas/sagasActions/defaultWeatherGetInfo';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/city.png');
@@ -35,7 +35,7 @@ export const CityScreen = () => {
 
   useEffect(() => {
     if (defaultCity) {
-      dispatch(defaultWeatherGetInfo(defaultCity.city));
+      dispatch(defaultWeatherGetInfoAction({ city: defaultCity.city }));
     }
   }, [defaultCity]);
 
