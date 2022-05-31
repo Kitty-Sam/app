@@ -7,8 +7,9 @@ import { Alert } from 'react-native';
 import { call, put } from '@redux-saga/core/effects';
 import { database } from '../../utils/getDataBaseURL';
 import { UserCredential } from '@firebase/auth';
-import { ShapshotType } from './addUsersSaga';
 import { fetchSelectedCitiesWorker } from './addSelectedCitiesSaga';
+import { UserType } from '../reducers/loginReducer';
+import { FirebaseDatabaseTypes } from '@react-native-firebase/database';
 
 export function* googleSignInWorker() {
   try {
@@ -29,18 +30,23 @@ export function* googleSignInWorker() {
     yield put(toggleAppStatus(requestStatus.SUCCEEDED));
     yield put(setCurrentUser({ userId, userEmail, userName }));
 
-    const snapshot: ShapshotType = yield database.ref('/users/').once('value');
-    const users = Object.values(snapshot.val());
-    const USER = users.find((user) => user.userId === userId);
+    yield call(fetchSelectedCitiesWorker);
 
-    yield call(() => fetchSelectedCitiesWorker());
+    const snapshot: FirebaseDatabaseTypes.DataSnapshot = yield database
+      .ref('/users/')
+      .once('value');
 
-    if (!USER) {
-      yield database
-        .ref('/users/')
-        .child(`${userId}`)
-        .set({ userId, userEmail, userName });
-      Alert.alert('Welcome!', `${userName}`);
+    if (snapshot.val()) {
+      const users: UserType[] = Object.values(snapshot.val());
+      const current_user = users.find((user) => user.userId === userId);
+
+      if (!current_user) {
+        yield database
+          .ref('/users/')
+          .child(`${userId}`)
+          .set({ userId, userEmail, userName });
+        Alert.alert('Welcome!', `${userName}`);
+      }
     }
   } catch (error: any) {
     yield put(loginToggle(false));

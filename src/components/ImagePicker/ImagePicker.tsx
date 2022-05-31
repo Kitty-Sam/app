@@ -12,7 +12,7 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import { AppButton } from '../AppButton/AppButton';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 import { styles } from './styles';
 import { DataResponseType } from './types';
 
@@ -97,7 +97,7 @@ export const ImagePicker = (): ReactElement => {
         <AppButton
           title={'add from gallery'}
           onPress={addPhoto}
-          backgroundColor={COLORS.BUTTONS_COLORS.tacao}
+          backgroundColor={colors.button_colors.tacao}
         />
       </View>
       {dataFromGallery.length ? (

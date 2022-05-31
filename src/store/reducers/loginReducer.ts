@@ -6,6 +6,8 @@ import {
 } from '../actions/login';
 
 export type UserType = {
+  isDefault?: string;
+  selected?: string[];
   userEmail?: string;
   userId: string;
   userName: string;

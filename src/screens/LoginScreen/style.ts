@@ -1,10 +1,10 @@
-import { StyleSheet, ViewStyle } from 'react-native';
-import { COLORS } from '../../theme/colors';
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { colors } from '../../theme/colors';
 
 type LoginScreenStyleType = {
   loaderContainer: ViewStyle;
   root: ViewStyle;
-  textContainer: ViewStyle;
+  text: TextStyle;
 };
 
 export const styles = StyleSheet.create<LoginScreenStyleType>({
@@ -12,11 +12,11 @@ export const styles = StyleSheet.create<LoginScreenStyleType>({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    backgroundColor: COLORS.BACKGROUND_COLORS.pampas,
+    backgroundColor: colors.background_colors.pampas,
   },
-  textContainer: {
-    marginVertical: 10,
-    alignItems: 'center',
+  text: {
+    textAlign: 'center',
+    color: colors.text_colors.zuccini,
   },
   loaderContainer: {
     flex: 1,

@@ -7,11 +7,13 @@ import { CityScreen } from '../../screens/CItyScreen/CityScreen';
 import { ListCitiesScreen } from '../../screens/ListCitiesScreen/ListCitiesScreen';
 import { Icon } from 'react-native-elements';
 import { TAB_NAVIGATION_NAME } from '../../enum/enum';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 import { ScreenOptionsType, TabStackParamList } from './types';
 import { AppButton } from '../../components/AppButton/AppButton';
 import { useDispatch } from 'react-redux';
-import { googleSignOut } from '../../store/sagas/sagasActions';
+import { buttonsName } from '../../utils/constants/buttons';
+import { iconsName, iconsType } from '../../utils/constants/icons';
+import { googleSignOutAction } from '../../store/sagas/sagasActions/googleSignOut';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
@@ -19,7 +21,7 @@ export const TabNavigation = () => {
   const dispatch = useDispatch();
 
   const onLogOutPress = () => {
-    dispatch(googleSignOut());
+    dispatch(googleSignOutAction());
   };
 
   const mainScreenOptions: BottomTabNavigationOptions = {
@@ -27,16 +29,16 @@ export const TabNavigation = () => {
     tabBarIcon: ({ size, focused, color }) => (
       <Icon
         tvParallaxProperties
-        name="home"
-        type="ionicon"
+        name={iconsName.HOME}
+        type={iconsType.IONICON}
         size={30}
-        color={COLORS.TEXT_COLORS.zuccini}
+        color={colors.text_colors.zuccini}
       />
     ),
 
-    tabBarActiveBackgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
-    tabBarInactiveBackgroundColor: COLORS.BACKGROUND_COLORS.pampas,
-    headerTitleStyle: { color: COLORS.TEXT_COLORS.zuccini },
+    tabBarActiveBackgroundColor: colors.background_colors.akaroa,
+    tabBarInactiveBackgroundColor: colors.background_colors.pampas,
+    headerTitleStyle: { color: colors.text_colors.zuccini },
   };
 
   const listCityScreenOptions: BottomTabNavigationOptions = {
@@ -44,26 +46,28 @@ export const TabNavigation = () => {
     tabBarIcon: ({ size, focused, color }) => (
       <Icon
         tvParallaxProperties
-        name="md-list-circle"
-        type="ionicon"
+        name={iconsName.LIST}
+        type={iconsType.IONICON}
         size={30}
-        color={COLORS.TEXT_COLORS.zuccini}
+        color={colors.text_colors.zuccini}
       />
     ),
-    tabBarActiveBackgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
-    tabBarInactiveBackgroundColor: COLORS.BACKGROUND_COLORS.pampas,
+    tabBarActiveBackgroundColor: colors.background_colors.akaroa,
+    tabBarInactiveBackgroundColor: colors.background_colors.pampas,
   };
 
   const commonScreenOptions: ScreenOptionsType = {
     headerStyle: {
-      backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
+      backgroundColor: colors.background_colors.akaroa,
     },
     headerTitleAlign: 'left',
-    headerTitle: 'Weather App',
+    headerTitle: 'Weather Now',
     headerRightContainerStyle: {
       paddingRight: 16,
     },
-    headerRight: () => <AppButton onPress={onLogOutPress} title="Log Out" />,
+    headerRight: () => (
+      <AppButton onPress={onLogOutPress} title={buttonsName.LOG_OUT} />
+    ),
   };
 
   return (

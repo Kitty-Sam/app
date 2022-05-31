@@ -1,0 +1,31 @@
+{
+  "listScreen": {
+    "choice": "Choose the city...",
+    "favorite": "Favorite cities list",
+    "input": "Type here",
+    "search": "Type city title...",
+    "delete": "Are you sure, that you want to delete this item?"
+  },
+  "weatherScreen": {
+    "wind": "wind",
+    "wind_unit": "m/s",
+    "pressure": "pressure",
+    "pressure_unit": "mmHg",
+    "humidity": "humidity",
+    "humidity_unit": "%"
+  },
+  "cityScreen": {
+    "firstLaunch": "You should select one city to make it default"
+  },
+  "alert": {
+    "empty": "OOps! Type something",
+    "goBack": "Note! You have changed favorite icon. Sure?"
+  },
+  "modal": {
+    "greetings": "Hello!",
+    "fab": " Just type city title, if you want to know the weather there.Have a nice day!"
+  },
+  "overlay": {
+    "question": "You have changed favorite city list! Are you sure?"
+  }
+}

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Image,
   SafeAreaView,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
@@ -14,15 +14,22 @@ import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/Wea
 import { useDispatch, useSelector } from 'react-redux';
 import { requestStatus } from '../../store/reducers/appReducer';
 import { getError, selectStatusApp } from '../../store/selectors/appSelector';
-import { Icon } from 'react-native-elements';
+import { Icon, Overlay } from 'react-native-elements';
 import { toggleSelectedCity } from '../../store/actions/cities';
 import { getCities } from '../../store/selectors/citySelector';
 import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
-import { weatherGetInfo } from '../../store/sagas/sagasActions';
+
 import { AppButton } from '../../components/AppButton/AppButton';
 import { styles } from './style';
 import { database } from '../../utils/getDataBaseURL';
 import { getCurrentUser } from '../../store/selectors/loginSelector';
+import { iconsName, iconsType } from '../../utils/constants/icons';
+import { buttonsName } from '../../utils/constants/buttons';
+import { getWeekDay } from '../../utils/getRoundItem';
+import { useTranslation } from 'react-i18next';
+import { language } from '../CItyScreen/CityScreen';
+import { colors } from '../../theme/colors';
+import { weatherGetInfoAction } from '../../store/sagas/sagasActions/weatherGetInfo';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const img = require('../../../assets/not_found.png');
@@ -36,10 +43,11 @@ export const WeatherCardScreen = (
   const { route, navigation } = props;
   const { title } = route.params;
 
-  const current_Day = new Date().toLocaleString('ru').slice(4, 16);
+  const currentDay = getWeekDay(language);
 
   const [isActive, setIsActive] = useState<boolean>(false);
   const [hasChanged, setHasChanged] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -55,55 +63,56 @@ export const WeatherCardScreen = (
     }
   });
 
+  const onPressIcon = () => {
+    if (hasChanged) {
+      setIsVisible(!isVisible);
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity style={{ marginLeft: 16 }} onPress={onPressIcon}>
+          <Icon
+            tvParallaxProperties
+            type={iconsType.MATERIAL}
+            name={iconsName.ARROW_LEFT}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, [hasChanged, isVisible]);
+
   useEffect(() => {
     if (title) {
-      dispatch(weatherGetInfo(title));
+      dispatch(weatherGetInfoAction({ search: title }));
     }
   }, [title]);
 
-  const toggleSelectedCityIconPress = async () => {
-    setHasChanged(true);
-    dispatch(toggleSelectedCity(title));
-    setIsActive(!isActive);
+  useEffect(() => {
     if (isActive) {
-      await database
+      database
         .ref(`/users/${current_user.userId}/selected`)
         .child(`${title}`)
         .remove();
-    } else {
-      await database
+    }
+
+    if (statusApp === requestStatus.SUCCEEDED) {
+      database
         .ref(`/users/${current_user.userId}/selected`)
         .child(`${title}`)
         .set({ city: title, id: title, selected: true, isDefault: false });
     }
-  };
+  }, [isActive, statusApp]);
 
-  useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      if (!hasChanged) {
-        return;
-      }
-      e.preventDefault();
-      Alert.alert(
-        '',
-        'You have changed favorite icon. Are you sure, that you wanted it?',
-        [
-          {
-            text: "Don't leave",
-            style: 'cancel',
-            onPress: () => {
-              console.log('Cancel');
-            },
-          },
-          {
-            text: 'Yes',
-            style: 'destructive',
-            onPress: () => navigation.dispatch(e.data.action),
-          },
-        ],
-      );
-    });
-  }, [navigation, hasChanged]);
+  const toggleSelectedCityIconPress = () => {
+    setHasChanged(true);
+    dispatch(toggleSelectedCity(title));
+    setIsActive(!isActive);
+  };
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -112,34 +121,66 @@ export const WeatherCardScreen = (
           <ActivityIndicator />
         </View>
       ) : (
-        <View style={{ alignItems: 'center' }}>
+        <View style={styles.errorContainer}>
           {error ? (
             <View>
               <Image source={img} style={styles.imageContainer} />
               <AppButton
                 onPress={() => navigation.goBack()}
-                title="Try again"
+                title={buttonsName.TRY}
               />
             </View>
           ) : (
-            <View style={{ alignItems: 'center' }}>
-              <View style={styles.textContainer}>
-                <Text style={styles.titleText}>Hello, {title}!</Text>
+            <View style={styles.weatherContainer}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>{title}</Text>
+                <View style={styles.favoriteIconContainer}>
+                  <Icon
+                    tvParallaxProperties
+                    name={
+                      currentCity?.selected
+                        ? iconsName.STAR
+                        : iconsName.STAR_OUTLINE
+                    }
+                    type={iconsType.IONICS}
+                    onPress={() => toggleSelectedCityIconPress()}
+                  />
+                </View>
               </View>
-              <Icon
-                tvParallaxProperties
-                name={currentCity?.selected ? 'star' : 'star-outline'}
-                type="ionics"
-                onPress={() => toggleSelectedCityIconPress()}
-              />
+              <Text>{currentDay}</Text>
               <View style={styles.infoContainer}>
                 {data?.main ? (
-                  <WeatherCardDayTemplate
-                    day={current_Day}
-                    tempMax={data.main.temp_max}
-                    tempMin={data.main.temp_min}
-                    feelsLike={data.main.feels_like}
-                  />
+                  <>
+                    <WeatherCardDayTemplate
+                      description={data.weather[0].description}
+                      humidity={data.main.humidity}
+                      pressure={data.main.pressure}
+                      speed={data.wind.speed}
+                      icon={data.weather[0].icon}
+                      feelsLike={data.main.feels_like}
+                    />
+                    <Overlay
+                      isVisible={isVisible}
+                      overlayStyle={styles.overlay}>
+                      <Text style={styles.textOverlayContainer}>
+                        {t('overlay.question')}
+                      </Text>
+                      <View style={styles.overlayButtonsContainer}>
+                        <AppButton
+                          onPress={() => {
+                            setIsVisible(!isVisible);
+                            navigation.goBack();
+                          }}
+                          title={buttonsName.YES}
+                        />
+                        <AppButton
+                          onPress={() => setIsVisible(!isVisible)}
+                          title={buttonsName.STAY}
+                          backgroundColor={colors.button_colors.tacao}
+                        />
+                      </View>
+                    </Overlay>
+                  </>
                 ) : (
                   <ActivityIndicator />
                 )}

@@ -10,15 +10,16 @@ import { COMMON_STACK_NAME } from '../../enum/enum';
 import { TabNavigation } from '../tabStack/tabNavigation';
 import { WeatherCardScreen } from '../../screens/WeatherCardScreen/WeatherCardScreen';
 import { CommonStackParamList } from './types';
-import { COLORS } from '../../theme/colors';
+import { colors } from '../../theme/colors';
 
 const MainStack = createStackNavigator<CommonStackParamList>();
 
 export const MainStackNavigation = () => {
   const screenOptions: StackNavigationOptions = {
     headerStyle: {
-      backgroundColor: COLORS.BACKGROUND_COLORS.akaroa,
+      backgroundColor: colors.background_colors.akaroa,
     },
+    gestureEnabled: true,
   };
 
   return (

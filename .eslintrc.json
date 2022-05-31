@@ -47,7 +47,7 @@
     "import/no-unresolved": "off",
     "import/named": 0,
     "import/namespace": 0,
-    "import/default": 2,
+    "import/default": 0,
     "import/export": 2
   },
   "settings": {
