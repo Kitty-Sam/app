@@ -10,7 +10,6 @@ export enum iconsName {
   LIST = 'md-list-circle',
   PRESSURE = 'coolant-temperature',
   SEARCH = 'cloud-search',
-  SMILE = 'emoticon-cool',
   STAR = 'star',
   STAR_OUTLINE = 'star-outline',
   TEMPERATURE_C = 'temperature-celsius',
