@@ -45,12 +45,9 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
   },
   citiesContainer: {
     alignItems: 'center',
-    // flex: 1,
   },
   listContainer: {
     margin: 16,
-    // backgroundColor: 'red',
-    // flex: 1,
   },
   cityItemContainer: {
     margin: 8,
@@ -74,7 +71,6 @@ export const styles = StyleSheet.create<ListCitiesScreenStyleType>({
     marginHorizontal: 10,
     fontSize: 20,
   },
-
   textOverlayContainer: {
     justifyContent: 'center',
     alignItems: 'center',

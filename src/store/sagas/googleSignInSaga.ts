@@ -24,6 +24,7 @@ export function* googleSignInWorker() {
       uid: userId,
       displayName: userName,
       email: userEmail,
+      photoURL: photoURL,
     } = userCred.user;
 
     yield put(loginToggle(true));
@@ -44,7 +45,7 @@ export function* googleSignInWorker() {
         yield database
           .ref('/users/')
           .child(`${userId}`)
-          .set({ userId, userEmail, userName });
+          .set({ userId, userEmail, userName, photoURL });
         Alert.alert('Welcome!', `${userName}`);
       }
     }

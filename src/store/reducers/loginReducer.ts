@@ -3,6 +3,7 @@ import {
   loginToggle,
   saveUsers,
   setCurrentUser,
+  setUserInfo,
 } from '../actions/login';
 
 export type UserType = {
@@ -10,6 +11,13 @@ export type UserType = {
   selected?: string[];
   userEmail?: string;
   userId: string;
+  userImg?: string;
+  userName: string;
+};
+
+export type UserTypeFirebase = {
+  userEmail: string;
+  userImg: string;
   userName: string;
 };
 
@@ -20,6 +28,11 @@ export type initialStateType = {
     userName: string;
   };
   isLoggedIn: boolean;
+  user: {
+    userEmail: string;
+    userImg: string;
+    userName: string;
+  };
   users: UserType[];
 };
 
@@ -27,6 +40,7 @@ const initialState = {
   isLoggedIn: false,
   users: [] as UserType[],
   currentUser: {} as UserType,
+  user: {} as UserTypeFirebase,
 };
 
 export const loginReducer = (
@@ -43,6 +57,9 @@ export const loginReducer = (
     case LoginActions.SET_CURRENT_USER:
       return { ...state, currentUser: action.payload };
 
+    case LoginActions.SET_USER_INFO:
+      return { ...state, user: action.payload };
+
     default:
       return state;
   }
@@ -51,4 +68,5 @@ export const loginReducer = (
 type ActionsType =
   | ReturnType<typeof loginToggle>
   | ReturnType<typeof saveUsers>
-  | ReturnType<typeof setCurrentUser>;
+  | ReturnType<typeof setCurrentUser>
+  | ReturnType<typeof setUserInfo>;

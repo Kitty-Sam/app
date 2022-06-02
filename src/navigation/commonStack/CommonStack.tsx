@@ -11,6 +11,7 @@ import { TabNavigation } from '../tabStack/tabNavigation';
 import { WeatherCardScreen } from '../../screens/WeatherCardScreen/WeatherCardScreen';
 import { CommonStackParamList } from './types';
 import { colors } from '../../theme/colors';
+import { UserProfileScreen } from '../../screens/UserProfileScreen/UserProfileScreen';
 
 const MainStack = createStackNavigator<CommonStackParamList>();
 
@@ -33,6 +34,11 @@ export const MainStackNavigation = () => {
         <MainStack.Screen
           name={COMMON_STACK_NAME.WEATHER}
           component={WeatherCardScreen}
+          options={screenOptions}
+        />
+        <MainStack.Screen
+          name={COMMON_STACK_NAME.PROFILE}
+          component={UserProfileScreen}
           options={screenOptions}
         />
       </MainStack.Navigator>
