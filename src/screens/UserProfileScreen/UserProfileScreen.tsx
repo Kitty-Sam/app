@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Image, Text, TextInput, View } from 'react-native';
+import { Image, LogBox, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
@@ -20,6 +20,11 @@ import { Icon, Overlay } from 'react-native-elements';
 import { iconsName, iconsType } from '../../utils/constants/icons';
 import { database } from '../../utils/getDataBaseURL';
 import { styles } from './style';
+import { useRoute } from '@react-navigation/native';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 export const UserProfileScreen = (
   props: StackScreenNavigationProps<
@@ -27,6 +32,9 @@ export const UserProfileScreen = (
     CommonStackParamList
   >,
 ) => {
+  const route = useRoute();
+  const { isFirst, setIsFirst } = route.params;
+
   const userName = useSelector(getUserName);
   const userEmail = useSelector(getUserEmail);
   const userImg = useSelector(getUserImg);
@@ -48,15 +56,24 @@ export const UserProfileScreen = (
     dispatch(googleSignOutAction());
   };
 
+  const onSaveChangedNamePress = async () => {
+    await database.ref(`/users/${userId}`).update({
+      userName: newName,
+    });
+    setEditMode(false);
+  };
+
   useEffect(() => {
     setNewName(userName);
   }, [userName]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setVisible(true);
-    }, 500);
-  }, [userName]);
+    setIsFirst(true);
+    isFirst ||
+      setTimeout(() => {
+        setVisible(true);
+      }, 500);
+  }, [isFirst]);
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.root}>
@@ -93,12 +110,7 @@ export const UserProfileScreen = (
                 style={styles.textInput}
                 autoFocus={true}
                 maxLength={19}
-                onSubmitEditing={async () => {
-                  await database.ref(`/users/${userId}`).update({
-                    userName: newName,
-                  });
-                  setEditMode(false);
-                }}
+                onSubmitEditing={onSaveChangedNamePress}
               />
 
               <Icon
@@ -107,12 +119,7 @@ export const UserProfileScreen = (
                 type={iconsType.IONICON}
                 size={24}
                 color={colors.text_colors.zuccini}
-                onPress={async () => {
-                  await database.ref(`/users/${userId}`).update({
-                    userName: newName,
-                  });
-                  setEditMode(false);
-                }}
+                onPress={onSaveChangedNamePress}
                 containerStyle={{ marginTop: 8 }}
               />
             </View>

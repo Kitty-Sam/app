@@ -2,7 +2,7 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { COMMON_STACK_NAME } from '../../enum/enum';
@@ -23,6 +23,8 @@ export const MainStackNavigation = () => {
     gestureEnabled: true,
   };
 
+  const [isFirst, setIsFirst] = useState<boolean>(false);
+
   return (
     <NavigationContainer>
       <MainStack.Navigator initialRouteName={COMMON_STACK_NAME.TAB}>
@@ -40,6 +42,10 @@ export const MainStackNavigation = () => {
           name={COMMON_STACK_NAME.PROFILE}
           component={UserProfileScreen}
           options={screenOptions}
+          initialParams={{
+            isFirst,
+            setIsFirst,
+          }}
         />
       </MainStack.Navigator>
     </NavigationContainer>
