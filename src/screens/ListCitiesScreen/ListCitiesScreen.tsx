@@ -24,6 +24,13 @@ import { requestStatus } from '../../store/reducers/appReducer';
 import { selectStatusApp } from '../../store/selectors/appSelector';
 import { useTranslation } from 'react-i18next';
 import { weatherGetInfoAction } from '../../store/sagas/sagasActions/weatherGetInfo';
+import { PanGestureHandler } from 'react-native-gesture-handler';
+import Animated, {
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
 export const ListCitiesScreen = (
   props: StackScreenNavigationProps<
@@ -84,6 +91,42 @@ export const ListCitiesScreen = (
     );
   };
 
+  const EventsExample = () => {
+    const startingPosition = 100;
+    const x = useSharedValue(startingPosition);
+    const y = useSharedValue(startingPosition);
+
+    const pressed = useSharedValue(false);
+    console.log('pressed', pressed);
+
+    const eventHandler = useAnimatedGestureHandler({
+      onStart: (event, ctx) => {
+        pressed.value = true;
+      },
+      onActive: (event, ctx) => {
+        x.value = startingPosition + event.translationX;
+        y.value = startingPosition + event.translationY;
+      },
+      onEnd: (event, ctx) => {
+        pressed.value = false;
+        x.value = withSpring(startingPosition);
+        y.value = withSpring(startingPosition);
+      },
+    });
+
+    return (
+      <PanGestureHandler onGestureEvent={eventHandler}>
+        <Animated.View
+          style={{
+            width: 60,
+            height: 60,
+            backgroundColor: 'green',
+          }}
+        />
+      </PanGestureHandler>
+    );
+  };
+
   return (
     <SafeAreaView style={styles.root}>
       {statusApp === requestStatus.LOADING ? (
@@ -119,6 +162,7 @@ export const ListCitiesScreen = (
               />
             </View>
           </View>
+          <EventsExample />
           <FlatList
             style={styles.listContainer}
             keyExtractor={keyExtractor}
