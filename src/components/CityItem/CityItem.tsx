@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Animated as An } from 'react-native';
 import { Icon, Overlay } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
@@ -21,7 +21,7 @@ import {
 } from '../../store/sagas/sagasActions/makeDefaultItem';
 
 export const CityItem = (props: CityItemProps): ReactElement => {
-  const { title, id, isDefault } = props;
+  const { title, id, isDefault, animationId, value } = props;
 
   const [visible, setVisible] = useState(false);
 
@@ -47,16 +47,21 @@ export const CityItem = (props: CityItemProps): ReactElement => {
     setVisible(!visible);
   };
 
+  const backgroundColor = value.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [
+      colors.background_colors.iron,
+      colors.background_colors.iron,
+      colors.background_colors.akaroa,
+    ],
+  });
+
   return (
     <SafeAreaView>
-      <View
+      <An.View
         style={[
           styles.textContainer,
-          {
-            backgroundColor: isDefault
-              ? colors.background_colors.iron
-              : colors.background_colors.akaroa,
-          },
+          id === animationId ? { backgroundColor } : null,
         ]}>
         <Text style={styles.itemText}>{title}</Text>
         <View style={styles.iconsContainer}>
@@ -99,7 +104,7 @@ export const CityItem = (props: CityItemProps): ReactElement => {
             </View>
           </View>
         </Overlay>
-      </View>
+      </An.View>
     </SafeAreaView>
   );
 };
