@@ -69,11 +69,17 @@ export const CityItem = (props: CityItemProps): ReactElement => {
     };
   });
 
+  const rIconContainer = useAnimatedStyle(() => {
+    const opacity = withTiming(Math.abs(translateX.value) < 50 ? 0 : 1);
+    return { opacity };
+  });
+
   type ContextAnimationType = {
     translateX: number;
   };
 
-  const [isMovedItem, setMovedItem] = useState<boolean>(false);
+  const [isMovedItem, setMovedItem] = useState<boolean>(true);
+
   const panGestureEvent = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
     ContextAnimationType
@@ -82,16 +88,18 @@ export const CityItem = (props: CityItemProps): ReactElement => {
       translateX.value = event.translationX;
     },
     onEnd: (event, context) => {
-      console.log('visible', visible);
+      isMovedItem ? (translateX.value = withTiming(0)) : null;
       const positionX = event.translationX;
 
-      /*  if (Math.abs(positionX) > 100) {
+      /* if (-positionX > 100) {
         translateX.value = withTiming(-50);
         setMovedItem(true);
-      } else {
+      }
+      if (-positionX < 100) {
         translateX.value = withTiming(0);
       }*/
-      Math.abs(positionX) > 100
+
+      -positionX > 100
         ? (translateX.value = withTiming(-50))
         : (translateX.value = withTiming(0));
     },
@@ -100,15 +108,18 @@ export const CityItem = (props: CityItemProps): ReactElement => {
   return (
     <SafeAreaView>
       {citiesLen || isDefault ? null : (
-        <View
-          style={{
-            position: 'absolute',
-            right: 18,
-            top: 6,
-            backgroundColor: 'orange',
-            padding: 4,
-            borderRadius: 4,
-          }}>
+        <Animated.View
+          style={[
+            {
+              position: 'absolute',
+              right: 18,
+              top: 6,
+              backgroundColor: colors.button_colors.tacao,
+              padding: 4,
+              borderRadius: 4,
+            },
+            rIconContainer,
+          ]}>
           <Icon
             style={{ marginHorizontal: 8 }}
             disabled={selectedCities.length === 1}
@@ -117,7 +128,7 @@ export const CityItem = (props: CityItemProps): ReactElement => {
             type={iconsType.MATERIAL}
             onPress={() => onDeletePress()}
           />
-        </View>
+        </Animated.View>
       )}
       <PanGestureHandler onGestureEvent={panGestureEvent}>
         <Animated.View
