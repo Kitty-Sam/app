@@ -24,13 +24,6 @@ import { requestStatus } from '../../store/reducers/appReducer';
 import { selectStatusApp } from '../../store/selectors/appSelector';
 import { useTranslation } from 'react-i18next';
 import { weatherGetInfoAction } from '../../store/sagas/sagasActions/weatherGetInfo';
-import { PanGestureHandler } from 'react-native-gesture-handler';
-import Animated, {
-  useAnimatedGestureHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from 'react-native-reanimated';
 
 export const ListCitiesScreen = (
   props: StackScreenNavigationProps<
@@ -47,7 +40,13 @@ export const ListCitiesScreen = (
   const selectedCities = useSelector(getSelectedCities);
   const statusApp = useSelector(selectStatusApp);
 
+  const [trashVisibleId, setTrashVisibleId] = useState<string | null>(null);
+
   const dispatch = useDispatch();
+
+  const update = (itemId: string) => {
+    setTrashVisibleId(itemId);
+  };
 
   const navToWeatherScreen = () => {
     navigation.navigate(COMMON_STACK_NAME.WEATHER, {
@@ -86,6 +85,8 @@ export const ListCitiesScreen = (
           id={id}
           selected={selected}
           isDefault={isDefault}
+          update={update}
+          trashVisibleId={trashVisibleId}
         />
       </TouchableOpacity>
     );

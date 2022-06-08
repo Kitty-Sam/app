@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { Icon, Overlay } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,6 +20,7 @@ import {
   makeDefaultItemPayload,
 } from '../../store/sagas/sagasActions/makeDefaultItem';
 import Animated, {
+  runOnJS,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -31,7 +32,7 @@ import {
 } from 'react-native-gesture-handler';
 
 export const CityItem = (props: CityItemProps): ReactElement => {
-  const { title, id, isDefault } = props;
+  const { title, id, isDefault, update, trashVisibleId } = props;
 
   const [visible, setVisible] = useState(false);
 
@@ -78,30 +79,31 @@ export const CityItem = (props: CityItemProps): ReactElement => {
     translateX: number;
   };
 
-  const [isMovedItem, setMovedItem] = useState<boolean>(true);
+  useEffect(() => {
+    if (trashVisibleId !== id && trashVisibleId !== null) {
+      translateX.value = withTiming(0);
+    }
+  }, [trashVisibleId]);
 
   const panGestureEvent = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
     ContextAnimationType
   >({
+    onStart: () => {
+      translateX.value = withTiming(0);
+    },
+
     onActive: (event, context) => {
       translateX.value = event.translationX;
     },
     onEnd: (event, context) => {
-      isMovedItem ? (translateX.value = withTiming(0)) : null;
       const positionX = event.translationX;
 
-      /* if (-positionX > 100) {
-        translateX.value = withTiming(-50);
-        setMovedItem(true);
-      }
-      if (-positionX < 100) {
-        translateX.value = withTiming(0);
-      }*/
-
-      -positionX > 100
+      -positionX > 50
         ? (translateX.value = withTiming(-50))
         : (translateX.value = withTiming(0));
+
+      runOnJS(update)(id);
     },
   });
 
