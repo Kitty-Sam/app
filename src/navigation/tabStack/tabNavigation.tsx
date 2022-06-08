@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { buttonsName } from '../../utils/constants/buttons';
 import { iconsName, iconsType } from '../../utils/constants/icons';
 import { googleSignOutAction } from '../../store/sagas/sagasActions/googleSignOut';
+import { EmptyScreen } from '../../screens/Empty/EmptyScreen';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
@@ -80,6 +81,11 @@ export const TabNavigation = () => {
       <TabStack.Screen
         name={TAB_NAVIGATION_NAME.LIST_CITIES_SCREEN}
         component={ListCitiesScreen}
+        options={listCityScreenOptions}
+      />
+      <TabStack.Screen
+        name={TAB_NAVIGATION_NAME.EMPTY}
+        component={EmptyScreen}
         options={listCityScreenOptions}
       />
     </TabStack.Navigator>

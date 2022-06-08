@@ -78,7 +78,7 @@ export const ListCitiesScreen = (
     const { city, id, selected, isDefault } = item;
     return (
       <TouchableOpacity
-        activeOpacity={0.5}
+        activeOpacity={0.9}
         style={styles.cityItemContainer}
         onPress={() => onCityItemPress(city)}>
         <CityItem
@@ -88,42 +88,6 @@ export const ListCitiesScreen = (
           isDefault={isDefault}
         />
       </TouchableOpacity>
-    );
-  };
-
-  const EventsExample = () => {
-    const startingPosition = 100;
-    const x = useSharedValue(startingPosition);
-    const y = useSharedValue(startingPosition);
-
-    const pressed = useSharedValue(false);
-    console.log('pressed', pressed);
-
-    const eventHandler = useAnimatedGestureHandler({
-      onStart: (event, ctx) => {
-        pressed.value = true;
-      },
-      onActive: (event, ctx) => {
-        x.value = startingPosition + event.translationX;
-        y.value = startingPosition + event.translationY;
-      },
-      onEnd: (event, ctx) => {
-        pressed.value = false;
-        x.value = withSpring(startingPosition);
-        y.value = withSpring(startingPosition);
-      },
-    });
-
-    return (
-      <PanGestureHandler onGestureEvent={eventHandler}>
-        <Animated.View
-          style={{
-            width: 60,
-            height: 60,
-            backgroundColor: 'green',
-          }}
-        />
-      </PanGestureHandler>
     );
   };
 
@@ -162,7 +126,6 @@ export const ListCitiesScreen = (
               />
             </View>
           </View>
-          <EventsExample />
           <FlatList
             style={styles.listContainer}
             keyExtractor={keyExtractor}
