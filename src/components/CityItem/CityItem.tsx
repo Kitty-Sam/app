@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { Icon, Overlay } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './styles';
-import { CityItemProps } from './types';
+import { CityItemProps, ContextAnimationType } from './types';
 import { useDispatch, useSelector } from 'react-redux';
 import { colors } from '../../theme/colors';
 import { iconsName, iconsType } from '../../utils/constants/icons';
@@ -40,8 +40,8 @@ export const CityItem = (props: CityItemProps): ReactElement => {
   const { t } = useTranslation();
 
   const selectedCities = useSelector(getSelectedCities);
-
   const citiesLen = selectedCities.length === 1;
+  const translateX = useSharedValue(0);
 
   const onDeletePress = () => {
     toggleOverlay();
@@ -58,8 +58,6 @@ export const CityItem = (props: CityItemProps): ReactElement => {
     setVisible(!visible);
   };
 
-  const translateX = useSharedValue(0);
-
   const rStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -74,10 +72,6 @@ export const CityItem = (props: CityItemProps): ReactElement => {
     const opacity = withTiming(Math.abs(translateX.value) < 50 ? 0 : 1);
     return { opacity };
   });
-
-  type ContextAnimationType = {
-    translateX: number;
-  };
 
   useEffect(() => {
     if (trashVisibleId !== id && trashVisibleId !== null) {
@@ -110,18 +104,7 @@ export const CityItem = (props: CityItemProps): ReactElement => {
   return (
     <SafeAreaView>
       {citiesLen || isDefault ? null : (
-        <Animated.View
-          style={[
-            {
-              position: 'absolute',
-              right: 18,
-              top: 6,
-              backgroundColor: colors.button_colors.tacao,
-              padding: 4,
-              borderRadius: 4,
-            },
-            rIconContainer,
-          ]}>
+        <Animated.View style={[styles.trashIconContainer, rIconContainer]}>
           <Icon
             style={{ marginHorizontal: 8 }}
             disabled={selectedCities.length === 1}

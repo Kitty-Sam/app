@@ -62,7 +62,7 @@ export const TabNavigation = () => {
       backgroundColor: colors.background_colors.akaroa,
     },
     headerTitleAlign: 'left',
-    headerTitle: 'Weather Now',
+    headerTitle: 'Weather',
     headerRightContainerStyle: {
       paddingRight: 16,
     },
@@ -83,11 +83,11 @@ export const TabNavigation = () => {
         component={ListCitiesScreen}
         options={listCityScreenOptions}
       />
-      <TabStack.Screen
+      {/* <TabStack.Screen
         name={TAB_NAVIGATION_NAME.EMPTY}
         component={EmptyScreen}
         options={listCityScreenOptions}
-      />
+      />*/}
     </TabStack.Navigator>
   );
 };

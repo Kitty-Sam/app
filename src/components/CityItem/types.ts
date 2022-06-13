@@ -6,3 +6,7 @@ export type CityItemProps = {
   trashVisibleId: string | null;
   update: (id: string) => void;
 };
+
+export type ContextAnimationType = {
+  translateX: number;
+};
