@@ -6,16 +6,24 @@ import {
 import { CityScreen } from '../../screens/CItyScreen/CityScreen';
 import { ListCitiesScreen } from '../../screens/ListCitiesScreen/ListCitiesScreen';
 import { Icon } from 'react-native-elements';
-import { COMMON_STACK_NAME, TAB_NAVIGATION_NAME } from '../../enum/enum';
+import { TAB_NAVIGATION_NAME } from '../../enum/enum';
 import { colors } from '../../theme/colors';
 import { ScreenOptionsType, TabStackParamList } from './types';
+import { AppButton } from '../../components/AppButton/AppButton';
+import { useDispatch } from 'react-redux';
+import { buttonsName } from '../../utils/constants/buttons';
 import { iconsName, iconsType } from '../../utils/constants/icons';
-import { useNavigation } from '@react-navigation/native';
+import { googleSignOutAction } from '../../store/sagas/sagasActions/googleSignOut';
+import { EmptyScreen } from '../../screens/Empty/EmptyScreen';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
 export const TabNavigation = () => {
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const onLogOutPress = () => {
+    dispatch(googleSignOutAction());
+  };
 
   const mainScreenOptions: BottomTabNavigationOptions = {
     tabBarShowLabel: false,
@@ -54,19 +62,12 @@ export const TabNavigation = () => {
       backgroundColor: colors.background_colors.akaroa,
     },
     headerTitleAlign: 'left',
-    headerTitle: 'Weather Now',
+    headerTitle: 'Weather',
     headerRightContainerStyle: {
       paddingRight: 16,
     },
     headerRight: () => (
-      <Icon
-        tvParallaxProperties
-        name={iconsName.AVATAR}
-        type={iconsType.MATERIAL}
-        onPress={() => navigation.navigate(COMMON_STACK_NAME.PROFILE)}
-        color={colors.text_colors.zuccini}
-        size={36}
-      />
+      <AppButton onPress={onLogOutPress} title={buttonsName.LOG_OUT} />
     ),
   };
 
@@ -82,6 +83,11 @@ export const TabNavigation = () => {
         component={ListCitiesScreen}
         options={listCityScreenOptions}
       />
+      {/* <TabStack.Screen
+        name={TAB_NAVIGATION_NAME.EMPTY}
+        component={EmptyScreen}
+        options={listCityScreenOptions}
+      />*/}
     </TabStack.Navigator>
   );
 };

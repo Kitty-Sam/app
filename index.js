@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/store/configureStore';
 import PushNotification from 'react-native-push-notification';
+// import 'react-native-gesture-handler';
 
 import i18n from './src/i18n/i18n';
 

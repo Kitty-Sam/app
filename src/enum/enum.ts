@@ -1,4 +1,5 @@
 export enum TAB_NAVIGATION_NAME {
+  EMPTY = 'Empty',
   LIST_CITIES_SCREEN = 'List',
   MAIN_SCREEN = 'CityScreen',
 }

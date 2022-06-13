@@ -8,6 +8,7 @@ import { AuthStackNavigation } from './src/navigation/authStack/AuthStack';
 import { MainStackNavigation } from './src/navigation/commonStack/CommonStack';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { selectLoginIn } from './src/store/selectors/loginSelector';
+import 'react-native-gesture-handler';
 
 import messaging from '@react-native-firebase/messaging';
 

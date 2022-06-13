@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
-  Animated as An,
   FlatList,
   Text,
   TextInput,
@@ -25,8 +24,6 @@ import { requestStatus } from '../../store/reducers/appReducer';
 import { selectStatusApp } from '../../store/selectors/appSelector';
 import { useTranslation } from 'react-i18next';
 import { weatherGetInfoAction } from '../../store/sagas/sagasActions/weatherGetInfo';
-import { useFocusEffect } from '@react-navigation/native';
-import { loginReducer } from '../../store/reducers/loginReducer';
 
 export const ListCitiesScreen = (
   props: StackScreenNavigationProps<
@@ -43,7 +40,13 @@ export const ListCitiesScreen = (
   const selectedCities = useSelector(getSelectedCities);
   const statusApp = useSelector(selectStatusApp);
 
+  const [trashVisibleId, setTrashVisibleId] = useState<string | null>(null);
+
   const dispatch = useDispatch();
+
+  const update = (itemId: string) => {
+    setTrashVisibleId(itemId);
+  };
 
   const navToWeatherScreen = () => {
     navigation.navigate(COMMON_STACK_NAME.WEATHER, {
@@ -60,28 +63,11 @@ export const ListCitiesScreen = (
     }
   };
 
-  const [animationId, setAnimationId] = useState('');
-
   const onCityItemPress = (city: string) => {
-    setAnimationId(city);
     navigation.navigate(COMMON_STACK_NAME.WEATHER, {
       title: city,
     });
   };
-
-  const value = new An.Value(0);
-
-  const startAnimation = () => {
-    An.timing(value, {
-      useNativeDriver: false,
-      toValue: 1,
-      duration: 3000,
-    }).start();
-  };
-
-  useFocusEffect(() => {
-    animationId && startAnimation();
-  });
 
   const toggleSearchOverlay = () => {
     setVisibleSearch(!isVisibleSearch);
@@ -91,7 +77,7 @@ export const ListCitiesScreen = (
     const { city, id, selected, isDefault } = item;
     return (
       <TouchableOpacity
-        activeOpacity={0.5}
+        activeOpacity={0.9}
         style={styles.cityItemContainer}
         onPress={() => onCityItemPress(city)}>
         <CityItem
@@ -99,8 +85,8 @@ export const ListCitiesScreen = (
           id={id}
           selected={selected}
           isDefault={isDefault}
-          animationId={animationId}
-          value={value}
+          update={update}
+          trashVisibleId={trashVisibleId}
         />
       </TouchableOpacity>
     );
@@ -129,24 +115,15 @@ export const ListCitiesScreen = (
               onChangeText={setSearch}
               value={search}
               style={styles.search}
-              onSubmitEditing={() => {
-                onShowWeatherPress();
-              }}
             />
             <View style={styles.showButtonContainer}>
               <Icon
-                containerStyle={{ borderRadius: 10 }}
                 tvParallaxProperties
                 name={iconsName.SEARCH}
                 type={iconsType.MATERIAL}
                 onPress={onShowWeatherPress}
-                color={
-                  search === ''
-                    ? colors.background_colors.indian_Khaki
-                    : colors.text_colors.zuccini
-                }
+                color={colors.text_colors.zuccini}
                 size={36}
-                disabled={search === ''}
               />
             </View>
           </View>

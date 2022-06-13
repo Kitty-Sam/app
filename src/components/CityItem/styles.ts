@@ -9,6 +9,7 @@ type CityItemStyleType = {
   overlayContainer: ViewStyle;
   text: TextStyle;
   textContainer: ViewStyle;
+  trashIconContainer: ViewStyle;
 };
 
 const { width } = Dimensions.get('window');
@@ -49,5 +50,13 @@ export const styles = StyleSheet.create<CityItemStyleType>({
   },
   overlay: {
     marginHorizontal: 20,
+  },
+  trashIconContainer: {
+    position: 'absolute',
+    right: 18,
+    top: 6,
+    backgroundColor: colors.button_colors.tacao,
+    padding: 4,
+    borderRadius: 4,
   },
 });
