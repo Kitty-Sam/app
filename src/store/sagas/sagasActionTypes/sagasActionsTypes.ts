@@ -7,3 +7,4 @@ export const GOOGLE_SIGN_IN = 'GOOGLE_SIGN_IN';
 export const GOOGLE_SIGN_OUT = 'GOOGLE_SIGN_OUT';
 export const MAKE_DEFAULT = 'MAKE_DEFAULT';
 export const WEATHER_GET_INFO = 'WEATHER_GET_INFO';
+export const FETCH_USER_INFO = 'FETCH_USER_INFO';

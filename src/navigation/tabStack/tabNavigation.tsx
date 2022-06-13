@@ -6,23 +6,16 @@ import {
 import { CityScreen } from '../../screens/CItyScreen/CityScreen';
 import { ListCitiesScreen } from '../../screens/ListCitiesScreen/ListCitiesScreen';
 import { Icon } from 'react-native-elements';
-import { TAB_NAVIGATION_NAME } from '../../enum/enum';
+import { COMMON_STACK_NAME, TAB_NAVIGATION_NAME } from '../../enum/enum';
 import { colors } from '../../theme/colors';
 import { ScreenOptionsType, TabStackParamList } from './types';
-import { AppButton } from '../../components/AppButton/AppButton';
-import { useDispatch } from 'react-redux';
-import { buttonsName } from '../../utils/constants/buttons';
 import { iconsName, iconsType } from '../../utils/constants/icons';
-import { googleSignOutAction } from '../../store/sagas/sagasActions/googleSignOut';
+import { useNavigation } from '@react-navigation/native';
 
 export const TabStack = createBottomTabNavigator<TabStackParamList>();
 
 export const TabNavigation = () => {
-  const dispatch = useDispatch();
-
-  const onLogOutPress = () => {
-    dispatch(googleSignOutAction());
-  };
+  const navigation = useNavigation();
 
   const mainScreenOptions: BottomTabNavigationOptions = {
     tabBarShowLabel: false,
@@ -66,7 +59,14 @@ export const TabNavigation = () => {
       paddingRight: 16,
     },
     headerRight: () => (
-      <AppButton onPress={onLogOutPress} title={buttonsName.LOG_OUT} />
+      <Icon
+        tvParallaxProperties
+        name={iconsName.AVATAR}
+        type={iconsType.MATERIAL}
+        onPress={() => navigation.navigate(COMMON_STACK_NAME.PROFILE)}
+        color={colors.text_colors.zuccini}
+        size={36}
+      />
     ),
   };
 
