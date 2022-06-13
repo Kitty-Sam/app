@@ -115,15 +115,24 @@ export const ListCitiesScreen = (
               onChangeText={setSearch}
               value={search}
               style={styles.search}
+              onSubmitEditing={() => {
+                onShowWeatherPress();
+              }}
             />
             <View style={styles.showButtonContainer}>
               <Icon
+                containerStyle={{ borderRadius: 10 }}
                 tvParallaxProperties
                 name={iconsName.SEARCH}
                 type={iconsType.MATERIAL}
                 onPress={onShowWeatherPress}
-                color={colors.text_colors.zuccini}
+                color={
+                  search === ''
+                    ? colors.background_colors.indian_Khaki
+                    : colors.text_colors.zuccini
+                }
                 size={36}
+                disabled={search === ''}
               />
             </View>
           </View>
