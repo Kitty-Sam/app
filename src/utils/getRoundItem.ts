@@ -1,5 +1,3 @@
-import { NativeModules } from 'react-native';
-
 export const getRoundItem = (a: number) => {
   return a.toFixed().toString();
 };
