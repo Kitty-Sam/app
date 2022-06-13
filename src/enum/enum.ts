@@ -9,6 +9,7 @@ export enum AUTH_NAVIGATION_NAME {
 }
 
 export enum COMMON_STACK_NAME {
+  PROFILE = 'Profile',
   TAB = 'Tab',
   WEATHER = 'Weather',
 }

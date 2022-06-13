@@ -14,12 +14,14 @@ import {
   DELETE_ITEM,
   FACEBOOK_SIGN_IN,
   FETCH_SELECTED_CITIES,
+  FETCH_USER_INFO,
   FETCH_USERS,
   GOOGLE_SIGN_IN,
   GOOGLE_SIGN_OUT,
   MAKE_DEFAULT,
   WEATHER_GET_INFO,
 } from './sagasActionTypes/sagasActionsTypes';
+import { fetchUserInfoWorker } from './addUserInfoSaga';
 
 export function* watchClickSaga() {
   yield takeEvery(WEATHER_GET_INFO, getWeatherWorker);
@@ -31,6 +33,7 @@ export function* watchClickSaga() {
   yield takeLatest(DELETE_ITEM, deleteItemWorker);
   yield takeLatest(FETCH_USERS, fetchUsersWorker);
   yield takeEvery(DEFAULT_WEATHER_GET_INFO, getDefaultWeatherWorker);
+  yield takeEvery(FETCH_USER_INFO, fetchUserInfoWorker);
 }
 
 export default function* rootSaga() {
