@@ -6,9 +6,10 @@ import {
   NativeModules,
   StatusBar,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
-import { styles } from './styles';
+import { cityStyles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { WeatherCardDayTemplate } from '../../components/WeatherCardTemplate/WeatherCardTemplate';
 import { requestStatus } from '../../store/reducers/appReducer';
@@ -32,6 +33,9 @@ export const CityScreen = () => {
   const dayWeatherInfo = useSelector(getDefaultDayWeatherInfo);
 
   const currentDay = getWeekDay(language);
+
+  const { width } = useWindowDimensions();
+  const styles = cityStyles(width);
 
   useEffect(() => {
     if (defaultCity) {

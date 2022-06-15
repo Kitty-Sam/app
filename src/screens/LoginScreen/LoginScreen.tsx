@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../theme/colors';
-import { styles } from './style';
+import { loginStyles } from './style';
 import { AppButtonWithImg } from '../../components/AppButtonWithImg/AppButtonWithImg';
 import { AUTH_NAVIGATION_NAME } from '../../enum/enum';
 import {
@@ -27,6 +32,9 @@ export const LoginScreen = (
   const statusApp = useSelector(selectStatusApp);
 
   const dispatch = useDispatch();
+
+  const { width } = useWindowDimensions();
+  const styles = loginStyles(width);
 
   useEffect(() => {
     dispatch(fetchUsersAction());

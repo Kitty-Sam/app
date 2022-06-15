@@ -5,10 +5,11 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from './styles';
+import { listCitiesStyles } from './styles';
 import { Icon, Overlay } from 'react-native-elements';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,6 +33,9 @@ export const ListCitiesScreen = (
   >,
 ) => {
   const { navigation } = props;
+
+  const { width } = useWindowDimensions();
+  const styles = listCitiesStyles(width);
 
   const { t } = useTranslation();
 

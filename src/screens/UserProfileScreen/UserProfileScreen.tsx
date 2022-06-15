@@ -1,5 +1,12 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Image, LogBox, Text, TextInput, View } from 'react-native';
+import {
+  Image,
+  LogBox,
+  Text,
+  TextInput,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COMMON_STACK_NAME } from '../../enum/enum';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
@@ -19,8 +26,8 @@ import { colors } from '../../theme/colors';
 import { Icon, Overlay } from 'react-native-elements';
 import { iconsName, iconsType } from '../../utils/constants/icons';
 import { database } from '../../utils/getDataBaseURL';
-import { styles } from './style';
 import { useRoute } from '@react-navigation/native';
+import { profileStyles } from './style';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -45,6 +52,9 @@ export const UserProfileScreen = (
   const [newName, setNewName] = useState<string>(userName);
 
   const dispatch = useDispatch();
+
+  const { width } = useWindowDimensions();
+  const styles = profileStyles(width);
 
   const avatar = 'https://flyclipart.com/thumb2/avatar-icon-518360.png';
 
@@ -82,7 +92,7 @@ export const UserProfileScreen = (
         isVisible={isVisible}
         overlayStyle={styles.overlay}>
         <Text style={styles.text}>
-          {newName}, you can change your NickName, if you want!
+          {newName || 'user'}, you can change your NickName, if you want!
         </Text>
       </Overlay>
       <View style={styles.avatarContainer}>

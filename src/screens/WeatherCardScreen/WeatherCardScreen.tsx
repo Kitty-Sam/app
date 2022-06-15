@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { StackScreenNavigationProps } from '../../navigation/authStack/types';
@@ -20,7 +21,7 @@ import { getCities } from '../../store/selectors/citySelector';
 import { getDayWeatherInfo } from '../../store/selectors/weatherSelector';
 
 import { AppButton } from '../../components/AppButton/AppButton';
-import { styles } from './style';
+import { weatherStyles } from './style';
 import { database } from '../../utils/getDataBaseURL';
 import { getCurrentUser } from '../../store/selectors/loginSelector';
 import { iconsName, iconsType } from '../../utils/constants/icons';
@@ -42,6 +43,9 @@ export const WeatherCardScreen = (
 ) => {
   const { route, navigation } = props;
   const { title } = route.params;
+
+  const { width } = useWindowDimensions();
+  const styles = weatherStyles(width);
 
   const currentDay = getWeekDay(language);
 
